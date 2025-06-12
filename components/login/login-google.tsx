@@ -1,5 +1,4 @@
 'use client'
-import { signIn } from '@/lib/auth-client'
 import { Button } from "@/components/ui/button";
 
 interface GoogleLoginButtonProps {
@@ -7,19 +6,14 @@ interface GoogleLoginButtonProps {
 }
 
 export function GoogleLoginButton({ className }: GoogleLoginButtonProps) {
-    const handleGoogleSignIn = async () => {
-        await signIn.social({
-            provider: "google",
-            callbackURL: '/dashboard',
-            errorCallbackURL: '/login'
-        });
-    }
 
   return (
     <Button
       variant="outline"
       className={`w-full h-12 border-gray-200 hover:bg-gray-50 transition-all hover:scale-105 rounded-xl`}
-      onClick={handleGoogleSignIn}
+      onClick={() => {
+        console.log('Google login button clicked')
+      }}
     >
       <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
         <path
