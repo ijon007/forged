@@ -4,6 +4,8 @@ import { google } from '@ai-sdk/google'
 import { generateObject, zodSchema } from 'ai'
 import { z } from 'zod'
 import { courseStore } from '@/lib/course-store'
+import { saveCourse } from './course-db-actions'
+import { generateUniqueSlug } from '@/utils/slug'
 
 export interface CourseGenerationResult {
   success: boolean
@@ -146,10 +148,10 @@ Remember to output the exact field names specified in the schema: title, descrip
       return { success: false, error: 'Failed to generate course content' }
     }
 
-    // Generate a unique ID for the course
-    const courseId = Date.now().toString()
+    // Generate a SEO-friendly slug for the course
+    const courseId = generateUniqueSlug(courseData.title)
 
-    // Save to store
+    // Save to in-memory store (for immediate access)
     courseStore.set(courseId, {
       title: courseData.title,
       description: courseData.description,
@@ -159,6 +161,24 @@ Remember to output the exact field names specified in the schema: title, descrip
       keyPoints: courseData.keyPoints,
       estimatedReadTime: courseData.estimatedReadTime,
     })
+
+    // Save to database
+    const dbResult = await saveCourse({
+      id: courseId,
+      title: courseData.title,
+      description: courseData.description,
+      content: courseData.content,
+      originalContent: extractedText,
+      tags: courseData.tags,
+      keyPoints: courseData.keyPoints,
+      estimatedReadTime: courseData.estimatedReadTime,
+      price: courseData.price,
+    })
+
+    if (!dbResult.success) {
+      console.error('Failed to save course to database:', dbResult.error)
+      // Continue anyway since we have it in memory store
+    }
 
     return {
       success: true,

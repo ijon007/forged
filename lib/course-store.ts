@@ -45,12 +45,15 @@ class CourseStore {
 export const courseStore = new CourseStore()
 
 // Helper function to format course data for preview
-export function formatCourseForPreview(course: GeneratedCourse) {
+export function formatCourseForPreview(course: GeneratedCourse, priceInCents?: number) {
+  // Convert price from cents to dollars, default to 19.99 if not provided
+  const price = priceInCents ? priceInCents / 100 : 19.99
+  
   return {
     id: course.id,
     title: course.title,
     description: course.description,
-    price: 19.99, // Default price for generated content
+    price: price,
     slug: `generated-${course.id}`,
     status: 'draft' as const,
     originalContent: course.originalContent,

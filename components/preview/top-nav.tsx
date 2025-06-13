@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Eye, Check, Save, ExternalLink, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 interface TopNavProps {
     previewData: {
+        id: string
         title: string
         status: string
         slug: string
@@ -18,6 +19,7 @@ interface TopNavProps {
 const TopNav = ({ previewData }: TopNavProps) => {
     const [isSaving, setIsSaving] = useState(false)
     const [isPublishing, setIsPublishing] = useState(false)
+    const router = useRouter()
 
     const handleSave = async () => {
         setIsSaving(true)
@@ -28,9 +30,20 @@ const TopNav = ({ previewData }: TopNavProps) => {
 
     const handlePublish = async () => {
         setIsPublishing(true)
-        // Simulate publish operation
-        await new Promise(resolve => setTimeout(resolve, 1500))
-        redirect(`/${previewData.slug}`)
+        try {
+            // TODO: Add actual publish logic here (update database status, etc.)
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            router.push(`/${previewData.slug}`)
+        } catch (error) {
+            console.error('Failed to publish:', error)
+        } finally {
+            setIsPublishing(false)
+        }
+    }
+
+    const handlePreview = () => {
+        // Open blog preview in new tab
+        window.open(`/dashboard/preview/${previewData.id}/blog`, '_blank')
     }
     
     return (
@@ -57,8 +70,19 @@ const TopNav = ({ previewData }: TopNavProps) => {
                     
                     <div className="flex items-center gap-2">
                         <Button
+                            variant="outline"
+                            onClick={handlePreview}
+                            className="hover:bg-muted"
+                        >
+                            <Eye className="mr-2 h-4 w-4" />
+                            Preview
+                        </Button>
+                        
+                        <Button
+                            onClick={handlePublish}
+                            disabled={isPublishing}
                             size="lg"
-                            className="group relative bg-black text-white hover:bg-gray-800 rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl"
+                            className="group relative bg-black text-white hover:bg-gray-800 rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity" />
                             <Check className="mr-2 h-4 w-4 relative" />
