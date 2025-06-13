@@ -14,7 +14,7 @@ export function Hero() {
 
       <div className="container relative mx-auto px-4 py-20 lg:py-32">
         <div className="text-center">
-          <div className="mb-8 inline-flex items-center rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-2 text-sm text-gray-600 transition-all hover:bg-white hover:shadow-lg hover:scale-105">
+          <div className="mb-8 inline-flex items-center rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-2 text-sm text-gray-600 transition-all hover:bg-white hover:shadow-lg hover:scale-105 cursor-default">
             <Sparkles className="mr-2 h-4 w-4 text-yellow-500" />
             Turn your knowledge into income
             <div className="ml-2 h-1 w-1 rounded-full bg-green-500 animate-pulse" />
@@ -25,14 +25,14 @@ export function Hero() {
             <br />
             <span className="relative">
               <span className="bg-gradient-to-r from-gray-900 via-black to-gray-700 bg-clip-text text-transparent">
-                sellable courses
+                money in seconds
               </span>
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-black to-transparent opacity-20" />
             </span>
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600 sm:text-xl leading-relaxed">
-            Upload your PDFs, get AI-generated courses with key points, and start earning money. No more boring PDFs or
+            Upload your PDFs, get AI-generated blog posts with key points, and start earning money. No more boring PDFs or
             endless Notion pages.
           </p>
 

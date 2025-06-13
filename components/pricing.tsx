@@ -8,8 +8,7 @@ export function Pricing() {
     "Custom pricing for your courses",
     "Image uploads and customization",
     "Unique shareable URLs",
-    "Analytics and insights",
-    "Priority support",
+    "Analytics and insights"
   ]
 
   return (
@@ -28,8 +27,6 @@ export function Pricing() {
 
         <div className="mx-auto max-w-md">
           <div className="group relative rounded-3xl border-2 border-gray-200 bg-white p-8 shadow-2xl transition-all hover:border-transparent hover:shadow-3xl hover:-translate-y-2">
-            {/* Gradient border effect */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-sm" />
 
             {/* Popular badge */}
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -62,12 +59,6 @@ export function Pricing() {
                   <span className="text-gray-700 group-hover/item:text-black transition-colors">{feature}</span>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-8 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 p-4">
-              <p className="text-center text-sm text-gray-600">
-                <strong>No setup fees.</strong> Cancel anytime. Start earning from day one.
-              </p>
             </div>
           </div>
         </div>

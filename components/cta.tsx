@@ -32,7 +32,7 @@ export function CTA() {
                 className="group relative bg-white text-black hover:bg-gray-100 transition-all hover:scale-105 hover:shadow-2xl rounded-xl overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative font-semibold">Start Creating Courses</span>
+                <span className="relative font-semibold">Start Creating</span>
                 <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>

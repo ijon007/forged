@@ -20,7 +20,7 @@ export function FAQ() {
     {
       question: "What file formats are supported?",
       answer:
-        "Currently, we support PDF files. We're working on expanding to support more formats like Word documents, PowerPoint presentations, and text files in future updates.",
+        "Currently, we support PDF files. We're working on expanding to support more formats.",
     },
     {
       question: "Is there a limit to how many courses I can create?",
@@ -30,7 +30,7 @@ export function FAQ() {
     {
       question: "Can I cancel my subscription anytime?",
       answer:
-        "Yes, you can cancel your subscription at any time. There are no long-term commitments or cancellation fees. Your existing courses will remain active even after cancellation.",
+        "Yes, you can cancel your subscription at any time. There are no long-term commitments or cancellation fees. However, your courses will not be available after cancellation.",
     },
   ]
 
@@ -38,7 +38,7 @@ export function FAQ() {
     <section className="bg-white py-20">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">Frequently Asked Questions</h2>
+          <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">FAQ</h2>
           <p className="mx-auto mb-16 max-w-2xl text-lg text-gray-600">
             Everything you need to know about turning your knowledge into income
           </p>
@@ -48,7 +48,7 @@ export function FAQ() {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-semibold text-black hover:text-gray-700">
+                <AccordionTrigger className="text-left text-lg font-semibold text-black hover:text-gray-700 cursor-pointer">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
