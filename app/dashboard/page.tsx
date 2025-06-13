@@ -4,54 +4,33 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { MoneyStats } from "@/components/dashboard/money-stats"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
+import { getUserCourses } from "@/actions/course-db-actions"
+import { type Course } from "@/db/schemas/course-schema"
 
-// Mock data for development - simplified to just pages
-const mockPages = [
-  {
-    id: "1",
-    title: "JavaScript Design Patterns",
-    description: "A comprehensive guide to modern JavaScript design patterns and best practices.",
-    status: "published" as const,
-    price: 29.99,
-    views: 1234,
-    sales: 89,
-    slug: "javascript-design-patterns"
-  },
-  {
-    id: "2", 
-    title: "React Best Practices",
-    description: "Learn the latest React patterns and how to build maintainable applications.",
-    status: "draft" as const,
-    price: 39.99,
-    views: 0,
-    sales: 0,
-    slug: "react-best-practices"
-  },
-  {
-    id: "3",
-    title: "Python Data Analysis Guide",
-    description: "Complete guide to data analysis with Python, pandas, and numpy.",
-    status: "published" as const,
-    price: 49.99,
-    views: 0,
-    sales: 0,
-    progress: 75
-  }
-]
+interface CourseWithRealData extends Course {
+  sales: number
+  priceInDollars: number
+}
 
-// Calculate mock stats from pages data
-const calculateStats = () => {
-  const totalSales = mockPages.reduce((sum, page) => sum + page.sales, 0)
-  const totalRevenue = mockPages.reduce((sum, page) => sum + (page.sales * page.price), 0)
-  const monthlySales = Math.floor(totalSales * 0.3) // Assuming 30% of sales this month
-  const monthlyRevenue = mockPages.reduce((sum, page) => sum + (Math.floor(page.sales * 0.3) * page.price), 0)
+const calculateStats = (courses: Course[]) => {
+  const coursesWithRealData: CourseWithRealData[] = courses.map(course => ({
+    ...course,
+    sales: 0,
+    priceInDollars: course.price / 100
+  }))
+
+
+  const totalSales = 0
+  const totalRevenue = 0
+  const monthlyRevenue = 0
   
   return {
     totalRevenue,
     monthlyRevenue,
-    revenueGrowth: 12.5, // Mock growth percentage
+    revenueGrowth: 0,
     totalSales,
-    salesGrowth: 8.3, // Mock growth percentage
+    salesGrowth: 0,
+    coursesWithRealData
   }
 }
 
@@ -62,29 +41,41 @@ async function DashboardPage() {
         redirect("/login")
     }
 
-    const stats = calculateStats()
+
+    const userCourses = await getUserCourses()
+    const { coursesWithRealData, ...stats } = calculateStats(userCourses)
+
+
+    const pageCards = coursesWithRealData.map(course => ({
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        status: course.published ? "published" as const : "draft" as const,
+        price: course.priceInDollars,
+        views: 0,
+        sales: course.sales,
+        slug: course.id,
+        imageUrl: course.imageUrl || undefined
+    }))
 
     return (
         <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-10">
-            {/* Header Section */}
             <div className="mt-10">
                 <DashboardHeader />
             </div>
 
-            {/* Money Stats */}
             <MoneyStats {...stats} />
 
-            {/* Pages Section */}
             <div className="space-y-6">
-                {mockPages.length > 0 ? (
+                {pageCards.length > 0 ? (
                     <>
                         <div className="flex items-center justify-between">
                             <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                                Your Pages ({mockPages.length})
+                                Your Pages ({pageCards.length})
                             </h2>
                         </div>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {mockPages.map((page) => (
+                            {pageCards.map((page) => (
                                 <PageCard key={page.id} {...page} />
                             ))}
                         </div>

@@ -64,7 +64,7 @@ export async function TopNav() {
               )}
             >
               <BookOpen className="h-4 w-4" />
-              <span className="inline-block">My Pages</span>
+              <span className="inline-block">Dashboard</span>
             </Link>
           </nav>
         </div>

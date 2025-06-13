@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { CreateCourseDialog } from "@/components/create-course-dialog"
-import { ArrowRight, PlusCircle } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 export function DashboardHeader() {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
-          My Pages
+          Dashboard
         </h1>
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 mt-2">
-          Transform your PDFs into beautiful, sellable blog pages
-        </p>
       </div>
       <CreateCourseDialog>
         <Button

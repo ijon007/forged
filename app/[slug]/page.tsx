@@ -33,7 +33,7 @@ export default async function BlogPage({
     author: "KnowledgeSmith AI", // Default author for AI-generated content
     readTime: `${dbCourse.estimatedReadTime} min read`,
     views: Math.floor(Math.random() * 1000) + 500, // TODO: Track actual views
-    imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop", // Default image
+    imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop", // Use stored image or fallback
     content: dbCourse.content,
     tags: dbCourse.tags,
     keyPoints: dbCourse.keyPoints

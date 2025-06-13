@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { MoreHorizontal, Eye, Edit, DollarSign, Share, ExternalLink, BarChart3 } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, DollarSign, Share, ExternalLink, BarChart3, Trash } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +29,6 @@ export function PageCard({
   description,
   status,
   price,
-  views,
   sales,
   progress,
   imageUrl,
@@ -66,19 +65,12 @@ export function PageCard({
 
   const statusConfig = getStatusConfig()
 
-  const getEditLink = () => {
-    if (status === "published" && slug) {
-      return `/${slug}`
-    }
-    return `/dashboard/preview/${id}`
-  }
-
   const revenue = sales * price
 
   return (
-    <div className="group relative bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg overflow-hidden cursor-default">
+    <div className="group relative bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg overflow-hidden cursor-default max-h-xl flex flex-col justify-between">
       {/* Header with status and menu */}
-      <div className="p-6 pb-4">
+      <div className="p-6 pb-4 flex-shrink-0">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${statusConfig.dot}`} />
@@ -93,9 +85,9 @@ export function PageCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Share className="mr-2 h-4 w-4" />
-                Share
+              <DropdownMenuItem className="cursor-pointer">
+                <Trash className="mr-2 h-4 w-4" />
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -107,7 +99,7 @@ export function PageCard({
             {title}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
-            {description}
+            {description.slice(0, 70)}...
           </p>
         </div>
 
@@ -124,7 +116,7 @@ export function PageCard({
       </div>
 
       {/* Image placeholder or actual image */}
-      <div className="px-6 pb-4">
+      <div className="px-6 pb-4 flex-shrink-0">
         <div className="aspect-[16/9] rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center overflow-hidden">
           {imageUrl ? (
             <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
@@ -140,14 +132,8 @@ export function PageCard({
       </div>
 
       {/* Stats and pricing */}
-      <div className="px-6 pb-4">
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              {views.toLocaleString()}
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Views</div>
-          </div>
+      <div className="px-6 pb-4 flex-shrink-0">
+        <div className="grid grid-cols-2 gap-4 text-center">
           <div>
             <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {sales}
@@ -164,7 +150,7 @@ export function PageCard({
       </div>
 
       {/* Footer with price and actions */}
-      <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800">
+      <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800 mt-auto flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold text-gray-900 dark:text-gray-100">
             ${price}

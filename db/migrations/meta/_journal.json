@@ -22,6 +22,13 @@
       "when": 1749814308197,
       "tag": "0002_mixed_goliath",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1749824341370,
+      "tag": "0003_flashy_prodigy",
+      "breakpoints": true
     }
   ]
 }

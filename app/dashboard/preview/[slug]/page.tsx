@@ -62,6 +62,7 @@ export default async function PreviewPage({
       slug: slug,
       status: published ? 'published' : 'draft',
       published,
+      imageUrl: dbCourse.imageUrl || undefined, // Include stored image URL
       originalContent: generatedCourse.originalContent,
       generatedContent: generatedCourse.content,
       tags: generatedCourse.tags,

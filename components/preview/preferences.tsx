@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { updateCourse } from '@/actions/course-db-actions'
 import { useRouter } from 'next/navigation'
+import { ImageSelector } from './image-selector'
 
 interface PreferencesProps {
     previewData: {
@@ -160,6 +161,14 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                         {formData.description.length}/160 characters
                     </div>
                 </div>
+
+                {/* Image Selector */}
+                <ImageSelector
+                    title={formData.title}
+                    courseId={previewData.id}
+                    currentImageUrl={previewData.imageUrl}
+                    onImageChange={() => router.refresh()}
+                />
                 
                 <div className="space-y-2">
                     <Label htmlFor="slug">URL Slug</Label>

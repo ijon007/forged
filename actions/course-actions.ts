@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { courseStore } from '@/lib/course-store'
 import { saveCourse } from './course-db-actions'
 import { generateUniqueSlug } from '@/utils/slug'
+import { autoSelectImageFromTitle } from '@/lib/unsplash-api'
 
 export interface CourseGenerationResult {
   success: boolean
@@ -151,6 +152,9 @@ Remember to output the exact field names specified in the schema: title, descrip
     // Generate a SEO-friendly slug for the course
     const courseId = generateUniqueSlug(courseData.title)
 
+    // Auto-select an image based on the title
+    const autoImageUrl = await autoSelectImageFromTitle(courseData.title)
+
     // Save to in-memory store (for immediate access)
     courseStore.set(courseId, {
       title: courseData.title,
@@ -173,6 +177,7 @@ Remember to output the exact field names specified in the schema: title, descrip
       keyPoints: courseData.keyPoints,
       estimatedReadTime: courseData.estimatedReadTime,
       price: courseData.price,
+      imageUrl: autoImageUrl,
     })
 
     if (!dbResult.success) {

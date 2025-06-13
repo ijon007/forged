@@ -16,6 +16,7 @@ export interface SaveCourseParams {
   keyPoints: string[]
   estimatedReadTime: number
   price: number
+  imageUrl?: string
 }
 
 export interface UpdateCourseParams {
@@ -23,6 +24,7 @@ export interface UpdateCourseParams {
   title?: string
   description?: string
   price?: number
+  imageUrl?: string
 }
 
 export async function saveCourse(courseData: SaveCourseParams): Promise<{ success: boolean; error?: string }> {
@@ -49,6 +51,7 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
       keyPoints: courseData.keyPoints,
       estimatedReadTime: courseData.estimatedReadTime,
       price: priceInCents,
+      imageUrl: courseData.imageUrl,
       published: false,
       userId: session.user.id,
     }
@@ -99,6 +102,9 @@ export async function updateCourse(courseData: UpdateCourseParams): Promise<{ su
     }
     if (courseData.price !== undefined) {
       updateData.price = Math.round(courseData.price * 100) // Convert to cents
+    }
+    if (courseData.imageUrl !== undefined) {
+      updateData.imageUrl = courseData.imageUrl
     }
 
     await db.update(course)
