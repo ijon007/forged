@@ -5,6 +5,7 @@ import { course, type NewCourse, type Course } from "@/db/schemas/course-schema"
 import { eq, desc } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import { user } from "@/db/schemas/auth-schema"
 
 export interface SaveCourseParams {
   id: string
@@ -210,6 +211,44 @@ export async function getCourse(courseId: string): Promise<Course | null> {
     return result[0] || null
   } catch (error) {
     console.error('Error getting course:', error)
+    return null
+  }
+}
+
+export async function getCourseWithUser(courseId: string): Promise<(Course & { userName: string }) | null> {
+  try {
+    const result = await db
+      .select({
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        content: course.content,
+        originalContent: course.originalContent,
+        tags: course.tags,
+        keyPoints: course.keyPoints,
+        estimatedReadTime: course.estimatedReadTime,
+        price: course.price,
+        imageUrl: course.imageUrl,
+        published: course.published,
+        userId: course.userId,
+        createdAt: course.createdAt,
+        updatedAt: course.updatedAt,
+        userName: user.name,
+      })
+      .from(course)
+      .leftJoin(user, eq(course.userId, user.id))
+      .where(eq(course.id, courseId))
+      .limit(1)
+
+    const courseData = result[0]
+    if (!courseData) return null
+
+    return {
+      ...courseData,
+      userName: courseData.userName || 'Anonymous'
+    }
+  } catch (error) {
+    console.error('Error getting course with user:', error)
     return null
   }
 }

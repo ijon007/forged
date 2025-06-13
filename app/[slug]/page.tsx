@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Lock, Star, Clock, Users, DollarSign, Eye, Share } from "lucide-react"
+import { Lock, Star, Clock, Users, DollarSign, Eye, Share, Sparkles } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { getCourse } from "@/actions/course-db-actions"
+import { getCourseWithUser } from "@/actions/course-db-actions"
+import Link from "next/link"
 
 export default async function BlogPage({
   params,
@@ -15,25 +16,21 @@ export default async function BlogPage({
 }) {
   const { slug } = await params
   
-  // Get course from database
-  const dbCourse = await getCourse(slug)
+  const dbCourse = await getCourseWithUser(slug)
   
-  // Only show published courses
   if (!dbCourse || !dbCourse.published) {
     notFound()
   }
   
-  // Format course data for the page
   const page = {
     id: dbCourse.id,
     title: dbCourse.title,
     description: dbCourse.description,
-    price: dbCourse.price / 100, // Convert from cents to dollars
-    isPurchased: false, // TODO: This would be determined by user session/payment status
-    author: "KnowledgeSmith AI", // Default author for AI-generated content
+    price: dbCourse.price / 100,
+    isPurchased: false,
+    author: dbCourse.userName,
     readTime: `${dbCourse.estimatedReadTime} min read`,
-    views: Math.floor(Math.random() * 1000) + 500, // TODO: Track actual views
-    imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop", // Use stored image or fallback
+    imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
     content: dbCourse.content,
     tags: dbCourse.tags,
     keyPoints: dbCourse.keyPoints
@@ -43,7 +40,6 @@ export default async function BlogPage({
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-8xl">
         
-        {/* Header */}
         <div className="space-y-6 mb-8">
           <div className="space-y-4">
             <Badge variant="secondary">Blog Post</Badge>
@@ -57,16 +53,11 @@ export default async function BlogPage({
               <Clock className="h-4 w-4" />
               <span>{page.readTime}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Eye className="h-4 w-4" />
-              <span>{page.views.toLocaleString()} views</span>
-            </div>
           </div>
           
           <Separator />
         </div>
 
-        {/* Hero Image */}
         {page.imageUrl && (
           <div className="mb-8">
             <img 
@@ -78,10 +69,8 @@ export default async function BlogPage({
         )}
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-3">
             {page.isPurchased ? (
-              // Full Content (for purchased users)
               <div className="prose prose-gray dark:prose-invert max-w-none">
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
@@ -122,9 +111,7 @@ export default async function BlogPage({
                 </ReactMarkdown>
               </div>
             ) : (
-              // Preview + Paywall
               <div className="space-y-8">
-                {/* Content Preview */}
                 <div className="prose prose-gray dark:prose-invert max-w-none">
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
@@ -165,7 +152,6 @@ export default async function BlogPage({
                   </ReactMarkdown>
                 </div>
                 
-                {/* Paywall */}
                 <Card className="border-dashed border-2 bg-muted/20">
                   <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                     <Lock className="h-12 w-12 text-muted-foreground mb-4" />
@@ -195,7 +181,6 @@ export default async function BlogPage({
             )}
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -213,18 +198,12 @@ export default async function BlogPage({
                 </div>
                 <Separator />
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Views</span>
-                  <span className="font-medium">{page.views.toLocaleString()}</span>
-                </div>
-                <Separator />
-                <div className="flex justify-between">
                   <span className="text-muted-foreground">Price</span>
                   <span className="font-medium">${page.price}</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Key Points Section */}
             {page.keyPoints && page.keyPoints.length > 0 && (
               <Card>
                 <CardHeader>
@@ -243,7 +222,6 @@ export default async function BlogPage({
               </Card>
             )}
 
-            {/* Tags Section */}
             {page.tags && page.tags.length > 0 && (
               <Card>
                 <CardHeader>
@@ -275,8 +253,23 @@ export default async function BlogPage({
                 )}
               </CardContent>
             </Card>
+
+
           </div>
         </div>
+      </div>
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <Link href="https://knowledgesmith.vercel.app" target="_blank">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-white/80 backdrop-blur-sm border-purple-200 text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-lg"
+          >
+            <Sparkles className="h-3 w-3 mr-1" />
+            <span className="text-xs font-medium">Powered by Knowledgesmith</span>
+          </Button>
+        </Link>
       </div>
     </div>
   )

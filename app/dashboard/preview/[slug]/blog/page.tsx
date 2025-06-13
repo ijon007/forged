@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import { Clock, Eye, Share, Star } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { getCourse } from "@/actions/course-db-actions"
+import { getCourseWithUser } from "@/actions/course-db-actions"
 import { courseStore, formatCourseForPreview } from "@/lib/course-store"
 
 export default async function BlogPreviewPage({
@@ -16,14 +16,11 @@ export default async function BlogPreviewPage({
 }) {
   const { slug } = await params
   
-  // Try to get course from memory store first, then database
   let generatedCourse = courseStore.get(slug)
   
-  // If not in memory, try database
   if (!generatedCourse) {
-    const dbCourse = await getCourse(slug)
+    const dbCourse = await getCourseWithUser(slug)
     if (dbCourse) {
-      // Convert database course to memory store format and cache it
       generatedCourse = {
         id: dbCourse.id,
         title: dbCourse.title,
@@ -36,7 +33,6 @@ export default async function BlogPreviewPage({
         createdAt: dbCourse.createdAt,
       }
       
-      // Cache in memory for faster future access
       courseStore.set(slug, generatedCourse)
     }
   }
@@ -45,9 +41,12 @@ export default async function BlogPreviewPage({
     notFound()
   }
 
-  // Format for blog display
-  const dbCourse = await getCourse(slug)
-  const priceInCents = dbCourse?.price
+  const dbCourse = await getCourseWithUser(slug)
+  if (!dbCourse) {
+    notFound()
+  }
+
+  const priceInCents = dbCourse.price
   const formattedCourse = formatCourseForPreview(generatedCourse, priceInCents)
   
   const page = {
@@ -55,9 +54,8 @@ export default async function BlogPreviewPage({
     title: formattedCourse.title,
     description: formattedCourse.description,
     price: formattedCourse.price,
-    author: formattedCourse.author,
+    author: dbCourse.userName,
     readTime: `${formattedCourse.estimatedReadTime} min read`,
-    views: Math.floor(Math.random() * 1000) + 500,
     imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
     content: formattedCourse.generatedContent
   }
@@ -66,7 +64,6 @@ export default async function BlogPreviewPage({
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-8xl">
         
-        {/* Preview Banner */}
         <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
           <div className="flex items-center gap-2">
             <Eye className="h-5 w-5 text-blue-600" />
@@ -75,7 +72,6 @@ export default async function BlogPreviewPage({
           </div>
         </div>
         
-        {/* Header */}
         <div className="space-y-6 mb-8">
           <div className="space-y-4">
             <Badge variant="secondary">Blog Post</Badge>
@@ -89,16 +85,11 @@ export default async function BlogPreviewPage({
               <Clock className="h-4 w-4" />
               <span>{page.readTime}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Eye className="h-4 w-4" />
-              <span>{page.views.toLocaleString()} views</span>
-            </div>
           </div>
           
           <Separator />
         </div>
 
-        {/* Hero Image */}
         <div className="mb-8">
           <img 
             src={page.imageUrl} 
@@ -108,7 +99,6 @@ export default async function BlogPreviewPage({
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="prose prose-gray dark:prose-invert max-w-none">
               <ReactMarkdown 
@@ -151,7 +141,6 @@ export default async function BlogPreviewPage({
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -166,11 +155,6 @@ export default async function BlogPreviewPage({
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Read time</span>
                   <span className="font-medium">{page.readTime}</span>
-                </div>
-                <Separator />
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Views</span>
-                  <span className="font-medium">{page.views.toLocaleString()}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between">
