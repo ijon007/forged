@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Eye, Check, Save, ExternalLink, ArrowRight } from 'lucide-react'
+import { ArrowLeft, Eye, Check, Save, ExternalLink, ArrowRight, X } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -96,21 +96,22 @@ const TopNav = ({ previewData }: TopNavProps) => {
                         </div>
                     </div>
                     
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                         <Button
                             variant="outline"
                             onClick={handlePreview}
-                            className="hover:bg-muted"
+                            className="hover:bg-muted py-2 rounded-xl"
+                            size="lg"
                         >
-                            <Eye className="mr-2 h-4 w-4" />
-                            Preview
+                            <Eye className="h-4 w-4 sm:mr-2" />
+                            <span className="hidden sm:inline ">Preview</span>
                         </Button>
 
                         {isPublished && (
                             <Link href={`/${previewData.id}`} target="_blank">
-                                <Button variant="outline" className="hover:bg-muted">
-                                    <ExternalLink className="mr-2 h-4 w-4" />
-                                    View Live
+                                <Button variant="outline" className="hover:bg-muted py-2 rounded-xl" size="lg">
+                                    <ExternalLink className="h-4 w-4 sm:mr-2" />
+                                    <span className="hidden sm:inline">View Live</span>
                                 </Button>
                             </Link>
                         )}
@@ -123,19 +124,20 @@ const TopNav = ({ previewData }: TopNavProps) => {
                                 isPublished 
                                     ? 'bg-red-600 hover:bg-red-700 text-white' 
                                     : 'bg-black text-white hover:bg-gray-800'
-                            } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                            } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 sm:size-xl`}
                         >
                             <div className={`absolute inset-0 ${
                                 isPublished 
                                     ? 'bg-gradient-to-r from-red-700 to-red-600'
                                     : 'bg-gradient-to-r from-gray-800 to-black'
                             } opacity-0 group-hover:opacity-100 transition-opacity`} />
-                            <Check className="mr-2 h-4 w-4 relative" />
-                            <span className='relative text-white'>
-                                {isPublishing 
-                                    ? (isPublished ? 'Unpublishing...' : 'Publishing...') 
-                                    : (isPublished ? 'Unpublish' : 'Publish')
-                                }
+                            {isPublished ? (
+                                <X className="h-4 w-4 relative sm:mr-2" />
+                            ) : (
+                                <Check className="h-4 w-4 relative sm:mr-2" />
+                            )}
+                            <span className='relative text-white hidden sm:inline'>
+                                {isPublished ? 'Unpublish' : 'Publish'}
                             </span>
                         </Button>
                     </div>
