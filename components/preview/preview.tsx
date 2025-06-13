@@ -37,10 +37,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                             Preview how your published page will look
                         </CardDescription>
                     </div>
-                    <Button variant="outline" size="sm">
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit Content
-                    </Button>
                 </div>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden">

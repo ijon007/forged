@@ -6,31 +6,28 @@ export const mockPreviewData = {
       price: 29.99,
       slug: "javascript-design-patterns",
       status: "draft" as const,
-      originalContent: `
-  # JavaScript Design Patterns - Original PDF Content
+      originalContent: `# JavaScript Design Patterns - Original PDF Content
   
-  ## Table of Contents
-  1. Introduction to Design Patterns
-  2. Creational Patterns
-  3. Structural Patterns
-  4. Behavioral Patterns
-  
-  ## Introduction
-  Design patterns are reusable solutions to commonly occurring problems in software design. They represent the best practices used by experienced object-oriented software developers.
-  
-  ## The Singleton Pattern
-  The Singleton pattern ensures a class has only one instance and provides a global point of access to it.
-  
-  ## The Factory Pattern  
-  The Factory Method pattern creates objects without specifying the exact class to create.
-  
-  ## The Observer Pattern
-  The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
-  
-  [Additional PDF content would be extracted here...]
-      `,
-      generatedContent: `
-  # JavaScript Design Patterns
+## Table of Contents
+1. Introduction to Design Patterns
+2. Creational Patterns
+3. Structural Patterns
+4. Behavioral Patterns
+
+## Introduction
+Design patterns are reusable solutions to commonly occurring problems in software design. They represent the best practices used by experienced object-oriented software developers.
+
+## The Singleton Pattern
+The Singleton pattern ensures a class has only one instance and provides a global point of access to it.
+
+## The Factory Pattern  
+The Factory Method pattern creates objects without specifying the exact class to create.
+
+## The Observer Pattern
+The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
+
+[Additional PDF content would be extracted here...]`,
+      generatedContent: `# JavaScript Design Patterns
   
   *Master the essential patterns that every JavaScript developer should know*
   
@@ -170,7 +167,6 @@ export const mockPreviewData = {
   
   Understanding and implementing design patterns in JavaScript will make your code more maintainable, scalable, and easier to understand. These patterns provide proven solutions to common problems and help establish a common vocabulary among developers.
   
-  Remember, patterns are tools - use them when they solve a real problem, not just because they exist.
-      `
+  Remember, patterns are tools - use them when they solve a real problem, not just because they exist.`
     }
   }
