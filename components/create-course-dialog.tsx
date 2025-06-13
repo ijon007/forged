@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { generateCourseFromPDF, validatePDFFile } from "@/actions/course-actions"
+import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,35 +30,64 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
     price: ""
   })
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
-    if (selectedFile && selectedFile.type === "application/pdf") {
-      setFile(selectedFile)
-      // Simulate upload progress
-      let progress = 0
-      const interval = setInterval(() => {
-        progress += 10
-        setUploadProgress(progress)
-        if (progress >= 100) {
-          clearInterval(interval)
-          setTimeout(() => setStep("details"), 500)
-        }
-      }, 200)
-    }
-  }
+    if (!selectedFile) return
 
-  const handleSubmit = () => {
-    setStep("generating")
-    
-    // Simulate AI generation with progress
+    // Validate the file
+    const validation = await validatePDFFile(selectedFile)
+    if (!validation.valid) {
+      toast.error(validation.error || "Invalid file")
+      return
+    }
+
+    setFile(selectedFile)
+    // Simulate upload progress
     let progress = 0
     const interval = setInterval(() => {
-      progress += 5
-      setGenerationProgress(progress)
-      
+      progress += 10
+      setUploadProgress(progress)
       if (progress >= 100) {
         clearInterval(interval)
-        // Simulate a brief completion state
+        setTimeout(() => setStep("details"), 500)
+      }
+    }, 200)
+  }
+
+  const handleSubmit = async () => {
+    if (!file) {
+      toast.error("Please select a PDF file")
+      return
+    }
+
+    setStep("generating")
+    
+    try {
+      // Create form data
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('title', pageData.title)
+      formData.append('description', pageData.description)
+      formData.append('price', pageData.price)
+
+      // Simulate progress while generating
+      const progressInterval = setInterval(() => {
+        setGenerationProgress(prev => {
+          if (prev >= 90) return prev
+          return prev + Math.random() * 10
+        })
+      }, 500)
+
+      // Call the server action
+      const result = await generateCourseFromPDF(formData)
+
+      clearInterval(progressInterval)
+      setGenerationProgress(100)
+
+      if (result.success && result.data) {
+        toast.success("Course generated successfully!")
+        
+        // Brief completion state
         setTimeout(() => {
           setOpen(false)
           // Reset state
@@ -66,11 +97,20 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
           setGenerationProgress(0)
           setPageData({ title: "", description: "", price: "" })
           
-          // Navigate to preview page with mock ID
-          router.push("/dashboard/preview/1")
+          // Navigate to preview page with generated ID
+          router.push(`/dashboard/preview/${result.data!.id}`)
         }, 1000)
+      } else {
+        toast.error(result.error || "Failed to generate course")
+        setStep("details") // Go back to details step
+        setGenerationProgress(0)
       }
-    }, 100)
+    } catch (error) {
+      console.error('Generation error:', error)
+      toast.error("An unexpected error occurred")
+      setStep("details")
+      setGenerationProgress(0)
+    }
   }
 
   const handleReset = () => {

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import { mockPreviewData } from "@/constants/preview"
+import { courseStore, formatCourseForPreview } from "@/lib/course-store"
 import Content from "@/components/preview/content"
 import Preferences from "@/components/preview/preferences"
 import Preview from "@/components/preview/preview"
@@ -11,7 +12,16 @@ export default async function PreviewPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const previewData = mockPreviewData[id as keyof typeof mockPreviewData]
+  
+  // Try to get generated course first, then fall back to mock data
+  const generatedCourse = courseStore.get(id)
+  let previewData
+  
+  if (generatedCourse) {
+    previewData = formatCourseForPreview(generatedCourse)
+  } else {
+    previewData = mockPreviewData[id as keyof typeof mockPreviewData]
+  }
 
   if (!previewData) {
     notFound()
