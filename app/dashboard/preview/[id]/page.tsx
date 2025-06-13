@@ -18,16 +18,17 @@ export default async function PreviewPage({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background max-w-8xl mx-auto">
       <TopNav previewData={previewData}/>
 
       <div className="container mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-2 gap-6 h-[calc(100vh-140px)]">
-          
-          <Content previewData={previewData} />
-
-          <div className="flex flex-col gap-6">
+        <div className="flex flex-row w-full gap-6">
+          <div className="flex flex-col gap-6 w-full">
             <Preferences previewData={previewData} />
+            <Content previewData={previewData} />
+          </div>
+
+          <div className="flex flex-col gap-6 w-full">
             <Preview previewData={previewData} />
           </div>
         </div>

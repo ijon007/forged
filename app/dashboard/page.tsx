@@ -1,10 +1,9 @@
 import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { CreateCourseDialog } from "@/components/create-course-dialog"
-import { CourseCard } from "@/components/course-card"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { PlusCircle, BookOpen } from "lucide-react"
+import { DashboardHeader } from "@/components/dashboard/dashboard-header"
+import { MoneyStats } from "@/components/dashboard/money-stats"
+import { PageCard } from "@/components/dashboard/page-card"
+import { EmptyState } from "@/components/dashboard/empty-state"
 
 // Mock data for development - simplified to just pages
 const mockPages = [
@@ -32,13 +31,29 @@ const mockPages = [
     id: "3",
     title: "Python Data Analysis Guide",
     description: "Complete guide to data analysis with Python, pandas, and numpy.",
-    status: "generating" as const,
+    status: "published" as const,
     price: 49.99,
     views: 0,
     sales: 0,
     progress: 75
   }
 ]
+
+// Calculate mock stats from pages data
+const calculateStats = () => {
+  const totalSales = mockPages.reduce((sum, page) => sum + page.sales, 0)
+  const totalRevenue = mockPages.reduce((sum, page) => sum + (page.sales * page.price), 0)
+  const monthlySales = Math.floor(totalSales * 0.3) // Assuming 30% of sales this month
+  const monthlyRevenue = mockPages.reduce((sum, page) => sum + (Math.floor(page.sales * 0.3) * page.price), 0)
+  
+  return {
+    totalRevenue,
+    monthlyRevenue,
+    revenueGrowth: 12.5, // Mock growth percentage
+    totalSales,
+    salesGrowth: 8.3, // Mock growth percentage
+  }
+}
 
 async function DashboardPage() {
     const session = await getSession()
@@ -47,47 +62,35 @@ async function DashboardPage() {
         redirect("/login")
     }
 
+    const stats = calculateStats()
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-10">
             {/* Header Section */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">My Pages</h1>
-                    <p className="text-muted-foreground">
-                        Transform your PDFs into beautiful, sellable blog pages
-                    </p>
-                </div>
-                <CreateCourseDialog>
-                    <Button size="lg">
-                        <PlusCircle className="mr-2 h-5 w-5" />
-                        Create Page
-                    </Button>
-                </CreateCourseDialog>
+            <div className="mt-10">
+                <DashboardHeader />
             </div>
 
-            {/* Pages Grid */}
-            <div className="space-y-4">
+            {/* Money Stats */}
+            <MoneyStats {...stats} />
+
+            {/* Pages Section */}
+            <div className="space-y-6">
                 {mockPages.length > 0 ? (
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {mockPages.map((page) => (
-                            <CourseCard key={page.id} {...page} />
-                        ))}
-                    </div>
+                    <>
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                                Your Pages ({mockPages.length})
+                            </h2>
+                        </div>
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {mockPages.map((page) => (
+                                <PageCard key={page.id} {...page} />
+                            ))}
+                        </div>
+                    </>
                 ) : (
-                    // Empty State
-                    <Card className="flex flex-col items-center justify-center p-12 text-center min-h-[400px]">
-                        <BookOpen className="h-16 w-16 text-muted-foreground mb-6" />
-                        <CardTitle className="mb-3 text-2xl">No pages yet</CardTitle>
-                        <CardDescription className="mb-6 text-lg max-w-md">
-                            Upload a PDF to create your first sellable blog page
-                        </CardDescription>
-                        <CreateCourseDialog>
-                            <Button size="lg">
-                                <PlusCircle className="mr-2 h-5 w-5" />
-                                Create Your First Page
-                            </Button>
-                        </CreateCourseDialog>
-                    </Card>
+                    <EmptyState />
                 )}
             </div>
         </div>

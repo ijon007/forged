@@ -92,7 +92,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] rounded-xl">
         <DialogHeader>
           <DialogTitle>Create New Page</DialogTitle>
           <DialogDescription>
