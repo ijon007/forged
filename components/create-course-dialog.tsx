@@ -235,7 +235,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
             </div>
             <div className="space-y-2">
               <Progress value={generationProgress} className="w-full" />
-              <p className="text-xs text-muted-foreground">{generationProgress}% complete</p>
+              <p className="text-xs text-muted-foreground">{generationProgress.toFixed(2)}% complete</p>
             </div>
           </div>
         )}

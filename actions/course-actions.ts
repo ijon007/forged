@@ -1,8 +1,8 @@
 "use server"
 
 import { google } from '@ai-sdk/google'
-import { generateObject } from 'ai'
-import { z } from 'zod/v4'
+import { generateObject, zodSchema } from 'ai'
+import { z } from 'zod'
 import { courseStore } from '@/lib/course-store'
 
 export interface CourseGenerationResult {
@@ -94,17 +94,9 @@ export async function generateCourseFromPDF(
     })
 
     // Generate structured course content using generateObject
-    const { object: courseData } = await generateObject({
+    const result = await generateObject({
       model: google('gemini-2.0-flash'),
-      schema: z.object({
-        title: z.string().describe('An engaging title for the blog post'),
-        description: z.string().describe('A compelling description of the content'),
-        content: z.string().describe('The complete blog post content in markdown format'),
-        tags: z.array(z.string()).describe('Relevant tags for the content'),
-        keyPoints: z.array(z.string()).describe('Key takeaways from the content'),
-        estimatedReadTime: z.number().describe('Estimated reading time in minutes'),
-        price: z.number().describe('Suggested price for this content in USD'),
-      }),
+      schema: zodSchema(courseSchema),
       system: `You are an expert content creator and educator. Your task is to transform PDF content into an engaging, well-structured blog post.
 
 IMPORTANT: You must return a JSON object with EXACTLY these field names:
@@ -147,10 +139,10 @@ Transform this into an engaging blog post that:
 Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`,
     })
 
-    // Type assertion to fix TypeScript inference
-    const typedCourseData = courseData as z.infer<typeof courseSchema>
+    // Extract object from result with type assertion
+    const courseData = result.object as z.infer<typeof courseSchema>
 
-    if (!typedCourseData) {
+    if (!courseData) {
       return { success: false, error: 'Failed to generate course content' }
     }
 
@@ -159,27 +151,27 @@ Remember to output the exact field names specified in the schema: title, descrip
 
     // Save to store
     courseStore.set(courseId, {
-      title: typedCourseData.title,
-      description: typedCourseData.description,
-      content: typedCourseData.content,
+      title: courseData.title,
+      description: courseData.description,
+      content: courseData.content,
       originalContent: extractedText,
-      tags: typedCourseData.tags,
-      keyPoints: typedCourseData.keyPoints,
-      estimatedReadTime: typedCourseData.estimatedReadTime,
+      tags: courseData.tags,
+      keyPoints: courseData.keyPoints,
+      estimatedReadTime: courseData.estimatedReadTime,
     })
 
     return {
       success: true,
       data: {
         id: courseId,
-        title: typedCourseData.title,
-        description: typedCourseData.description,
-        content: typedCourseData.content,
+        title: courseData.title,
+        description: courseData.description,
+        content: courseData.content,
         originalContent: extractedText,
-        tags: typedCourseData.tags,
-        keyPoints: typedCourseData.keyPoints,
-        estimatedReadTime: typedCourseData.estimatedReadTime,
-        price: typedCourseData.price,
+        tags: courseData.tags,
+        keyPoints: courseData.keyPoints,
+        estimatedReadTime: courseData.estimatedReadTime,
+        price: courseData.price,
       },
     }
   } catch (error) {
