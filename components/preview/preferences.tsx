@@ -4,44 +4,47 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, AlertCircle, Copy } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Copy, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
+import { updateCourse } from '@/actions/course-db-actions'
+import { useRouter } from 'next/navigation'
 
 interface PreferencesProps {
     previewData: {
+        id: string
         title: string
         price: number
         description: string
         slug: string
+        published?: boolean
+        status?: string
+        [key: string]: any // Allow additional properties
     }
 }
 
 const Preferences = ({ previewData }: PreferencesProps) => {
+    const router = useRouter()
     const [formData, setFormData] = useState({
         title: previewData.title,
         price: previewData.price,
         description: previewData.description,
         slug: previewData.slug
     })
-    const [isAutoSaving, setIsAutoSaving] = useState(false)
+    const [isSaving, setIsSaving] = useState(false)
     const [lastSaved, setLastSaved] = useState<Date | null>(null)
+    const [hasChanges, setHasChanges] = useState(false)
 
-    // Auto-save functionality
+    // Track if there are unsaved changes
     useEffect(() => {
-        const timeoutId = setTimeout(async () => {
-            if (JSON.stringify(formData) !== JSON.stringify(previewData)) {
-                setIsAutoSaving(true)
-                // Simulate auto-save
-                await new Promise(resolve => setTimeout(resolve, 500))
-                setIsAutoSaving(false)
-                setLastSaved(new Date())
-            }
-        }, 2000)
-
-        return () => clearTimeout(timeoutId)
+        const hasUnsavedChanges = JSON.stringify(formData) !== JSON.stringify({
+            title: previewData.title,
+            price: previewData.price,
+            description: previewData.description,
+            slug: previewData.slug
+        })
+        setHasChanges(hasUnsavedChanges)
     }, [formData, previewData])
 
     const handleInputChange = (field: string, value: string | number) => {
@@ -49,6 +52,39 @@ const Preferences = ({ previewData }: PreferencesProps) => {
             ...prev,
             [field]: value
         }))
+    }
+
+    const handleSave = async () => {
+        if (!hasChanges) {
+            toast.info('No changes to save')
+            return
+        }
+
+        setIsSaving(true)
+        try {
+            const result = await updateCourse({
+                id: previewData.id,
+                title: formData.title,
+                description: formData.description,
+                price: formData.price
+            })
+
+            if (result.success) {
+                setLastSaved(new Date())
+                setHasChanges(false)
+                toast.success('Changes saved successfully!')
+                
+                // Refresh the page data without full reload
+                router.refresh()
+            } else {
+                toast.error('Failed to save changes: ' + (result.error || 'Unknown error'))
+            }
+        } catch (error) {
+            console.error('Save error:', error)
+            toast.error('Failed to save changes')
+        } finally {
+            setIsSaving(false)
+        }
     }
 
     const generateSlug = () => {
@@ -76,10 +112,10 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                             Customize your page details before publishing
                         </CardDescription>
                     </div>
-                    {lastSaved && (
+                    {lastSaved && !hasChanges && (
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <CheckCircle2 className="h-3 w-3 text-green-500" />
-                            Auto-saved {lastSaved.toLocaleTimeString()}
+                            Saved {lastSaved.toLocaleTimeString()}
                         </div>
                     )}
                 </div>
@@ -136,6 +172,7 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                                 onChange={(e) => handleInputChange('slug', e.target.value)}
                                 className="text-sm pr-8"
                                 placeholder="url-slug"
+                                disabled
                             />
                         </div>
                         <Button 
@@ -152,12 +189,38 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                             <Copy className="mr-1 h-3 w-3" />
                             Copy URL
                         </Button>
-                        {isAutoSaving && (
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                <div className="animate-spin h-3 w-3 border border-current border-t-transparent rounded-full" />
-                                Saving...
-                            </div>
-                        )}
+                    </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="pt-4 border-t">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            {hasChanges && (
+                                <>
+                                    <AlertCircle className="h-4 w-4 text-orange-500" />
+                                    <span>You have unsaved changes</span>
+                                </>
+                            )}
+                        </div>
+                        <Button 
+                            onClick={handleSave}
+                            disabled={isSaving || !hasChanges}
+                            size="sm"
+                            className="min-w-[100px]"
+                        >
+                            {isSaving ? (
+                                <>
+                                    <div className="animate-spin h-4 w-4 border border-current border-t-transparent rounded-full mr-2" />
+                                    Saving...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="mr-2 h-4 w-4" />
+                                    Save Changes
+                                </>
+                            )}
+                        </Button>
                     </div>
                 </div>
             </CardContent>

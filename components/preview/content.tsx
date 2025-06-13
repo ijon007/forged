@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 interface ContentProps {
     previewData: {
         originalContent: string
+        [key: string]: any // Allow additional properties
     }
 }
 

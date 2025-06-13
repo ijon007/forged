@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, json } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, json, boolean } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema";
 
 export const course = pgTable("course", {
@@ -11,6 +11,7 @@ export const course = pgTable("course", {
   keyPoints: json('key_points').$type<string[]>().notNull().default([]),
   estimatedReadTime: integer('estimated_read_time').notNull(),
   price: integer('price').notNull(), // Store price in cents to avoid floating point issues
+  published: boolean('published').notNull().default(false),
   userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').$defaultFn(() => new Date()).notNull(),
   updatedAt: timestamp('updated_at').$defaultFn(() => new Date()).notNull()

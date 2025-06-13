@@ -16,6 +16,7 @@ interface PreviewProps {
         price?: number
         description?: string
         imageUrl?: string
+        [key: string]: any // Allow additional properties
     }
 }
 

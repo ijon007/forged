@@ -15,6 +15,13 @@
       "when": 1749811424606,
       "tag": "0001_wet_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749814308197,
+      "tag": "0002_mixed_goliath",
+      "breakpoints": true
     }
   ]
 }

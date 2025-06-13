@@ -14,39 +14,72 @@ export default async function PreviewPage({
 }) {
   const { slug } = await params
   
-  // Try to get course from memory store first, then database, then fall back to mock data
-  let generatedCourse = courseStore.get(slug)
+  // Always try database first to get the latest data
+  const dbCourse = await getCourse(slug)
+  let generatedCourse
   
-  // If not in memory, try database
-  if (!generatedCourse) {
-    const dbCourse = await getCourse(slug)
-    if (dbCourse) {
-      // Convert database course to memory store format and cache it
-      generatedCourse = {
-        id: dbCourse.id,
-        title: dbCourse.title,
-        description: dbCourse.description,
-        content: dbCourse.content,
-        originalContent: dbCourse.originalContent,
-        tags: dbCourse.tags,
-        keyPoints: dbCourse.keyPoints,
-        estimatedReadTime: dbCourse.estimatedReadTime,
-        createdAt: dbCourse.createdAt,
-      }
-      
-      // Cache in memory for faster future access
-      courseStore.set(slug, generatedCourse)
+  if (dbCourse) {
+    // Convert database course to memory store format
+    generatedCourse = {
+      id: dbCourse.id,
+      title: dbCourse.title,
+      description: dbCourse.description,
+      content: dbCourse.content,
+      originalContent: dbCourse.originalContent,
+      tags: dbCourse.tags,
+      keyPoints: dbCourse.keyPoints,
+      estimatedReadTime: dbCourse.estimatedReadTime,
+      createdAt: dbCourse.createdAt,
     }
+    
+    // Update memory store with latest data (exclude id and createdAt)
+    courseStore.set(slug, {
+      title: dbCourse.title,
+      description: dbCourse.description,
+      content: dbCourse.content,
+      originalContent: dbCourse.originalContent,
+      tags: dbCourse.tags,
+      keyPoints: dbCourse.keyPoints,
+      estimatedReadTime: dbCourse.estimatedReadTime,
+    })
+  } else {
+    // Fallback to memory store if not in database
+    generatedCourse = courseStore.get(slug)
   }
   
   let previewData
   
-  if (generatedCourse) {
-    // Get price from database if available
-    const dbCourse = await getCourse(slug)
-    const priceInCents = dbCourse?.price
-    previewData = formatCourseForPreview(generatedCourse, priceInCents)
+  if (generatedCourse && dbCourse) {
+    // Use fresh database data for title, description, price, and published status
+    const priceInCents = dbCourse.price
+    const published = dbCourse.published || false
+    
+    previewData = {
+      id: dbCourse.id,
+      title: dbCourse.title, // Use fresh DB data
+      description: dbCourse.description, // Use fresh DB data
+      price: priceInCents / 100, // Convert from cents and use fresh DB data
+      slug: slug,
+      status: published ? 'published' : 'draft',
+      published,
+      originalContent: generatedCourse.originalContent,
+      generatedContent: generatedCourse.content,
+      tags: generatedCourse.tags,
+      keyPoints: generatedCourse.keyPoints,
+      estimatedReadTime: generatedCourse.estimatedReadTime,
+      author: "KnowledgeSmith AI",
+      createdAt: generatedCourse.createdAt.toISOString(),
+    }
+  } else if (generatedCourse) {
+    // Fallback for memory-only data
+    const basePreviewData = formatCourseForPreview(generatedCourse, undefined)
+    previewData = {
+      ...basePreviewData,
+      published: false,
+      status: 'draft'
+    }
   } else {
+    // Final fallback to mock data
     previewData = mockPreviewData[slug as keyof typeof mockPreviewData]
   }
 

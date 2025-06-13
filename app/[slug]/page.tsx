@@ -6,95 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import { Lock, Star, Clock, Users, DollarSign, Eye, Share } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-
-// Mock page data - in real app this would come from database
-const mockPages = {
-  "javascript-design-patterns": {
-    id: "1",
-    title: "JavaScript Design Patterns",
-    description: "A comprehensive guide to modern JavaScript design patterns and best practices.",
-    price: 29.99,
-    isPurchased: false, // This would be determined by user session/payment status
-    author: "John Doe",
-    readTime: "15 min read",
-    views: 1234,
-    imageUrl: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&h=400&fit=crop",
-    content: `
-# Introduction
-
-JavaScript design patterns are reusable solutions to common problems in software design. They represent the best practices used by experienced object-oriented software developers.
-
-## The Module Pattern
-
-The Module Pattern is one of the most common design patterns used in JavaScript. It provides a way to wrap a mix of public and private methods and variables, protecting pieces from leaking into the global scope.
-
-\`\`\`javascript
-const Module = (function() {
-  let privateVariable = 'Hello World';
-  
-  function privateMethod() {
-    console.log(privateVariable);
-  }
-  
-  return {
-    publicMethod: function() {
-      privateMethod();
-    }
-  };
-})();
-\`\`\`
-
-## The Observer Pattern
-
-The Observer Pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes.
-
-This is just a preview of the content...
-    `
-  },
-  "react-best-practices": {
-    id: "2",
-    title: "React Best Practices",
-    description: "Learn the latest React patterns and how to build maintainable applications.",
-    price: 39.99,
-    isPurchased: true,
-    author: "Jane Smith",
-    readTime: "22 min read",
-    views: 856,
-    imageUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop",
-    content: `
-# React Best Practices Guide
-
-This comprehensive guide covers the essential patterns and practices for building robust React applications.
-
-## Component Organization
-
-Keep your components focused and single-purpose. Each component should have one responsibility and do it well.
-
-\`\`\`jsx
-// Good - Single responsibility
-function UserCard({ user }) {
-  return (
-    <div className="user-card">
-      <img src={user.avatar} alt={user.name} />
-      <h3>{user.name}</h3>
-      <p>{user.email}</p>
-    </div>
-  );
-}
-\`\`\`
-
-## State Management
-
-Use local state for component-specific data and global state for data that needs to be shared across components.
-
-## Performance Optimization
-
-Learn about React.memo, useMemo, and useCallback to optimize your application's performance.
-
-And much more...
-    `
-  }
-}
+import { getCourse } from "@/actions/course-db-actions"
 
 export default async function BlogPage({
   params,
@@ -102,10 +14,29 @@ export default async function BlogPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const page = mockPages[slug as keyof typeof mockPages]
-
-  if (!page) {
+  
+  // Get course from database
+  const dbCourse = await getCourse(slug)
+  
+  // Only show published courses
+  if (!dbCourse || !dbCourse.published) {
     notFound()
+  }
+  
+  // Format course data for the page
+  const page = {
+    id: dbCourse.id,
+    title: dbCourse.title,
+    description: dbCourse.description,
+    price: dbCourse.price / 100, // Convert from cents to dollars
+    isPurchased: false, // TODO: This would be determined by user session/payment status
+    author: "KnowledgeSmith AI", // Default author for AI-generated content
+    readTime: `${dbCourse.estimatedReadTime} min read`,
+    views: Math.floor(Math.random() * 1000) + 500, // TODO: Track actual views
+    imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop", // Default image
+    content: dbCourse.content,
+    tags: dbCourse.tags,
+    keyPoints: dbCourse.keyPoints
   }
 
   return (
@@ -292,6 +223,43 @@ export default async function BlogPage({
                 </div>
               </CardContent>
             </Card>
+
+            {/* Key Points Section */}
+            {page.keyPoints && page.keyPoints.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Key Takeaways</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm">
+                    {page.keyPoints.map((point, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <Star className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Tags Section */}
+            {page.tags && page.tags.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tags</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {page.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             <Card>
               <CardContent className="pt-6">
