@@ -28,22 +28,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import SignOut from "./login/sign-out"
+import { getSession } from "@/actions/auth-actions"
+import { redirect } from "next/navigation"
 
-const navigation = [
-  {
-    name: "My Pages",
-    href: "/dashboard",
-    icon: BookOpen,
-  },
-]
 
-const user = {
-  name: "John Doe",
-  email: "john@example.com",
-  avatar: "/avatars/user.jpg",
-}
-
-export function TopNav() {
+export async function TopNav() {
+  const session = await getSession()
+  const user = session?.user
+  if (!user) {
+    redirect("/login")
+  }
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between w-full px-6">
@@ -83,13 +78,13 @@ export function TopNav() {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src={user.image || ""} alt={user.name} />
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
+            <DropdownMenuContent className="w-56 p-2 rounded-xl" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal mb-2">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user.name}</p>
                   <p className="text-xs leading-none text-muted-foreground">
@@ -97,33 +92,7 @@ export function TopNav() {
                   </p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  <span>Upgrade to Pro</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck className="mr-2 h-4 w-4" />
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell className="mr-2 h-4 w-4" />
-                  <span>Notifications</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
+              <SignOut />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
