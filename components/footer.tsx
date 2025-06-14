@@ -5,7 +5,7 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-6">
           <div className="flex flex-col items-center">
             <h3 className="text-xl font-bold text-black mb-2">Knowledgesmith</h3>
-            <p className="text-gray-600 text-sm">Turn your notes into money</p>
+            <p className="text-gray-600 text-sm">Create and sell digital playbooks from your knowledge</p>
           </div>
         </div>
 

@@ -3,34 +3,34 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export function FAQ() {
   const faqs = [
     {
-      question: "How does the AI extract key points from my PDFs?",
+      question: "How do I sell a playbook?",
       answer:
-        "Our advanced AI analyzes your PDF content and automatically identifies the most important information, creating structured summaries, titles, and bullet points that form the foundation of your course.",
+        "Upload a PDF or your notes, set a price, and share a link. We handle payments for you. Our AI automatically extracts key points and creates a structured playbook that's ready to sell.",
     },
     {
-      question: "Can I customize the generated courses?",
+      question: "What is a playbook?",
       answer:
-        "After the AI generates your course structure, you can edit content, add custom images, adjust pricing, and personalize every aspect to match your style and brand.",
+        "A playbook is a digital guide that teaches a process step-by-step, like 'How to Plan a Product Launch' or 'How to Crack Marketing for Clients' It's your knowledge packaged into an actionable format that others can follow.",
     },
     {
-      question: "How do I get paid for my courses?",
+      question: "How do I get paid?",
       answer:
-        "You set your own pricing for each course. When someone purchases your course through the unique URL, you receive the payment directly. We handle the technical infrastructure while you keep your earnings.",
+        "You receive 100% of every sale. Payments are processed through Stripe (via Polar). Set your own pricing and everything that you earn.",
     },
     {
-      question: "What file formats are supported?",
+      question: "Can I edit my playbook after it's created?",
       answer:
-        "Currently, we support PDF files. We're working on expanding to support more formats.",
+        "Yes! After the AI generates your playbook, you can edit content, add images, adjust pricing, and personalize every aspect to match your style and brand.",
     },
     {
-      question: "Is there a limit to how many courses I can create?",
+      question: "What files can I upload to create a playbook?",
       answer:
-        "No limits! With your $5/month subscription, you can upload unlimited PDFs and create as many courses as you want. Scale your knowledge business without restrictions.",
+        "Currently, we support only PDF files. We're working on expanding to support more formats like Word documents and Google Docs.",
     },
     {
-      question: "Can I cancel my subscription anytime?",
+      question: "How many playbooks can I create?",
       answer:
-        "Yes, you can cancel your subscription at any time. There are no long-term commitments or cancellation fees. However, your courses will not be available after cancellation.",
+        "No limits! With your $5/month subscription, you can upload unlimited PDFs and create as many playbooks as you want. Scale your knowledge business without restrictions.",
     },
   ]
 

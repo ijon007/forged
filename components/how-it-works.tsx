@@ -5,22 +5,23 @@ export function HowItWorks() {
     {
       icon: Upload,
       title: "Upload Your PDF",
-      description: "Drop your notes, documents, or any PDF with valuable knowledge",
+      description: "Drag and drop your notes, guides, or any PDF with valuable knowledge. We turn your raw content into a monetizable asset.",
       step: "01",
       gradient: "from-blue-500 to-cyan-500",
     },
     {
       icon: Brain,
-      title: "AI Extracts Key Points",
+      title: "AI Converts It Into a Structured Playbook",
       description:
-        "Our AI analyzes your content and creates structured courses with titles, summaries, and bullet points",
+        "Our AI extracts key points, adds a title and summary, and formats your content into a polished digital playbook.",
       step: "02",
       gradient: "from-purple-500 to-pink-500",
     },
     {
       icon: Share2,
-      title: "Share & Earn",
-      description: "Set your pricing, add images, and share your course with a unique URL",
+      title: "Sell Your Playbook & Keep 100%",
+      description:
+        "Set your own price, customize your page, and share your AI-generated playbook with a unique link. Every sale goes directly to you.",
       step: "03",
       gradient: "from-green-500 to-emerald-500",
     },

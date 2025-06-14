@@ -21,19 +21,18 @@ export function Hero() {
           </div>
 
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-black sm:text-6xl lg:text-7xl">
-            Turn notes into
+            Create & Sell Your Custom
             <br />
             <span className="relative">
               <span className="bg-gradient-to-r from-gray-900 via-black to-gray-700 bg-clip-text text-transparent">
-                money in seconds
+                AI‑Powered Playbook
               </span>
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-black to-transparent opacity-20" />
             </span>
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600 sm:text-xl leading-relaxed">
-            Upload your PDFs, get AI-generated blog posts with key points, and start earning money. No more boring PDFs or
-            endless Notion pages.
+            Upload your notes, generate beautifully formatted content, and start earning, no writing required.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -43,7 +42,7 @@ export function Hero() {
                 className="group relative bg-black text-white hover:bg-gray-800 rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative">Get Started</span>
+                <span className="relative">Generate Playbook</span>
                 <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
