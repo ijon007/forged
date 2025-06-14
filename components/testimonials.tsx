@@ -7,10 +7,10 @@ import remarkGfm from 'remark-gfm'
 const testimonials = [
   {
     id: 1,
-    name: "Sarah Chen",
+    name: "Rea",
     role: "Marketing Consultant",
     avatar: "https://avatar.vercel.sh/sarah",
-    content: "KnowledgeSmith transformed my scattered notes into a professional marketing course. I've already sold 47 copies at $89 each!",
+    content: "Knowledgesmith transformed my scattered notes into a professional marketing course! Can't wait to see how it goes!",
     rating: 5,
     previewData: {
       title: "Digital Marketing Fundamentals: From Zero to Hero",
@@ -23,7 +23,7 @@ Digital marketing has revolutionized how businesses connect with customers. This
 ### 1. Search Engine Optimization (SEO)
 - On-page optimization techniques
 - Keyword research strategies`,
-      author: "Sarah Chen",
+      author: "Rea",
       readTime: "12 min read",
       views: 2847,
       price: 89,
@@ -32,7 +32,7 @@ Digital marketing has revolutionized how businesses connect with customers. This
   },
   {
     id: 2,
-    name: "Marcus Rodriguez",
+    name: "Riad",
     role: "Software Engineer",
     avatar: "https://avatar.vercel.sh/marcus",
     content: "Incredible platform! My coding notes became a structured programming course. The AI understood my technical concepts perfectly.",
@@ -51,7 +51,7 @@ const Modal = ({ children }) => {
   return <div className="modal">{children}</div>
 }
 \`\`\``,
-      author: "Marcus Rodriguez",
+      author: "Riad",
       readTime: "18 min read",
       views: 4321,
       price: 149,
@@ -60,7 +60,7 @@ const Modal = ({ children }) => {
   },
   {
     id: 3,
-    name: "Emily Thompson",
+    name: "Emily",
     role: "UX Designer",
     avatar: "https://avatar.vercel.sh/emily",
     content: "From my design process notes to a complete UX course in minutes. The generated content maintained all my methodologies perfectly.",
@@ -76,7 +76,7 @@ A comprehensive guide to creating exceptional user experiences through systemati
 ### User Research Methods
 - User interviews and surveys
 - Competitive analysis`,
-      author: "Emily Thompson",
+      author: "Emily",
       readTime: "15 min read",
       views: 3654,
       price: 119,
@@ -115,7 +115,6 @@ const TestimonialBlogCard = ({ testimonial }: { testimonial: typeof testimonials
       <div className="p-6 border-t border-gray-100 bg-white">
         <div className="space-y-4">
           <div className="space-y-3">
-            <Badge variant="secondary">Generated Course</Badge>
             <h3 className="text-lg font-bold leading-tight group-hover:text-blue-600 transition-colors">
               {testimonial.previewData.title}
             </h3>
@@ -176,7 +175,7 @@ export function Testimonials() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent mb-4">
+          <h2 className="text-4xl font-bold mb-4">
             Success Stories
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

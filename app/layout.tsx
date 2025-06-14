@@ -1,14 +1,14 @@
 import type React from "react"
-import { Inter } from "next/font/google"
+import { Geist } from "next/font/google"
 import "./globals.css"
 import type { Metadata } from "next"
 import { Toaster } from "@/components/ui/sonner"
 import { Analytics } from "@vercel/analytics/next"
 
-const inter = Inter({
+const geist = Geist({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-geist-sans",
 })
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
-      <body className={inter.className}>
+    <html lang="en" className={`${geist.variable}`}>
+      <body className={` ${geist.variable}`}>
         {children}
         <Toaster />
         <Analytics />
