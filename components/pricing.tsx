@@ -3,9 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { PencilLine, Check } from "lucide-react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export function Pricing() {
   const [isYearly, setIsYearly] = useState(false)
+  const router = useRouter()
+
+  const handleStartCreating = () => {
+    // Always redirect to login from landing page
+    router.push('/login')
+  }
 
   return (
     <section className="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
@@ -24,7 +31,7 @@ export function Pricing() {
         </div>
 
         {/* Toggle */}
-        <div className="flex justify-center mb-5">
+        <div className="mb-10 flex justify-center">
           <div className="relative bg-gray-100 rounded-full p-1 flex items-center">
             <button
               onClick={() => setIsYearly(false)}
@@ -50,7 +57,7 @@ export function Pricing() {
         </div>
 
         {/* Single Pricing Card */}
-        <div className="mx-auto max-w-md">
+        <div className="flex justify-center">
           <div className="group relative">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-300 blur-sm"></div>
             <div className="relative rounded-3xl border border-gray-200 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">

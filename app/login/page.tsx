@@ -4,13 +4,20 @@ import Link from "next/link"
 import { GoogleLoginButton } from "@/components/login/login-google"
 import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
+import { hasActiveSubscription } from "@/lib/subscription"
 
 export default async function LoginPage() {
 
   const session = await getSession()
 
   if (session) {
-    redirect("/dashboard")
+    // Check if user has subscription, if yes go to dashboard, if no go to pricing
+    const hasSubscription = await hasActiveSubscription(session.user.id)
+    if (hasSubscription) {
+      redirect("/dashboard")
+    } else {
+      redirect("/pricing")
+    }
   }
 
   return (

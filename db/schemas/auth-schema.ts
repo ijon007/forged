@@ -6,6 +6,12 @@ export const user = pgTable("user", {
  email: text('email').notNull().unique(),
  emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
  image: text('image'),
+ // Subscription fields
+ polarCustomerId: text('polar_customer_id'),
+ subscriptionId: text('subscription_id'),
+ subscriptionStatus: text('subscription_status'),
+ planType: text('plan_type'), // "monthly" or "yearly"
+ subscriptionEndsAt: timestamp('subscription_ends_at'),
  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull()
 				});

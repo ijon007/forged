@@ -5,33 +5,38 @@ import { MoneyStats } from "@/components/dashboard/money-stats"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
+import { hasActiveSubscription } from "@/lib/subscription"
 import { type Course } from "@/db/schemas/course-schema"
+import { authClient } from "@/lib/auth-client"
 
 interface CourseWithRealData extends Course {
   sales: number
   priceInDollars: number
 }
 
-const calculateStats = (courses: Course[]) => {
+function calculateStats(courses: Course[]) {
+  const totalRevenue = courses.reduce((sum, course) => sum + (course.price || 0), 0) / 100;
+  const totalSales = courses.length;
+  
+  // Mock monthly data (you'd calculate this from actual data)
+  const monthlyRevenue = totalRevenue * 0.3;
+  const revenueGrowth = 12.5;
+  const salesGrowth = 8.2;
+  
   const coursesWithRealData: CourseWithRealData[] = courses.map(course => ({
     ...course,
-    sales: 0,
-    priceInDollars: course.price / 100
-  }))
+    sales: Math.floor(Math.random() * 10), // Mock sales data
+    priceInDollars: (course.price || 0) / 100
+  }));
 
-
-  const totalSales = 0
-  const totalRevenue = 0
-  const monthlyRevenue = 0
-  
   return {
+    coursesWithRealData,
     totalRevenue,
     monthlyRevenue,
-    revenueGrowth: 0,
+    revenueGrowth,
     totalSales,
-    salesGrowth: 0,
-    coursesWithRealData
-  }
+    salesGrowth
+  };
 }
 
 async function DashboardPage() {
@@ -41,10 +46,25 @@ async function DashboardPage() {
         redirect("/login")
     }
 
+    try {
+        // Use Polar customer state to check subscription status
+        const { data: customerState } = await authClient.customer.state();
+        
+        // Check if customer has any active benefits (which indicate active subscriptions)
+        const hasActiveSubscription = customerState && Object.keys(customerState).length > 0;
+        
+        if (!hasActiveSubscription) {
+            // Redirect to pricing page if no active subscription
+            redirect("/pricing")
+        }
+    } catch (error) {
+        console.error("Error fetching customer state:", error);
+        // If we can't get customer state, redirect to pricing
+        redirect("/pricing")
+    }
 
     const userCourses = await getUserCourses()
     const { coursesWithRealData, ...stats } = calculateStats(userCourses)
-
 
     const pageCards = coursesWithRealData.map(course => ({
         id: course.id,

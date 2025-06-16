@@ -11,7 +11,7 @@ export function GoogleLoginButton() {
   const handleGoogleSignIn = async () => {
     await signIn.social({
       provider: "google",
-      callbackURL: '/dashboard',
+      callbackURL: '/pricing',
       errorCallbackURL: '/login'
     });
 }
