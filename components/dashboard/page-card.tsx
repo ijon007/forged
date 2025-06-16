@@ -1,7 +1,9 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { MoreHorizontal, Eye, Edit, DollarSign, Share, ExternalLink, BarChart3, Trash } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
+import { DeleteCourseDialog } from "@/components/dashboard/delete-course-dialog"
 
 interface PageCardProps {
   id: string
@@ -84,11 +87,16 @@ export function PageCard({
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                <Trash className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
+            <DropdownMenuContent align="start">
+              <DeleteCourseDialog courseId={id} courseTitle={title}>
+                <DropdownMenuItem 
+                  className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" color="red"/>
+                  Delete
+                </DropdownMenuItem>
+              </DeleteCourseDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
