@@ -1,9 +1,14 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Clock, Eye } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useTheme } from 'next-themes'
 
 interface PreviewProps {
     previewData: {
@@ -11,8 +16,6 @@ interface PreviewProps {
         generatedContent: string
         author?: string
         readTime?: string
-        views?: number
-        price?: number
         description?: string
         imageUrl?: string
         [key: string]: any // Allow additional properties
@@ -20,10 +23,11 @@ interface PreviewProps {
 }
 
 const Preview = ({ previewData }: PreviewProps) => {
+    const { theme } = useTheme()
+    
     // Set default values for missing data
     const author = previewData.author || "John Doe"
-    const readTime = previewData.readTime || "10 min read"
-    const views = previewData.views || 0
+    const readTime = previewData.readTime || "5 min read"
     const price = previewData.price || 29.99
     const description = previewData.description || "AI-generated blog post content"
 
@@ -57,10 +61,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                                 <Clock className="h-3 w-3" />
                                 <span>{readTime}</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <Eye className="h-3 w-3" />
-                                <span>{views.toLocaleString()} views</span>
-                            </div>
                         </div>
                         
                         <Separator />
@@ -86,17 +86,39 @@ const Preview = ({ previewData }: PreviewProps) => {
                                 remarkPlugins={[remarkGfm]}
                                 components={{
                                     code({ className, children, ...props }: any) {
+                                        const match = /language-(\w+)/.exec(className || '')
+                                        const language = match ? match[1] : ''
                                         const isInline = !className?.includes('language-')
-                                        return isInline ? (
-                                            <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
-                                                {children}
-                                            </code>
-                                        ) : (
-                                            <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                                                <code className="text-sm font-mono" {...props}>
+                                        
+                                        if (isInline) {
+                                            return (
+                                                <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
                                                     {children}
                                                 </code>
-                                            </pre>
+                                            )
+                                        }
+                                        
+                                        return (
+                                            <div className="my-4">
+                                                <SyntaxHighlighter
+                                                    style={theme === 'dark' ? vscDarkPlus : vs}
+                                                    language={language || 'text'}
+                                                    PreTag="div"
+                                                    customStyle={{
+                                                        margin: 0,
+                                                        borderRadius: '0.5rem',
+                                                        fontSize: '0.875rem',
+                                                    }}
+                                                    codeTagProps={{
+                                                        style: {
+                                                            fontSize: '0.875rem',
+                                                            fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                                                        },
+                                                    }}
+                                                >
+                                                    {String(children).replace(/\n$/, '')}
+                                                </SyntaxHighlighter>
+                                            </div>
                                         )
                                     },
                                     h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-3 first:mt-0">{children}</h1>,
