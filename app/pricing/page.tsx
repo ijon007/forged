@@ -1,6 +1,6 @@
 import { getSession } from "@/actions/auth-actions"
-import { redirect } from "next/navigation"
 import { PlanSelection } from "@/components/plan-selection"
+import { redirect } from "next/navigation"
 
 export default async function PricingPage() {
   const session = await getSession()
@@ -20,7 +20,6 @@ export default async function PricingPage() {
             Start creating unlimited knowledge pages and keep 100% of your earnings
           </p>
         </div>
-        
         <PlanSelection userId={session.user.id} />
       </div>
     </div>

@@ -7,7 +7,6 @@ import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
 import { hasActiveSubscription } from "@/lib/subscription"
 import { type Course } from "@/db/schemas/course-schema"
-import { authClient } from "@/lib/auth-client"
 
 interface CourseWithRealData extends Course {
   sales: number
@@ -46,20 +45,11 @@ async function DashboardPage() {
         redirect("/login")
     }
 
-    try {
-        // Use Polar customer state to check subscription status
-        const { data: customerState } = await authClient.customer.state();
-        
-        // Check if customer has any active benefits (which indicate active subscriptions)
-        const hasActiveSubscription = customerState && Object.keys(customerState).length > 0;
-        
-        if (!hasActiveSubscription) {
-            // Redirect to pricing page if no active subscription
-            redirect("/pricing")
-        }
-    } catch (error) {
-        console.error("Error fetching customer state:", error);
-        // If we can't get customer state, redirect to pricing
+    // Use database subscription check instead of Polar client state
+    const hasSubscription = await hasActiveSubscription(session.user.id)
+    
+    if (!hasSubscription) {
+        // Redirect to pricing page if no active subscription
         redirect("/pricing")
     }
 

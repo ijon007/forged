@@ -6,6 +6,7 @@ import { account, session, user, verification } from "@/db/schemas/auth-schema";
 import { polar, checkout, portal, webhooks, usage } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
 import { eq } from "drizzle-orm";
+import { getURL } from "@/utils/helpers";
 
 const polarClient = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN,
@@ -45,7 +46,7 @@ export const auth = betterAuth({
                             slug: "knowledgesmith-yearly"
                         }
                     ],
-                    successUrl: "/dashboard/success?checkout_id={CHECKOUT_ID}",
+                    successUrl: getURL("/dashboard/success?checkout_id={CHECKOUT_ID}"),
                     authenticatedUsersOnly: true
                 }),
                 portal(),
@@ -63,7 +64,7 @@ export const auth = betterAuth({
                     },
                     onSubscriptionActive: async (payload) => {
                         console.log('Subscription activated:', payload);
-                        await updateUserSubscription(payload);
+                        await updateUserSubscription(payload, 'active');
                     },
                     onSubscriptionCanceled: async (payload) => {
                         console.log('Subscription canceled:', payload);
@@ -90,6 +91,13 @@ export const auth = betterAuth({
 // Helper function to update user subscription from webhook data
 async function updateUserSubscription(subscription: any, status?: string) {
     try {
+        console.log('Processing subscription webhook:', { 
+            subscriptionId: subscription.id,
+            customerId: subscription.customer_id,
+            status: status || subscription.status,
+            payload: subscription 
+        });
+
         const customerId = subscription.customer_id;
         
         // Find user by polar customer ID
@@ -101,27 +109,51 @@ async function updateUserSubscription(subscription: any, status?: string) {
 
         if (users.length === 0) {
             console.error('User not found for customer ID:', customerId);
+            // If no user found by polar customer ID, try to find by checkout session if available
+            if (subscription.checkout_id) {
+                console.log('Attempting to find user by checkout session...');
+                // You might need to store checkout sessions temporarily to map them to users
+            }
             return;
         }
 
         const currentUser = users[0];
+        console.log('Found user:', currentUser.id, 'for customer:', customerId);
 
         // Determine plan type based on product or price
-        const planType = subscription.price?.recurring_interval === 'year' ? 'yearly' : 'monthly';
+        let planType = 'monthly'; // default
+        if (subscription.price?.recurring_interval === 'year') {
+            planType = 'yearly';
+        } else if (subscription.product_id === process.env.POLAR_YEARLY_PRODUCT_ID) {
+            planType = 'yearly';
+        }
+
+        // Calculate subscription end date
+        let subscriptionEndsAt = null;
+        if (subscription.current_period_end) {
+            subscriptionEndsAt = new Date(subscription.current_period_end);
+        } else if (subscription.ended_at) {
+            subscriptionEndsAt = new Date(subscription.ended_at);
+        }
+
+        const updateData = {
+            subscriptionId: subscription.id,
+            subscriptionStatus: status || subscription.status,
+            planType: planType,
+            subscriptionEndsAt: subscriptionEndsAt,
+            updatedAt: new Date(),
+        };
+
+        console.log('Updating user subscription with data:', updateData);
 
         await db
             .update(user)
-            .set({
-                subscriptionId: subscription.id,
-                subscriptionStatus: status || subscription.status,
-                planType: planType,
-                subscriptionEndsAt: subscription.current_period_end ? new Date(subscription.current_period_end) : null,
-                updatedAt: new Date(),
-            })
+            .set(updateData)
             .where(eq(user.id, currentUser.id));
 
-        console.log(`Updated subscription for user ${currentUser.id}: ${status || subscription.status}`);
+        console.log(`Successfully updated subscription for user ${currentUser.id}: ${status || subscription.status}`);
     } catch (error) {
         console.error('Error updating user subscription:', error);
+        throw error; // Re-throw to ensure webhook shows failure
     }
 }
