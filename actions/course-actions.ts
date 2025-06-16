@@ -100,44 +100,91 @@ export async function generateCourseFromPDF(
     const result = await generateObject({
       model: google('gemini-2.0-flash'),
       schema: zodSchema(courseSchema),
-      system: `You are an expert content creator and educator. Your task is to transform PDF content into an engaging, well-structured blog post.
+      system: `You are an expert content strategist and educator who specializes in creating professional, high-value educational content. Your task is to transform PDF content into a comprehensive playbook/course that provides genuine value to learners.
+
+PROFESSIONAL CONTENT STANDARDS:
+- Maintain a professional, authoritative tone throughout
+- Focus on delivering practical, actionable insights
+- Structure content for optimal learning and retention
+- Ensure every section provides clear value to the reader
+- Use precise, clear language without unnecessary fluff
+- Stick closely to the source material while enhancing its presentation
+
+CONTENT ENHANCEMENT APPROACH:
+- Organize information into logical, progressive sections
+- Add context and explanations to make complex topics accessible
+- Include practical examples and real-world applications
+- Provide step-by-step guidance where appropriate
+- Highlight critical concepts and important distinctions
+- Create clear connections between different concepts
+
+EDUCATIONAL VALUE FOCUS:
+- Transform raw information into structured learning modules
+- Add implementation guidance and best practices
+- Include common pitfalls and how to avoid them
+- Provide frameworks and methodologies for practical application
+- Ensure content is comprehensive yet concise
+- Create content that learners can reference and apply immediately
+
+CONTENT STRUCTURE:
+- Use clear, descriptive headings that outline what readers will learn
+- Break complex topics into digestible sections
+- Include summary points and key takeaways
+- Ensure logical flow from basic concepts to advanced applications
+- Add practical exercises or reflection questions where beneficial
 
 IMPORTANT: You must return a JSON object with EXACTLY these field names:
-- title: string (engaging title)
-- description: string (compelling description)
-- content: string (complete blog post in markdown)
-- tags: array of strings (relevant tags)
-- keyPoints: array of strings (key takeaways)
+- title: string (professional, value-focused title)
+- description: string (clear description of what learners will gain)
+- content: string (complete educational content in markdown format)
+- tags: array of strings (relevant professional tags)
+- keyPoints: array of strings (practical key takeaways)
 - estimatedReadTime: number (reading time in minutes)
 - price: number (price in USD as a number, not string)
-
-Requirements:
-- Create an engaging title that captures the essence of the content
-- Write a compelling description that would make someone want to read more
-- Transform the content into a well-formatted blog post with proper markdown structure
-- Use markdown formatting for headers, lists, emphasis, etc.
-- Make the content engaging and easy to read
-- Extract 3-5 key takeaways as keyPoints
-- Estimate a realistic reading time based on word count
-- Set a fair price as a number (e.g., 5 for $5, not "$5")
-- Include 3-5 relevant tags
 
 The user provided these preferences:
 - Title preference: ${title || 'Not specified'}
 - Description preference: ${description || 'Not specified'}
 - Price point: $${price || 'Not specified'}
 
-Use these as guidance but prioritize creating the best possible content.`,
-      prompt: `Please analyze this PDF content and generate a comprehensive blog post:
+Focus on creating professional educational content that provides clear value and actionable insights.`,
+      prompt: `Please analyze this PDF content and transform it into a professional educational playbook/course:
 
 ${extractedText}
 
-Transform this into an engaging blog post that:
-1. Has a clear structure with proper headings
-2. Is easy to read and engaging
-3. Maintains the original information while making it more accessible
-4. Includes relevant examples or analogies where appropriate
-5. Has a strong introduction and conclusion
+CONTENT TRANSFORMATION OBJECTIVES:
+1. Extract and organize the core concepts into a logical learning progression
+2. Enhance clarity by adding context, explanations, and practical examples
+3. Structure information into comprehensive yet digestible sections
+4. Identify and highlight the most valuable insights and methodologies
+5. Provide practical implementation guidance throughout
+6. Ensure the content serves as a complete reference guide on the topic
+7. Add professional insights that enhance understanding without straying from source material
+8. Create clear learning outcomes for each major section
+
+PROFESSIONAL FORMATTING REQUIREMENTS:
+- Use clear, informative headings that describe what learners will gain
+- Organize content in a logical sequence from foundational to advanced concepts
+- Include practical applications and real-world examples where relevant
+- Highlight key principles, frameworks, and methodologies
+- Provide actionable steps and implementation guidance
+- Add summary sections that reinforce learning objectives
+- Ensure each section builds upon previous knowledge
+
+EDUCATIONAL VALUE STANDARDS:
+- Make complex topics accessible without oversimplifying
+- Focus on practical application and real-world utility
+- Include best practices and common implementation challenges
+- Provide frameworks that learners can apply immediately
+- Ensure content is comprehensive enough to serve as a complete guide
+- Maintain professional tone while being engaging and clear
+
+QUALITY CHECKLIST:
+- Does this provide clear, actionable value to learners?
+- Is the content well-organized and easy to follow?
+- Are key concepts explained thoroughly yet concisely?
+- Does it include practical guidance for implementation?
+- Would someone pay for this level of educational content?
 
 Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`,
     })
