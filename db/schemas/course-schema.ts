@@ -3,6 +3,7 @@ import { user } from "./auth-schema";
 
 export const course = pgTable("course", {
   id: text('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
   title: text('title').notNull(),
   description: text('description').notNull(),
   content: text('content').notNull(),

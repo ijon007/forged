@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { courseStore, formatCourseForPreview } from "@/lib/course-store"
+import { courseStore } from "@/lib/course-store"
 import { getCourseWithUser } from "@/actions/course-db-actions"
 import Content from "@/components/preview/content"
 import Preferences from "@/components/preview/preferences"
@@ -20,6 +20,7 @@ export default async function PreviewPage({
 
   let generatedCourse = {
     id: dbCourse.id,
+    slug: dbCourse.slug,
     title: dbCourse.title,
     description: dbCourse.description,
     content: dbCourse.content,

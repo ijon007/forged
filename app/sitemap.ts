@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { getCourseWithUser } from '@/actions/course-db-actions'
+import { getAllPublishedCourses } from '@/actions/course-db-actions'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://knowledgesmith.vercel.app'
@@ -15,10 +15,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   try {
-    // You'll need to implement a function to get all published courses
-    // For now, this is a placeholder structure
-    // Replace this with actual database query to get all published courses
-    const courses: { slug: string; updatedAt?: Date; createdAt?: Date }[] = [] // await getAllPublishedCourses()
+    // Get all published courses
+    const courses = await getAllPublishedCourses()
     
     const courseRoutes = courses.map((course) => ({
       url: `${baseUrl}/${course.slug}`,

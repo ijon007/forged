@@ -9,6 +9,7 @@ import { user } from "@/db/schemas/auth-schema"
 
 export interface SaveCourseParams {
   id: string
+  slug: string
   title: string
   description: string
   content: string
@@ -44,6 +45,7 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
 
     const newCourse: NewCourse = {
       id: courseData.id,
+      slug: courseData.slug,
       title: courseData.title,
       description: courseData.description,
       content: courseData.content,
@@ -220,6 +222,7 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
     const result = await db
       .select({
         id: course.id,
+        slug: course.slug,
         title: course.title,
         description: course.description,
         content: course.content,
@@ -315,5 +318,24 @@ export async function deleteCourse(courseId: string): Promise<{ success: boolean
       success: false, 
       error: error instanceof Error ? error.message : 'Failed to delete course' 
     }
+  }
+}
+
+export async function getAllPublishedCourses(): Promise<{ slug: string; createdAt: Date; updatedAt: Date | null }[]> {
+  try {
+    const result = await db
+      .select({
+        slug: course.slug,
+        createdAt: course.createdAt,
+        updatedAt: course.updatedAt,
+      })
+      .from(course)
+      .where(eq(course.published, true))
+      .orderBy(desc(course.updatedAt))
+
+    return result
+  } catch (error) {
+    console.error('Error getting published courses:', error)
+    return []
   }
 } 

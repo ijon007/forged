@@ -216,6 +216,7 @@ Remember to output the exact field names specified in the schema: title, descrip
     // Save to database
     const dbResult = await saveCourse({
       id: courseId,
+      slug: courseId,
       title: courseData.title,
       description: courseData.description,
       content: courseData.content,
