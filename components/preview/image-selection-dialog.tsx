@@ -149,8 +149,8 @@ export function ImageSelectionDialog({
                 {images.map((image) => (
                   <Card 
                     key={image.id}
-                    className={`cursor-pointer transition-all hover:ring-2 hover:ring-blue-500 ${
-                      selectedImage === image.url ? 'ring-2 ring-blue-500' : ''
+                    className={`cursor-pointer transition-colors hover:bg-muted/50 ${
+                      selectedImage === image.url ? 'border-primary bg-muted/30' : ''
                     }`}
                     onClick={() => handleImageSelect(image.url)}
                   >
@@ -162,7 +162,7 @@ export function ImageSelectionDialog({
                       />
                       {selectedImage === image.url && (
                         <div className="absolute top-2 right-2">
-                          <div className="bg-blue-500 text-white rounded-full p-1">
+                          <div className="bg-primary text-primary-foreground rounded-full p-1">
                             <Check className="h-3 w-3" />
                           </div>
                         </div>

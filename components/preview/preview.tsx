@@ -7,7 +7,7 @@ import { Clock } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useTheme } from 'next-themes'
 
 interface PreviewProps {
@@ -101,7 +101,7 @@ const Preview = ({ previewData }: PreviewProps) => {
                                         return (
                                             <div className="my-4">
                                                 <SyntaxHighlighter
-                                                    style={theme === 'dark' ? vscDarkPlus : vs}
+                                                    style={vscDarkPlus}
                                                     language={language || 'text'}
                                                     PreTag="div"
                                                     customStyle={{
@@ -126,9 +126,9 @@ const Preview = ({ previewData }: PreviewProps) => {
                                     h3: ({ children }) => <h3 className="text-lg font-medium mt-4 mb-2">{children}</h3>,
                                     h4: ({ children }) => <h4 className="text-base font-medium mt-3 mb-2">{children}</h4>,
                                     p: ({ children }) => <p className="mb-3 leading-6 text-gray-700 dark:text-gray-300">{children}</p>,
-                                    ul: ({ children }) => <ul className="mb-3 space-y-1 list-disc list-inside">{children}</ul>,
-                                    ol: ({ children }) => <ol className="mb-3 space-y-1 list-decimal list-inside">{children}</ol>,
-                                    li: ({ children }) => <li className="leading-6">{children}</li>,
+                                    ul: ({ children }) => <ul className="mb-4 pl-6 space-y-2 list-disc list-outside">{children}</ul>,
+                                    ol: ({ children }) => <ol className="mb-4 pl-6 space-y-2 list-decimal list-outside">{children}</ol>,
+                                    li: ({ children }) => <li className="leading-6 text-gray-700 dark:text-gray-300">{children}</li>,
                                     blockquote: ({ children }) => (
                                         <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-3 italic text-gray-600 dark:text-gray-400 mb-3">
                                             {children}

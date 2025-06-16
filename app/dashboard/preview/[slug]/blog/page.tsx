@@ -8,6 +8,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getCourseWithUser } from "@/actions/course-db-actions"
 import { courseStore, formatCourseForPreview } from "@/lib/course-store"
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export default async function BlogPreviewPage({
   params,
@@ -105,35 +107,57 @@ export default async function BlogPreviewPage({
                 remarkPlugins={[remarkGfm]}
                 components={{
                   code({ className, children, ...props }: any) {
+                    const match = /language-(\w+)/.exec(className || '')
+                    const language = match ? match[1] : ''
                     const isInline = !className?.includes('language-')
-                    return isInline ? (
-                      <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
-                        {children}
-                      </code>
-                    ) : (
-                      <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                        <code className="text-sm font-mono" {...props}>
-                          {children}
-                        </code>
-                      </pre>
+                    
+                    if (isInline) {
+                        return (
+                            <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                                {children}
+                            </code>
+                        )
+                    }
+                    
+                    return (
+                        <div className="my-4">
+                            <SyntaxHighlighter
+                                style={vscDarkPlus}
+                                language={language || 'text'}
+                                PreTag="div"
+                                customStyle={{
+                                    margin: 0,
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.875rem',
+                                }}
+                                codeTagProps={{
+                                    style: {
+                                        fontSize: '0.875rem',
+                                        fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                                    },
+                                }}
+                            >
+                                {String(children).replace(/\n$/, '')}
+                            </SyntaxHighlighter>
+                        </div>
                     )
-                  },
-                  h1: ({ children }) => <h1 className="text-3xl font-bold mt-8 mb-4 first:mt-0">{children}</h1>,
-                  h2: ({ children }) => <h2 className="text-2xl font-semibold mt-8 mb-4">{children}</h2>,
-                  h3: ({ children }) => <h3 className="text-xl font-medium mt-6 mb-3">{children}</h3>,
-                  h4: ({ children }) => <h4 className="text-lg font-medium mt-4 mb-2">{children}</h4>,
-                  p: ({ children }) => <p className="mb-4 leading-7 text-gray-700 dark:text-gray-300">{children}</p>,
-                  ul: ({ children }) => <ul className="mb-4 space-y-2 list-disc list-inside">{children}</ul>,
-                  ol: ({ children }) => <ol className="mb-4 space-y-2 list-decimal list-inside">{children}</ol>,
-                  li: ({ children }) => <li className="leading-7">{children}</li>,
-                  blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">
-                      {children}
+                },
+                h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-3 first:mt-0">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-xl font-semibold mt-6 mb-3">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-lg font-medium mt-4 mb-2">{children}</h3>,
+                h4: ({ children }) => <h4 className="text-base font-medium mt-3 mb-2">{children}</h4>,
+                p: ({ children }) => <p className="mb-3 leading-6 text-gray-700 dark:text-gray-300">{children}</p>,
+                ul: ({ children }) => <ul className="mb-4 pl-6 space-y-2 list-disc list-outside">{children}</ul>,
+                ol: ({ children }) => <ol className="mb-4 pl-6 space-y-2 list-decimal list-outside">{children}</ol>,
+                li: ({ children }) => <li className="leading-6 text-gray-700 dark:text-gray-300">{children}</li>,
+                blockquote: ({ children }) => (
+                    <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-3 italic text-gray-600 dark:text-gray-400 mb-3">
+                        {children}
                     </blockquote>
-                  ),
-                  strong: ({ children }) => <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>,
-                  em: ({ children }) => <em className="italic">{children}</em>,
-                  hr: () => <hr className="my-8 border-gray-200 dark:border-gray-700" />,
+                ),
+                strong: ({ children }) => <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>,
+                em: ({ children }) => <em className="italic">{children}</em>,
+                hr: () => <hr className="my-6 border-gray-200 dark:border-gray-700" />,
                 }}
               >
                 {page.content}

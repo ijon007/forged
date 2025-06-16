@@ -215,7 +215,7 @@ export async function getCourse(courseId: string): Promise<Course | null> {
   }
 }
 
-export async function getCourseWithUser(courseId: string): Promise<(Course & { userName: string }) | null> {
+export async function getCourseWithUser(courseId: string): Promise<(Course & { userName: string })> {
   try {
     const result = await db
       .select({
@@ -241,15 +241,14 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
       .limit(1)
 
     const courseData = result[0]
-    if (!courseData) return null
+    if (!courseData) throw new Error('Course not found')
 
     return {
       ...courseData,
       userName: courseData.userName || 'Anonymous'
     }
   } catch (error) {
-    console.error('Error getting course with user:', error)
-    return null
+    throw new Error('Failed to get course with user: ' + error)
   }
 }
 
