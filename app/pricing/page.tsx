@@ -20,7 +20,7 @@ export default async function PricingPage() {
             Start creating unlimited knowledge pages and keep 100% of your earnings
           </p>
         </div>
-        <PlanSelection userId={session.user.id} />
+        <PlanSelection />
       </div>
     </div>
   )

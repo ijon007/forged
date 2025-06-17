@@ -1,32 +1,27 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { authClient } from "@/lib/auth-client"
 import { Check } from "lucide-react"
 import { useState } from "react"
 
-interface PlanSelectionProps {
-  userId: string
-}
-
-export function PlanSelection({ userId }: PlanSelectionProps) {
+export function PlanSelection() {
   const [isLoading, setIsLoading] = useState<string | null>(null)
 
-  const handlePlanSelect = async (plan: 'monthly' | 'yearly') => {
-    setIsLoading(plan)
-    
-    // Your checkout URLs
-    const monthlyCheckoutUrl = process.env.NEXT_PUBLIC_POLAR_MONTHLY_CHECKOUT!
-    const yearlyCheckoutUrl = process.env.NEXT_PUBLIC_POLAR_YEARLY_CHECKOUT!
-    
-    const checkoutUrl = plan === 'monthly' ? monthlyCheckoutUrl : yearlyCheckoutUrl
-    
-    // Add metadata to track the user and plan
-    const urlWithParams = new URL(checkoutUrl)
-    urlWithParams.searchParams.set('user_id', userId)
-    urlWithParams.searchParams.set('plan', plan)
-    
-    // Redirect to Polar checkout
-    window.location.href = urlWithParams.toString()
+  const buyMonthlyPlan = async () => {
+    setIsLoading('monthly')
+    await authClient.checkout({
+      products: ["4106f4b6-7fe4-4878-a585-e841be593ea1"],
+      slug: "Knowledgesmith",
+    });
+  }
+
+  const buyYearlyPlan = async () => {
+    setIsLoading('yearly')
+    await authClient.checkout({
+      products: ["3196f5a1-28d3-4c44-9758-bb82bd1e38e9"],
+      slug: "Knowledgesmith-Yearly",
+    });
   }
 
   return (
@@ -49,7 +44,7 @@ export function PlanSelection({ userId }: PlanSelectionProps) {
               </div>
 
               <Button 
-                onClick={() => handlePlanSelect('monthly')}
+                onClick={() => buyMonthlyPlan()}
                 disabled={isLoading !== null}
                 className="mb-8 py-6 w-full bg-black text-white hover:bg-gray-800 transition-all hover:scale-105 hover:shadow-lg rounded-2xl font-semibold"
               >
@@ -103,7 +98,7 @@ export function PlanSelection({ userId }: PlanSelectionProps) {
               </div>
 
               <Button 
-                onClick={() => handlePlanSelect('yearly')}
+                onClick={() => buyYearlyPlan()}
                 disabled={isLoading !== null}
                 className="mb-8 py-6 w-full bg-black text-white hover:bg-gray-800 transition-all hover:scale-105 hover:shadow-lg rounded-2xl font-semibold"
               >

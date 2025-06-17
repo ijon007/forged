@@ -45,14 +45,6 @@ async function DashboardPage() {
         redirect("/login")
     }
 
-    // Use database subscription check instead of Polar client state
-    const hasSubscription = await hasActiveSubscription(session.user.id)
-    
-    if (!hasSubscription) {
-        // Redirect to pricing page if no active subscription
-        redirect("/pricing")
-    }
-
     const userCourses = await getUserCourses()
     const { coursesWithRealData, ...stats } = calculateStats(userCourses)
 
