@@ -53,11 +53,7 @@ export const auth = betterAuth({
                             slug: "knowledgesmith-yearly",
                         },
                     ],
-                    successUrl:
-                    process.env.NODE_ENV === "production"
-                    ? `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/success?checkout_id={CHECKOUT_ID}`
-                    : getURL("/dashboard/success?checkout_id={CHECKOUT_ID}"),
-                    authenticatedUsersOnly: true,
+                    successUrl: "https://knowledgesmith.vercel.app/dashboard/success?checkout_id={CHECKOUT_ID}",
                 }),
                 portal(),
                 usage(),
