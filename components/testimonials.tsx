@@ -128,39 +128,6 @@ const TestimonialBlogCard = ({ testimonial }: { testimonial: typeof testimonials
               <span>{testimonial.previewData.readTime}</span>
             </div>
           </div>
-          
-          <Separator />
-
-          <div className="prose prose-gray max-w-none prose-sm">
-            <ReactMarkdown 
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ className, children, ...props }: any) {
-                  const isInline = !className?.includes('language-')
-                  return isInline ? (
-                    <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono" {...props}>
-                      {children}
-                    </code>
-                  ) : (
-                    <pre className="bg-gray-100 p-3 rounded-lg overflow-x-auto">
-                      <code className="text-xs font-mono overflow-hidden" {...props}>
-                        {children}
-                      </code>
-                    </pre>
-                  )
-                },
-                h1: ({ children }) => <h1 className="text-base font-bold mt-3 mb-2 first:mt-0">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-sm font-semibold mt-3 mb-2">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-sm font-medium mt-2 mb-1">{children}</h3>,
-                p: ({ children }) => <p className="mb-2 leading-5 text-gray-700 text-sm">{children}</p>,
-                ul: ({ children }) => <ul className="mb-2 space-y-0.5 list-disc list-inside text-sm">{children}</ul>,
-                li: ({ children }) => <li className="leading-5 text-sm">{children}</li>,
-                strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
-              }}
-            >
-              {testimonial.previewData.generatedContent}
-            </ReactMarkdown>
-          </div>
         </div>
       </div>
     </div>

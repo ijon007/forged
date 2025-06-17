@@ -1,101 +1,10 @@
-'use client'
 
-import { Suspense, useEffect, useState } from 'react'
-import { CheckCircle, ArrowRight, Loader2 } from 'lucide-react'
+import { CheckCircle, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { authClient } from '@/lib/auth-client'
 
-function SuccessContent() {
-  const [isProcessing, setIsProcessing] = useState(true)
-  const [subscriptionReady, setSubscriptionReady] = useState(false)
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const checkoutId = searchParams.get('checkout_id')
-
-  useEffect(() => {
-    let pollInterval: NodeJS.Timeout
-    let attempts = 0
-    const maxAttempts = 30 // 30 seconds max wait
-
-    const checkSubscriptionStatus = async () => {
-      try {
-        attempts++
-        
-        // Check if subscription is active in our database
-        const response = await fetch('/api/check-subscription', {
-          credentials: 'include'
-        })
-        
-        if (response.ok) {
-          const { hasActiveSubscription } = await response.json()
-          
-          if (hasActiveSubscription) {
-            setSubscriptionReady(true)
-            setIsProcessing(false)
-            clearInterval(pollInterval)
-            return
-          }
-        }
-
-        // If we've exceeded max attempts, stop polling and show ready state
-        if (attempts >= maxAttempts) {
-          setSubscriptionReady(true)
-          setIsProcessing(false)
-          clearInterval(pollInterval)
-        }
-      } catch (error) {
-        console.error('Error checking subscription status:', error)
-        
-        // If we've exceeded max attempts, stop polling and show ready state
-        if (attempts >= maxAttempts) {
-          setSubscriptionReady(true)
-          setIsProcessing(false)
-          clearInterval(pollInterval)
-        }
-      }
-    }
-
-    // Start polling immediately
-    checkSubscriptionStatus()
-    
-    // Then poll every second
-    pollInterval = setInterval(checkSubscriptionStatus, 1000)
-
-    return () => {
-      if (pollInterval) {
-        clearInterval(pollInterval)
-      }
-    }
-  }, [checkoutId])
-
-  if (isProcessing) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-              <Loader2 className="h-6 w-6 text-blue-600 animate-spin" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
-              Processing Payment...
-            </CardTitle>
-            <CardDescription>
-              We're setting up your subscription. This usually takes just a few seconds.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center text-sm text-gray-500">
-              Please don't close this page
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
-
+export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -131,11 +40,3 @@ function SuccessContent() {
     </div>
   )
 }
-
-export default function SuccessPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <SuccessContent />
-    </Suspense>
-  )
-} 

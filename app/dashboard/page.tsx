@@ -1,11 +1,10 @@
-import { getSession } from "@/actions/auth-actions"
+import { getSession, hasActiveSubscription } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { MoneyStats } from "@/components/dashboard/money-stats"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
-import { hasActiveSubscription } from "@/lib/subscription"
 import { type Course } from "@/db/schemas/course-schema"
 
 interface CourseWithRealData extends Course {
@@ -17,14 +16,13 @@ function calculateStats(courses: Course[]) {
   const totalRevenue = courses.reduce((sum, course) => sum + (course.price || 0), 0) / 100;
   const totalSales = courses.length;
   
-  // Mock monthly data (you'd calculate this from actual data)
   const monthlyRevenue = totalRevenue * 0.3;
   const revenueGrowth = 12.5;
   const salesGrowth = 8.2;
   
   const coursesWithRealData: CourseWithRealData[] = courses.map(course => ({
     ...course,
-    sales: Math.floor(Math.random() * 10), // Mock sales data
+    sales: Math.floor(Math.random() * 10),
     priceInDollars: (course.price || 0) / 100
   }));
 
@@ -40,9 +38,13 @@ function calculateStats(courses: Course[]) {
 
 async function DashboardPage() {
     const session = await getSession()
-
     if (!session) {
         redirect("/login")
+    }
+
+    const hasSubscription = await hasActiveSubscription()
+    if (!hasSubscription) {
+        redirect("/pricing")
     }
 
     const userCourses = await getUserCourses()

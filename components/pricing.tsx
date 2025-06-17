@@ -3,16 +3,10 @@
 import { Button } from "@/components/ui/button"
 import { PencilLine, Check } from "lucide-react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function Pricing() {
   const [isYearly, setIsYearly] = useState(false)
-  const router = useRouter()
-
-  const handleStartCreating = () => {
-    // Always redirect to login from landing page
-    router.push('/login')
-  }
 
   return (
     <section className="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
@@ -91,10 +85,16 @@ export function Pricing() {
                   )}
                 </div>
 
-                <Button className="mb-8 py-6 w-full bg-black text-white hover:bg-gray-800 transition-all hover:scale-105 hover:shadow-lg rounded-2xl font-semibold">
-                  <PencilLine className="mr-2 h-4 w-4" />
-                  Start Creating
-                </Button>
+                <Link href="/login" className="mb-5">
+                  <Button
+                    size="lg"
+                    className="group relative bg-black text-white hover:bg-gray-800 rounded-2xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl w-full py-6 px-10 sm:w-auto"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <PencilLine className="relative ml-2 h-4 w-4 transition-transform" />
+                    <span className="relative">Start Creating</span>
+                  </Button>
+                </Link>
 
                 <div className="space-y-4 w-full">
                   <div className="flex items-center text-gray-700">
