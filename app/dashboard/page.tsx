@@ -1,4 +1,4 @@
-import { getSession, hasActiveSubscription } from "@/actions/auth-actions"
+import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { MoneyStats } from "@/components/dashboard/money-stats"
@@ -6,6 +6,7 @@ import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
 import { type Course } from "@/db/schemas/course-schema"
+import { authClient } from "@/lib/auth-client"
 
 interface CourseWithRealData extends Course {
   sales: number
@@ -42,8 +43,8 @@ async function DashboardPage() {
         redirect("/login")
     }
 
-    const hasSubscription = await hasActiveSubscription()
-    if (!hasSubscription) {
+    const { data: customerState } = await authClient.customer.state();
+    if(customerState?.activeSubscriptions.length === 0) {
         redirect("/pricing")
     }
 

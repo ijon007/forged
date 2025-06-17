@@ -1,12 +1,17 @@
 import { getSession } from "@/actions/auth-actions"
 import { PlanSelection } from "@/components/plan-selection"
+import { authClient } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
 
 export default async function PricingPage() {
   const session = await getSession()
-
   if (!session) {
     redirect("/login")
+  }
+
+  const { data: customerState } = await authClient.customer.state();
+  if(customerState?.activeSubscriptions) {
+    redirect("/dashboard")
   }
 
   return (
