@@ -12,9 +12,6 @@ import { account, session, user, verification } from "@/db/schemas/auth-schema";
 import { polar, checkout, portal, webhooks, usage } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
 
-// Utils
-import { getURL } from "@/utils/helpers";
-
 const polarClient = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN,
     server: 'sandbox'
