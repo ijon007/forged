@@ -42,23 +42,26 @@ export const auth = betterAuth({
             client: polarClient,
             createCustomerOnSignUp: true,
             use: [
-              checkout({
-                products: [
-                  {
-                    productId: process.env.POLAR_MONTHLY_PRODUCT_ID!,
-                    slug: "knowledgesmith-monthly",
-                  },
-                  {
-                    productId: process.env.POLAR_YEARLY_PRODUCT_ID!,
-                    slug: "knowledgesmith-yearly",
-                  },
-                ],
-                successUrl: getURL("/dashboard/success?checkout_id={CHECKOUT_ID}"),
-                authenticatedUsersOnly: true,
-              }),
-              portal(),
-              usage(),
-              webhooks({
+                checkout({
+                    products: [
+                        {
+                            productId: process.env.POLAR_MONTHLY_PRODUCT_ID!,
+                            slug: "knowledgesmith-monthly",
+                        },
+                        {
+                            productId: process.env.POLAR_YEARLY_PRODUCT_ID!,
+                            slug: "knowledgesmith-yearly",
+                        },
+                    ],
+                    successUrl:
+                    process.env.NODE_ENV === "production"
+                    ? `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/success?checkout_id={CHECKOUT_ID}`
+                    : getURL("/dashboard/success?checkout_id={CHECKOUT_ID}"),
+                    authenticatedUsersOnly: true,
+                }),
+                portal(),
+                usage(),
+                webhooks({
                     secret: process.env.POLAR_WEBHOOK_SECRET!,
         
                     onSubscriptionCreated: async (payload) => {
