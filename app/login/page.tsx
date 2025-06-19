@@ -4,20 +4,18 @@ import Link from "next/link"
 import { GoogleLoginButton } from "@/components/login/login-google"
 import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
-import { hasActiveSubscription } from "@/lib/subscription"
+import { authClient } from "@/lib/auth-client"
 
 export default async function LoginPage() {
 
   const session = await getSession()
 
   if (session) {
-    // Check if user has subscription, if yes go to dashboard, if no go to pricing
-    const hasSubscription = await hasActiveSubscription(session.user.id)
-    if (hasSubscription) {
-      redirect("/dashboard")
-    } else {
-      redirect("/pricing")
+    const { data: customerState } = await authClient.customer.state();
+    if(customerState?.activeSubscriptions.length === 0) {
+        redirect("/pricing")
     }
+    redirect("/dashboard")
   }
 
   return (

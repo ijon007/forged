@@ -43,6 +43,13 @@
       "when": 1750065788706,
       "tag": "0005_nasty_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1750330187327,
+      "tag": "0006_ordinary_mockingbird",
+      "breakpoints": true
     }
   ]
 }

@@ -14,6 +14,9 @@ export const course = pgTable("course", {
   price: integer('price').notNull(), // Store price in cents to avoid floating point issues
   imageUrl: text('image_url'), // URL for blog post hero image
   published: boolean('published').notNull().default(false),
+  // Polar product fields
+  polarProductId: text('polar_product_id'), // Polar product ID
+  polarProductSlug: text('polar_product_slug'), // Polar product slug
   userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').$defaultFn(() => new Date()).notNull(),
   updatedAt: timestamp('updated_at').$defaultFn(() => new Date()).notNull()

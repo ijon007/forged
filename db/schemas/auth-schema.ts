@@ -6,12 +6,18 @@ export const user = pgTable("user", {
  email: text('email').notNull().unique(),
  emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
  image: text('image'),
- // Subscription fields
+ // Subscription fields (customer in our platform)
  polarCustomerId: text('polar_customer_id'),
  subscriptionId: text('subscription_id'),
  subscriptionStatus: text('subscription_status'),
  planType: text('plan_type'), // "monthly" or "yearly"
  subscriptionEndsAt: timestamp('subscription_ends_at'),
+ // Polar OAuth fields (user's own Polar account for selling)
+ polarUserId: text('polar_user_id'), // Their Polar user ID
+ polarAccessToken: text('polar_access_token'), // OAuth access token
+ polarRefreshToken: text('polar_refresh_token'), // OAuth refresh token
+ polarTokenExpiresAt: timestamp('polar_token_expires_at'), // Token expiry
+ polarConnectedAt: timestamp('polar_connected_at'), // When they connected
  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull()
 				});

@@ -1,0 +1,91 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { PolarConnectionDialog } from "./polar-connection-dialog";
+import { toast } from "sonner";
+
+interface DashboardClientWrapperProps {
+  children: React.ReactNode;
+  polarStatus: {
+    isConnected: boolean;
+    isTokenExpired?: boolean;
+    connectedAt?: Date | null;
+    needsReconnection?: boolean;
+    error?: string;
+  };
+}
+
+export function DashboardClientWrapper({ 
+  children, 
+  polarStatus 
+}: DashboardClientWrapperProps) {
+  const [showPolarDialog, setShowPolarDialog] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Handle OAuth callback parameters
+    const connected = searchParams.get('connected');
+    const error = searchParams.get('error');
+
+    if (connected === 'true') {
+      toast.success("Successfully connected your Polar account!");
+      // Remove URL parameters without page reload
+      window.history.replaceState({}, '', '/dashboard');
+    }
+
+    if (error) {
+      let errorMessage = "Failed to connect Polar account";
+      switch (error) {
+        case 'oauth_failed':
+          errorMessage = "OAuth authorization failed";
+          break;
+        case 'missing_params':
+          errorMessage = "Missing authorization parameters";
+          break;
+        case 'invalid_state':
+          errorMessage = "Invalid authorization state";
+          break;
+        case 'token_exchange_failed':
+          errorMessage = "Failed to exchange authorization code";
+          break;
+        case 'userinfo_failed':
+          errorMessage = "Failed to get user information from Polar";
+          break;
+        case 'callback_failed':
+          errorMessage = "OAuth callback processing failed";
+          break;
+      }
+      
+      toast.error(errorMessage);
+      // Remove URL parameters without page reload
+      window.history.replaceState({}, '', '/dashboard');
+    }
+
+    // Show connection dialog if user is not connected
+    if (!polarStatus.isConnected && !error) {
+      // Show dialog after a short delay for better UX
+      const timer = setTimeout(() => {
+        setShowPolarDialog(true);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+
+    // Show reconnection notice if token is expired
+    if (polarStatus.needsReconnection) {
+      toast.warning("Your Polar account connection has expired. Please reconnect to continue selling products.");
+    }
+  }, [searchParams, polarStatus]);
+
+  return (
+    <>
+      {children}
+      
+      <PolarConnectionDialog 
+        open={showPolarDialog}
+        onOpenChange={setShowPolarDialog}
+      />
+    </>
+  );
+} 

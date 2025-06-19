@@ -5,8 +5,10 @@ import { MoneyStats } from "@/components/dashboard/money-stats"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
+import { getPolarConnectionStatus } from "@/actions/polar-actions"
 import { type Course } from "@/db/schemas/course-schema"
 import { authClient } from "@/lib/auth-client"
+import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper"
 
 interface CourseWithRealData extends Course {
   sales: number
@@ -48,6 +50,9 @@ async function DashboardPage() {
         redirect("/pricing")
     }
 
+    // Check Polar connection status
+    const polarStatus = await getPolarConnectionStatus();
+
     const userCourses = await getUserCourses()
     const { coursesWithRealData, ...stats } = calculateStats(userCourses)
 
@@ -64,32 +69,34 @@ async function DashboardPage() {
     }))
 
     return (
-        <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-10">
-            <div className="mt-10">
-                <DashboardHeader />
-            </div>
+        <DashboardClientWrapper polarStatus={polarStatus}>
+            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-10">
+                <div className="mt-10">
+                    <DashboardHeader />
+                </div>
 
-            <MoneyStats {...stats} />
+                <MoneyStats {...stats} />
 
-            <div className="space-y-6">
-                {pageCards.length > 0 ? (
-                    <>
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                                Your Pages ({pageCards.length})
-                            </h2>
-                        </div>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {pageCards.map((page) => (
-                                <PageCard key={page.id} {...page} />
-                            ))}
-                        </div>
-                    </>
-                ) : (
-                    <EmptyState />
-                )}
+                <div className="space-y-6">
+                    {pageCards.length > 0 ? (
+                        <>
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                                    Your Pages ({pageCards.length})
+                                </h2>
+                            </div>
+                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                {pageCards.map((page) => (
+                                    <PageCard key={page.id} {...page} />
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <EmptyState />
+                    )}
+                </div>
             </div>
-        </div>
+        </DashboardClientWrapper>
     )
 }
 
