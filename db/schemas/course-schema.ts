@@ -22,5 +22,17 @@ export const course = pgTable("course", {
   updatedAt: timestamp('updated_at').$defaultFn(() => new Date()).notNull()
 });
 
+// Simple table to track course purchases
+export const coursePurchase = pgTable("course_purchase", {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  courseId: text('course_id').notNull().references(() => course.id, { onDelete: 'cascade' }),
+  polarOrderId: text('polar_order_id'), // Track the Polar order ID
+  purchaseDate: timestamp('purchase_date').$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp('created_at').$defaultFn(() => new Date()).notNull(),
+});
+
+export type NewCourse = typeof course.$inferInsert;
 export type Course = typeof course.$inferSelect;
-export type NewCourse = typeof course.$inferInsert; 
+export type NewCoursePurchase = typeof coursePurchase.$inferInsert;
+export type CoursePurchase = typeof coursePurchase.$inferSelect; 

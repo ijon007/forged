@@ -1,11 +1,12 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { course, type NewCourse, type Course } from "@/db/schemas/course-schema"
-import { eq, desc } from "drizzle-orm"
+import { course, coursePurchase, type NewCourse, type Course } from "@/db/schemas/course-schema"
+import { eq, desc, and } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { user } from "@/db/schemas/auth-schema"
+import { createPolarProduct, createCheckoutLink } from "./polar-actions"
 
 export interface SaveCourseParams {
   id: string
@@ -43,6 +44,26 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
     // Convert price to cents for storage
     const priceInCents = Math.round(courseData.price * 100)
 
+    // Try to create Polar product first
+    let polarProductId: string | undefined
+    let polarProductSlug: string | undefined
+
+    try {
+      const polarResult = await createPolarProduct({
+        name: courseData.title,
+        description: courseData.description,
+        price: priceInCents
+      })
+
+      if (polarResult.success && polarResult.data) {
+        polarProductId = polarResult.data.productId
+        polarProductSlug = courseData.slug
+      }
+    } catch (error) {
+      console.error('Error creating Polar product:', error)
+      // Continue with course creation even if Polar product creation fails
+    }
+
     const newCourse: NewCourse = {
       id: courseData.id,
       slug: courseData.slug,
@@ -57,13 +78,15 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
       imageUrl: courseData.imageUrl,
       published: false,
       userId: session.user.id,
+      polarProductId: polarProductId,
+      polarProductSlug: polarProductSlug,
     }
 
     await db.insert(course).values(newCourse)
 
     return { success: true }
   } catch (error) {
-    console.error('Error saving course:', error)
+    console.error('❌ Error saving course:', error)
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Failed to save course' 
@@ -339,5 +362,126 @@ export async function getAllPublishedCourses(): Promise<{ slug: string; createdA
   } catch (error) {
     console.error('Error getting published courses:', error)
     return []
+  }
+}
+
+export async function getCourseCheckoutUrl(courseId: string): Promise<{ success: boolean; checkoutUrl?: string; error?: string }> {
+  try {
+    // Get course with polar product info
+    const courseData = await db.select({
+      polarProductId: course.polarProductId,
+      title: course.title,
+      price: course.price,
+      slug: course.slug,
+    })
+    .from(course)
+    .where(eq(course.id, courseId))
+    .limit(1);
+
+    if (!courseData.length) {
+      return { success: false, error: 'Course not found' };
+    }
+
+    const courseInfo = courseData[0];
+
+    if (!courseInfo.polarProductId) {
+      return { success: false, error: 'No Polar product associated with this course' };
+    }
+
+    // Create checkout link using the Polar product ID with course page as success URL
+    const successUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${courseInfo.slug}`;
+    const checkoutResult = await createCheckoutLink(courseInfo.polarProductId, successUrl);
+
+    if (!checkoutResult.success) {
+      return { success: false, error: checkoutResult.error };
+    }
+
+    return {
+      success: true,
+      checkoutUrl: checkoutResult.data?.checkoutUrl
+    };
+
+  } catch (error) {
+    console.error('Error getting checkout URL:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get checkout URL'
+    };
+  }
+}
+
+// Simple function to check if user purchased a course
+export async function hasUserPurchasedCourse(courseId: string, userId?: string): Promise<boolean> {
+  try {
+    if (!userId) return false;
+    
+    // First check our database
+    const purchase = await db
+      .select()
+      .from(coursePurchase)
+      .where(and(
+        eq(coursePurchase.courseId, courseId),
+        eq(coursePurchase.userId, userId)
+      ))
+      .limit(1);
+    
+    return purchase.length > 0;
+  } catch (error) {
+    console.error('Error checking course purchase:', error);
+    return false;
+  }
+}
+
+// Backup function: Check purchase status via Polar API (if webhooks fail)
+export async function checkPurchaseViaPolarAPI(courseId: string, userId?: string): Promise<boolean> {
+  try {
+    if (!userId) return false;
+    
+    // Get user's polar customer ID
+    const userData = await db.select({
+      polarCustomerId: user.polarCustomerId,
+    })
+    .from(user)
+    .where(eq(user.id, userId))
+    .limit(1);
+    
+    if (!userData.length || !userData[0].polarCustomerId) {
+      return false;
+    }
+    
+    // Get course's polar product ID
+    const courseData = await db.select({
+      polarProductId: course.polarProductId,
+    })
+    .from(course)
+    .where(eq(course.id, courseId))
+    .limit(1);
+    
+    if (!courseData.length || !courseData[0].polarProductId) {
+      return false;
+    }
+    
+    // Query Polar API to check if customer has purchased this product
+    // This is a backup method if webhooks aren't working
+    try {
+      const response = await fetch(`https://sandbox-api.polar.sh/v1/orders?customer_id=${userData[0].polarCustomerId}&product_id=${courseData[0].polarProductId}`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.POLAR_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        const orders = await response.json();
+        return orders.items && orders.items.length > 0;
+      }
+    } catch (apiError) {
+      console.error('Error checking Polar API:', apiError);
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking purchase via Polar API:', error);
+    return false;
   }
 } 

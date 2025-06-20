@@ -65,7 +65,8 @@ async function DashboardPage() {
         views: 0,
         sales: course.sales,
         slug: course.id,
-        imageUrl: course.imageUrl || undefined
+        imageUrl: course.imageUrl || undefined,
+        polarProductId: course.polarProductId || undefined
     }))
 
     return (

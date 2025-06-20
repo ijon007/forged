@@ -6,6 +6,7 @@ import { nextCookies } from "better-auth/next-js";
 // Drizzle
 import { db } from "../db/drizzle";
 import { account, session, user, verification } from "@/db/schemas/auth-schema";
+import { course, coursePurchase } from "@/db/schemas/course-schema";
 import { eq } from "drizzle-orm";
 
 // Polar
@@ -54,6 +55,49 @@ export const auth = betterAuth({
                 }),
                 webhooks({
                     secret: process.env.POLAR_WEBHOOK_SECRET!,
+                    
+                    // Handle course purchases - fixed event name
+                    onOrderPaid: async (payload) => {
+                        console.log("Order paid", payload);
+                        
+                        const order = payload.data;
+                        const customerId = order.customerId;
+                        
+                        // Find the user by polar customer ID
+                        const userData = await db.select()
+                            .from(user)
+                            .where(eq(user.polarCustomerId, customerId))
+                            .limit(1);
+                        
+                        if (!userData.length) {
+                            console.error("User not found for polar customer:", customerId);
+                            return;
+                        }
+                        
+                        const userId = userData[0].id;
+                        
+                        // Find the course by polar product ID
+                        if (order.productId) {
+                            const courseData = await db.select()
+                                .from(course)
+                                .where(eq(course.polarProductId, order.productId))
+                                .limit(1);
+                            
+                            if (courseData.length > 0) {
+                                const courseId = courseData[0].id;
+                                
+                                // Record the purchase
+                                await db.insert(coursePurchase).values({
+                                    id: `purchase_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                                    userId: userId,
+                                    courseId: courseId,
+                                    polarOrderId: order.id,
+                                });
+                                
+                                console.log(`Course purchase recorded: User ${userId} bought course ${courseId}`);
+                            }
+                        }
+                    },
                     
                     onSubscriptionActive: async (payload) => {
                         console.log("Subscription active", payload);

@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation"
-import { getCourseWithUser } from "@/actions/course-db-actions"
+import { getCourseWithUser, hasUserPurchasedCourse, checkPurchaseViaPolarAPI } from "@/actions/course-db-actions"
 import { Metadata } from 'next'
 import PublishedContent from "@/components/slug/content"
 import CourseHeader from "@/components/slug/course-header"
 import CourseSidebar from "@/components/slug/course-sidebar"
 import CourseJsonLd from "@/components/slug/course-json-ld"
 import PoweredByBadge from "@/components/slug/powered-by-badge"
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
 
 // ISR: Revalidate every hour (3600 seconds)
 export const revalidate = 3600
@@ -112,12 +114,28 @@ export default async function BlogPage({
     notFound()
   }
   
+  // Check if current user has purchased this course
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  
+  let isPurchased = false;
+  if (session?.user?.id) {
+    // First check our database (fast)
+    isPurchased = await hasUserPurchasedCourse(dbCourse.id, session.user.id);
+    
+    // If not found in database, check Polar API directly (backup)
+    if (!isPurchased) {
+      isPurchased = await checkPurchaseViaPolarAPI(dbCourse.id, session.user.id);
+    }
+  }
+  
   const page = {
     id: dbCourse.id,
     title: dbCourse.title,
     description: dbCourse.description,
     price: dbCourse.price / 100,
-    isPurchased: false,
+    isPurchased: isPurchased,
     author: dbCourse.userName,
     readTime: `${dbCourse.estimatedReadTime} min read`,
     imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
@@ -164,6 +182,7 @@ export default async function BlogPage({
               keyPoints={page.keyPoints}
               tags={page.tags}
               isPurchased={page.isPurchased}
+              courseId={slug}
             />
           </div>
         </div>
