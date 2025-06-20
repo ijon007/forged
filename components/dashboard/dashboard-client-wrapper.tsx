@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { PolarConnectionDialog } from "./polar-connection-dialog";
 import { toast } from "sonner";
 
@@ -22,6 +22,7 @@ export function DashboardClientWrapper({
 }: DashboardClientWrapperProps) {
   const [showPolarDialog, setShowPolarDialog] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     // Handle OAuth callback parameters
@@ -29,9 +30,15 @@ export function DashboardClientWrapper({
     const error = searchParams.get('error');
 
     if (connected === 'true') {
-      toast.success("Successfully connected your Polar account!");
-      // Remove URL parameters without page reload
+      toast.success("🎉 Polar account connected successfully! You can now create and sell products.", {
+        duration: 5000,
+      });
+      // Remove URL parameters and refresh to show updated status
       window.history.replaceState({}, '', '/dashboard');
+      // Refresh the page to show updated connection status
+      setTimeout(() => {
+        router.refresh();
+      }, 1000);
     }
 
     if (error) {
@@ -62,8 +69,8 @@ export function DashboardClientWrapper({
       window.history.replaceState({}, '', '/dashboard');
     }
 
-    // Show connection dialog if user is not connected
-    if (!polarStatus.isConnected && !error) {
+    // Show connection dialog if user is not connected (and no error occurred)
+    if (!polarStatus.isConnected && !error && !connected) {
       // Show dialog after a short delay for better UX
       const timer = setTimeout(() => {
         setShowPolarDialog(true);
@@ -76,7 +83,7 @@ export function DashboardClientWrapper({
     if (polarStatus.needsReconnection) {
       toast.warning("Your Polar account connection has expired. Please reconnect to continue selling products.");
     }
-  }, [searchParams, polarStatus]);
+  }, [searchParams, polarStatus, router]);
 
   return (
     <>

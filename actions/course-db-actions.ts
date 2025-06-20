@@ -233,6 +233,8 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
         price: course.price,
         imageUrl: course.imageUrl,
         published: course.published,
+        polarProductId: course.polarProductId,
+        polarProductSlug: course.polarProductSlug,
         userId: course.userId,
         createdAt: course.createdAt,
         updatedAt: course.updatedAt,

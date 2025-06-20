@@ -38,13 +38,14 @@ export function PolarConnectionDialog({ open, onOpenChange }: PolarConnectionDia
             <Zap className="h-5 w-5 text-blue-500" />
             Connect Your Polar Account
           </DialogTitle>
-          <DialogDescription className="text-base space-y-4">
-            <p>
-              To start monetizing your generated content, you'll need to connect your Polar account. 
-              This allows you to create and sell products directly through your blog posts.
-            </p>
-            
-            <div className="space-y-3">
+          <DialogDescription asChild className="text-base space-y-4">
+            <div>
+              <p>
+                To start monetizing your generated content, you'll need to connect your Polar account. 
+                This allows you to create and sell products directly through your blog posts.
+              </p>
+              
+              <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <DollarSign className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div>
@@ -74,6 +75,7 @@ export function PolarConnectionDialog({ open, onOpenChange }: PolarConnectionDia
                   </p>
                 </div>
               </div>
+            </div>
             </div>
           </DialogDescription>
         </DialogHeader>
