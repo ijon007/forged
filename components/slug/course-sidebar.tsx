@@ -9,8 +9,6 @@ import { useState } from "react"
 import { toast } from "sonner"
 
 interface CourseSidebarProps {
-  author: string
-  readTime: string
   price: number
   keyPoints?: string[]
   tags?: string[]
@@ -18,7 +16,7 @@ interface CourseSidebarProps {
   courseId: string
 }
 
-const CourseSidebar = ({ author, readTime, price, keyPoints, tags, isPurchased, courseId }: CourseSidebarProps) => {
+const CourseSidebar = ({ price, keyPoints, tags, isPurchased, courseId }: CourseSidebarProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePurchase = async () => {
@@ -48,41 +46,12 @@ const CourseSidebar = ({ author, readTime, price, keyPoints, tags, isPurchased, 
   }
 
   const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: `Check out this course by ${author}`,
-        url: window.location.href
-      })
-    } else {
-      navigator.clipboard.writeText(window.location.href)
-      toast.success("Course link copied to clipboard!")
-    }
+    navigator.clipboard.writeText(window.location.href)
+    toast.success("Course link copied to clipboard!")
   }
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>About this article</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Author</span>
-            <span className="font-medium">{author}</span>
-          </div>
-          <Separator />
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Read time</span>
-            <span className="font-medium">{readTime}</span>
-          </div>
-          <Separator />
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Price</span>
-            <span className="font-medium">${price}</span>
-          </div>
-        </CardContent>
-      </Card>
-
       {keyPoints && keyPoints.length > 0 && (
         <Card>
           <CardHeader>

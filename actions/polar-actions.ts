@@ -275,6 +275,9 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
     const checkoutResponse = await userPolarClient.checkouts.create({
       products: [productId],
       successUrl: successUrl,
+      allowDiscountCodes: true,
+      requireBillingAddress: false,
+      isBusinessCustomer: false,
     });
 
     return {
@@ -287,6 +290,15 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
 
   } catch (error) {
     console.error("Error creating checkout link:", error);
+    
+    // Check if it's a scope error
+    if (error instanceof Error && error.message.includes("insufficient_scope")) {
+      return {
+        success: false,
+        error: "Your Polar account needs to be reconnected with updated permissions. Please disconnect and reconnect your Polar account to enable checkout creation."
+      };
+    }
+    
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to create checkout link"

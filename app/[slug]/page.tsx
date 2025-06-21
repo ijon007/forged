@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { getCourseWithUser, hasUserPurchasedCourse, checkPurchaseViaPolarAPI } from "@/actions/course-db-actions"
+import { getCourseWithUser, hasUserPurchasedCourse } from "@/actions/course-db-actions"
 import { Metadata } from 'next'
 import PublishedContent from "@/components/slug/content"
 import CourseHeader from "@/components/slug/course-header"
@@ -119,16 +119,7 @@ export default async function BlogPage({
     headers: await headers()
   })
   
-  let isPurchased = false;
-  if (session?.user?.id) {
-    // First check our database (fast)
-    isPurchased = await hasUserPurchasedCourse(dbCourse.id, session.user.id);
-    
-    // If not found in database, check Polar API directly (backup)
-    if (!isPurchased) {
-      isPurchased = await checkPurchaseViaPolarAPI(dbCourse.id, session.user.id);
-    }
-  }
+  const isPurchased = await hasUserPurchasedCourse(dbCourse.id, session?.user?.id);
   
   const page = {
     id: dbCourse.id,
@@ -176,8 +167,6 @@ export default async function BlogPage({
             </div>
 
             <CourseSidebar
-              author={page.author}
-              readTime={page.readTime}
               price={page.price}
               keyPoints={page.keyPoints}
               tags={page.tags}

@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { user } from "@/db/schemas/auth-schema"
 import { createPolarProduct, createCheckoutLink } from "./polar-actions"
+import { getURL } from "@/utils/helpers"
 
 export interface SaveCourseParams {
   id: string
@@ -389,7 +390,7 @@ export async function getCourseCheckoutUrl(courseId: string): Promise<{ success:
     }
 
     // Create checkout link using the Polar product ID with course page as success URL
-    const successUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${courseInfo.slug}`;
+    const successUrl = getURL(`/${courseInfo.slug}`);
     const checkoutResult = await createCheckoutLink(courseInfo.polarProductId, successUrl);
 
     if (!checkoutResult.success) {
