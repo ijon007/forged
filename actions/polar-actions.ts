@@ -90,7 +90,7 @@ export async function refreshPolarToken() {
     const refreshToken = userData[0].polarRefreshToken;
 
     // Exchange refresh token for new access token
-    const tokenResponse = await fetch('https://api.polar.sh/v1/oauth2/token', {
+    const tokenResponse = await fetch('https://sandbox-api.polar.sh/v1/oauth2/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

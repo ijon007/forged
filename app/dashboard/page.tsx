@@ -10,34 +10,6 @@ import { type Course } from "@/db/schemas/course-schema"
 import { authClient } from "@/lib/auth-client"
 import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper"
 
-interface CourseWithRealData extends Course {
-  sales: number
-  priceInDollars: number
-}
-
-function calculateStats(courses: Course[]) {
-  const totalRevenue = courses.reduce((sum, course) => sum + (course.price || 0), 0) / 100;
-  const totalSales = courses.length;
-  
-  const monthlyRevenue = totalRevenue * 0.3;
-  const revenueGrowth = 12.5;
-  const salesGrowth = 8.2;
-  
-  const coursesWithRealData: CourseWithRealData[] = courses.map(course => ({
-    ...course,
-    sales: Math.floor(Math.random() * 10),
-    priceInDollars: (course.price || 0) / 100
-  }));
-
-  return {
-    coursesWithRealData,
-    totalRevenue,
-    monthlyRevenue,
-    revenueGrowth,
-    totalSales,
-    salesGrowth
-  };
-}
 
 async function DashboardPage() {
     const session = await getSession()
@@ -54,19 +26,22 @@ async function DashboardPage() {
     const polarStatus = await getPolarConnectionStatus();
 
     const userCourses = await getUserCourses()
-    const { coursesWithRealData, ...stats } = calculateStats(userCourses)
+    const stats = {
+        totalRevenue: 0,
+        monthlyRevenue: 0,
+        revenueGrowth: 0,
+        totalSales: 0,
+        salesGrowth: 0
+    }
 
-    const pageCards = coursesWithRealData.map(course => ({
+    const pageCards = userCourses.map(course => ({
         id: course.id,
+        imageUrl: course.imageUrl || "",
         title: course.title,
         description: course.description,
         status: course.published ? "published" as const : "draft" as const,
-        price: course.priceInDollars,
-        views: 0,
-        sales: course.sales,
+        price: (course.price || 0) / 100, // Convert from cents to dollars
         slug: course.id,
-        imageUrl: course.imageUrl || undefined,
-        polarProductId: course.polarProductId || undefined
     }))
 
     return (
