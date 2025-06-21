@@ -192,10 +192,11 @@ export async function createPolarProduct(courseData: {
     const productResponse = await userPolarClient.products.create({
       name: courseData.name,
       description: courseData.description,
-      organizationId: userPolarData.polarUserId!,
-      recurringInterval: "month",
+      organizationId: process.env.POLAR_ORG_ID!,
+      recurringInterval: null,
       prices: [
         {
+          amountType: "fixed",
           priceCurrency: "usd",
           priceAmount: courseData.price,
         }
