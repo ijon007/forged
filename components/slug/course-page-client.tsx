@@ -141,6 +141,7 @@ export default function CoursePage({ page, accessCode, slug, createdAt, updatedA
         onSubmit={handleAccessCodeSubmit}
         isLoading={isLoading}
         error={error}
+        onClose={() => setShowInputDialog(false)}
       />
     </>
   )
