@@ -366,6 +366,8 @@ export async function getAllPublishedCourses(): Promise<{ slug: string; createdA
   }
 }
 
+import { generateToken } from "@/utils/token";
+
 export async function getCourseCheckoutUrl(courseId: string): Promise<{ success: boolean; checkoutUrl?: string; error?: string }> {
   try {
     // Get course with polar product info
@@ -389,8 +391,11 @@ export async function getCourseCheckoutUrl(courseId: string): Promise<{ success:
       return { success: false, error: 'No Polar product associated with this course' };
     }
 
+    // Generate a token
+    const token = await generateToken();
+
     // Create checkout link using the Polar product ID with course page as success URL
-    const successUrl = getURL(`/${courseInfo.slug}`);
+    const successUrl = `${getURL(`/${courseInfo.slug}`)}?token=${token}`;
     const checkoutResult = await createCheckoutLink(courseInfo.polarProductId, successUrl);
 
     if (!checkoutResult.success) {

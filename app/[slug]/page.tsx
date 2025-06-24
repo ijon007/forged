@@ -103,30 +103,26 @@ export async function generateMetadata({
 
 export default async function BlogPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ token?: string }>
 }) {
   const { slug } = await params
-  
+  const { token } = await searchParams
+
   const dbCourse = await getCourseWithUser(slug)
   
   if (!dbCourse.published) {
     notFound()
   }
   
-  // Check if current user has purchased this course
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
-  
-  const isPurchased = await hasUserPurchasedCourse(dbCourse.id, session?.user?.id);
-  
   const page = {
     id: dbCourse.id,
     title: dbCourse.title,
     description: dbCourse.description,
     price: dbCourse.price / 100,
-    isPurchased: isPurchased,
+    isPurchased: false,
     author: dbCourse.userName,
     readTime: `${dbCourse.estimatedReadTime} min read`,
     imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
@@ -134,6 +130,39 @@ export default async function BlogPage({
     tags: dbCourse.tags,
     keyPoints: dbCourse.keyPoints
   }
+
+  if (!token) {
+    return (
+      <>
+        <div className="min-h-screen bg-background">
+          <div className="container mx-auto px-4 py-8 w-11/12 lg:w-10/12">
+            <CourseHeader
+              title={page.title}
+              description={page.description}
+              author={page.author}
+              readTime={page.readTime}
+              imageUrl={page.imageUrl}
+            />
+            <div className="grid lg:grid-cols-4 gap-8">
+              <div className="lg:col-span-3">
+                <PublishedContent page={page} />
+              </div>
+              <CourseSidebar
+                price={page.price}
+                keyPoints={page.keyPoints}
+                tags={page.tags}
+                isPurchased={page.isPurchased}
+                courseId={slug}
+              />
+            </div>
+          </div>
+          <PoweredByBadge />
+        </div>
+      </>
+    );
+  }
+
+  page.isPurchased = true;
 
   return (
     <>
@@ -151,7 +180,7 @@ export default async function BlogPage({
       />
       
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8 max-w-8xl">
+        <div className="container mx-auto px-4 py-8 w-11/12 lg:w-10/12">
           
           <CourseHeader
             title={page.title}
@@ -180,4 +209,4 @@ export default async function BlogPage({
       </div>
     </>
   )
-} 
+}
