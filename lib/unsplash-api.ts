@@ -1,4 +1,3 @@
-// Real Unsplash API integration
 export interface UnsplashImage {
   id: string
   url: string
@@ -36,7 +35,6 @@ interface UnsplashPhoto {
 
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
 
-// Search images from Unsplash API
 export async function searchUnsplashImages(query: string, page = 1, perPage = 12): Promise<UnsplashImage[]> {
   if (!UNSPLASH_ACCESS_KEY) {
     console.warn('Unsplash access key not found, using fallback images')
@@ -74,7 +72,6 @@ export async function searchUnsplashImages(query: string, page = 1, perPage = 12
   }
 }
 
-// Get featured images for a category
 export async function getFeaturedImages(category: string): Promise<UnsplashImage[]> {
   const collectionIds: Record<string, string> = {
     technology: '4602100', // Tech collection
@@ -124,7 +121,6 @@ export async function getFeaturedImages(category: string): Promise<UnsplashImage
   }
 }
 
-// Auto-select best image based on title using real API
 export async function autoSelectImageFromTitle(title: string): Promise<string> {
   const keywords = extractKeywords(title)
   const searchQuery = keywords.slice(0, 3).join(' ') || title
@@ -138,7 +134,6 @@ export async function autoSelectImageFromTitle(title: string): Promise<string> {
   }
 }
 
-// Extract keywords from title for better image matching
 function extractKeywords(title: string): string[] {
   const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'how', 'what', 'when', 'where', 'why'])
   
@@ -150,7 +145,6 @@ function extractKeywords(title: string): string[] {
     .slice(0, 5) // Take first 5 meaningful words
 }
 
-// Fallback images when API is not available
 function getFallbackImages(query: string): UnsplashImage[] {
   const categoryImages: Record<string, string[]> = {
     technology: [

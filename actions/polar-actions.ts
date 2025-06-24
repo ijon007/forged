@@ -1,10 +1,15 @@
 "use server";
 
+/* Actions */
 import { getSession } from "@/actions/auth-actions";
+
+/* DB */
 import { db } from "@/db/drizzle";
 import { user } from "@/db/schemas/auth-schema";
-import { Polar } from "@polar-sh/sdk";
 import { eq } from "drizzle-orm";
+
+/* Polar */
+import { Polar } from "@polar-sh/sdk";
 
 export async function getPolarConnectionStatus() {
   try {
@@ -244,7 +249,6 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
 
     const userPolarData = userData[0];
     
-    // Check if token is expired
     if (userPolarData.polarTokenExpiresAt && new Date() > userPolarData.polarTokenExpiresAt) {
       try {
         await refreshPolarToken();
@@ -271,7 +275,6 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
       server: "sandbox",
     });
 
-    // Create checkout session
     const checkoutResponse = await userPolarClient.checkouts.create({
       products: [productId],
       successUrl: successUrl,

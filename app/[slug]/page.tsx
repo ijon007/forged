@@ -1,18 +1,20 @@
-import { notFound } from "next/navigation"
-import { getCourseWithUser, hasUserPurchasedCourse } from "@/actions/course-db-actions"
+/* Next */
 import { Metadata } from 'next'
+import { notFound } from "next/navigation"
+
+/* Actions */
+import { getCourseWithUser } from "@/actions/course-db-actions"
+
+/* Components */
 import PublishedContent from "@/components/slug/content"
 import CourseHeader from "@/components/slug/course-header"
 import CourseSidebar from "@/components/slug/course-sidebar"
 import CourseJsonLd from "@/components/slug/course-json-ld"
 import PoweredByBadge from "@/components/slug/powered-by-badge"
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
 
 // ISR: Revalidate every hour (3600 seconds)
 export const revalidate = 3600
 
-// Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: {

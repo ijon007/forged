@@ -1,13 +1,16 @@
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Sparkles, Github } from "lucide-react"
+/* Next */
 import Link from "next/link"
-import { GoogleLoginButton } from "@/components/login/login-google"
-import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
+
+/* Components */
+import { ArrowLeft, Sparkles } from "lucide-react"
+import { GoogleLoginButton } from "@/components/login/login-google"
+
+/* Actions */
+import { getSession } from "@/actions/auth-actions"
 import { authClient } from "@/lib/auth-client"
 
 export default async function LoginPage() {
-
   const session = await getSession()
 
   if (session) {
@@ -57,14 +60,6 @@ export default async function LoginPage() {
             {/* Social login */}
             <div className="space-y-3">
               <GoogleLoginButton />
-
-              <Button
-                variant="outline"
-                className="w-full h-12 border-gray-200 hover:bg-gray-50 transition-all hover:scale-105 rounded-xl"
-              >
-                <Github className="h-5 w-5 mr-3" />
-                Continue with GitHub
-              </Button>
             </div>
           </div>
         </div>
