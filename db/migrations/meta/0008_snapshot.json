@@ -1,6 +1,6 @@
 {
-  "id": "06d35b4d-a145-4ac8-a052-2a3042775e0e",
-  "prevId": "b619e48e-7a99-4f5f-b0aa-efa03992f61e",
+  "id": "b7b8bd7a-2786-4017-a746-c2e217a64d36",
+  "prevId": "06d35b4d-a145-4ac8-a052-2a3042775e0e",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -538,6 +538,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "access_code": {
+          "name": "access_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "purchase_date": {
           "name": "purchase_date",
           "type": "timestamp",
@@ -582,11 +588,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "course_purchase_unlock_token_unique": {
-          "name": "course_purchase_unlock_token_unique",
+        "course_purchase_access_code_unique": {
+          "name": "course_purchase_access_code_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "unlock_token"
+            "access_code"
           ]
         }
       },

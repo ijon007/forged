@@ -5,8 +5,8 @@ import { headers } from "next/headers"
 
 /* DB */
 import { db } from "@/db/drizzle"
-import { course, type NewCourse, type Course } from "@/db/schemas/course-schema"
-import { eq, desc } from "drizzle-orm"
+import { course, coursePurchase, type NewCourse, type Course } from "@/db/schemas/course-schema"
+import { eq, desc, and } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { user } from "@/db/schemas/auth-schema"
 
@@ -15,7 +15,7 @@ import { createPolarProduct, createCheckoutLink } from "./polar-actions"
 
 /* Utils */
 import { getURL } from "@/utils/helpers"
-import { generateToken } from "@/utils/token";
+import { generateToken, generateAccessCode } from "@/utils/token";
 
 /* Types */
 export interface SaveCourseParams {
@@ -375,11 +375,8 @@ export async function getAllPublishedCourses(): Promise<{ slug: string; createdA
   }
 }
 
-
-
 export async function getCourseCheckoutUrl(courseId: string): Promise<{ success: boolean; checkoutUrl?: string; error?: string }> {
   try {
-    // Get course with polar product info
     const courseData = await db.select({
       polarProductId: course.polarProductId,
       title: course.title,
@@ -400,9 +397,25 @@ export async function getCourseCheckoutUrl(courseId: string): Promise<{ success:
       return { success: false, error: 'No Polar product associated with this course' };
     }
 
-    const token = generateToken(8);
+    let accessCode = generateAccessCode();
+    let attempts = 0;
+    
+    while (attempts < 5) {
+      try {
+        await db.insert(coursePurchase).values({
+          id: `purchase_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          userId: "anonymous",
+          courseId: courseId,
+          accessCode: accessCode,
+        });
+        break;
+      } catch (error) {
+        accessCode = generateAccessCode();
+        attempts++;
+      }
+    }
 
-    const successUrl = `${getURL(`/${courseInfo.slug}`)}?token=${token}`;
+    const successUrl = `${getURL(`/${courseInfo.slug}`)}?access_code=${accessCode}`;
     const checkoutResult = await createCheckoutLink(courseInfo.polarProductId, successUrl);
 
     if (!checkoutResult.success) {
@@ -420,5 +433,42 @@ export async function getCourseCheckoutUrl(courseId: string): Promise<{ success:
       success: false,
       error: error instanceof Error ? error.message : 'Failed to get checkout URL'
     };
+  }
+}
+
+export async function checkFirstTimeAccess(courseId: string, accessCode: string): Promise<{ success: boolean; isFirstTime?: boolean; error?: string }> {
+  try {
+    const purchase = await db.select()
+      .from(coursePurchase)
+      .where(and(eq(coursePurchase.courseId, courseId), eq(coursePurchase.accessCode, accessCode)))
+      .limit(1);
+
+    if (purchase.length === 0) {
+      return { success: false, error: 'Invalid access code' };
+    }
+
+    const isFirstTime = !purchase[0].polarOrderId;
+    return { success: true, isFirstTime };
+  } catch (error) {
+    console.error('Error checking first time access:', error);
+    return { success: false, error: 'Failed to check access' };
+  }
+}
+
+export async function validateAccessCode(courseId: string, accessCode: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const purchase = await db.select()
+      .from(coursePurchase)
+      .where(and(eq(coursePurchase.courseId, courseId), eq(coursePurchase.accessCode, accessCode)))
+      .limit(1);
+
+    if (purchase.length === 0) {
+      return { success: false, error: 'Invalid access code' };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error validating access code:', error);
+    return { success: false, error: 'Failed to validate access code' };
   }
 }

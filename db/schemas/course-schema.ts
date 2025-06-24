@@ -27,7 +27,9 @@ export const coursePurchase = pgTable("course_purchase", {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
   courseId: text('course_id').notNull().references(() => course.id, { onDelete: 'cascade' }),
-  polarOrderId: text('polar_order_id'), // Track the Polar order ID
+  polarOrderId: text('polar_order_id'),
+  unlockToken: text('unlock_token'),
+  accessCode: text('access_code').unique(),
   purchaseDate: timestamp('purchase_date').$defaultFn(() => new Date()).notNull(),
   createdAt: timestamp('created_at').$defaultFn(() => new Date()).notNull(),
 });
