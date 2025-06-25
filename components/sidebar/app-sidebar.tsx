@@ -2,10 +2,9 @@
 
 import * as React from "react"
 import {
-  BookOpen,
-  PlusCircle,
-  Command,
-  Settings,
+  BarChart3,
+  Eye,
+  LayoutDashboard,
 } from "lucide-react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
@@ -19,59 +18,87 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Image from "next/image"
+import { getUserCourses } from "@/actions/course-db-actions"
+import type { Course } from "@/db/schemas/course-schema"
 
-const data = {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/avatars/user.jpg",
-  },
-  navMain: [
+    name: string
+    email: string
+    image?: string | null
+  }
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const [userCourses, setUserCourses] = React.useState<Course[]>([])
+
+  React.useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const courses = await getUserCourses()
+        setUserCourses(courses)
+      } catch (error) {
+        console.error('Error fetching user courses:', error)
+        setUserCourses([])
+      }
+    }
+    
+    fetchCourses()
+  }, [])
+
+  const previewItems = userCourses.length > 0 
+    ? userCourses.map(course => ({
+        title: course.title,
+        url: `/dashboard/preview/${course.id}`,
+      }))
+    : []
+
+  const navMain = [
     {
-      title: "My Pages",
+      title: "Dashboard",
       url: "/dashboard",
-      icon: BookOpen,
+      icon: LayoutDashboard,
       isActive: true,
     },
     {
-      title: "Create New",
-      url: "/dashboard/create",
-      icon: PlusCircle,
+      title: "Analytics",
+      url: "/dashboard/analytics",
+      icon: BarChart3,
     },
     {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: Settings,
+      title: "Preview",
+      url: "/dashboard/preview",
+      icon: Eye,
+      items: previewItems.length > 0 ? previewItems : undefined,
     },
-  ],
-}
+  ]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="/dashboard">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Command className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Knowledgesmith</span>
-                  <span className="truncate text-xs">Page Generator</span>
-                </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-    </Sidebar>
+        <Sidebar variant="inset" {...props}>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <a href="/dashboard">
+                                <Image src="/forged-black.svg" alt="Forged" width={100} height={100} />
+                            </a>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+            <SidebarContent>
+                <NavMain items={navMain} />
+            </SidebarContent>
+            <SidebarFooter>
+                <NavUser 
+                    user={{
+                        name: user.name,
+                        email: user.email,
+                        avatar: user.image || ""
+                    }} 
+                />
+            </SidebarFooter>
+        </Sidebar>
   )
 }

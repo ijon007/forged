@@ -45,10 +45,8 @@ async function DashboardPage() {
 
     return (
         <DashboardClientWrapper polarStatus={polarStatus}>
-            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-10">
-                <div className="mt-10">
-                    <DashboardHeader polarStatus={polarStatus} />
-                </div>
+            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10">
+                <DashboardHeader />
 
                 <MoneyStats {...stats} />
 
