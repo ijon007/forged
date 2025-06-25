@@ -1,7 +1,8 @@
 import Link from "next/link"
 import {
   BookOpen,
-  Command
+  Command,
+  User
 } from "lucide-react"
 
 import {
@@ -55,6 +56,15 @@ export async function TopNav() {
             >
               <BookOpen className="h-4 w-4" />
               <span className="inline-block">Dashboard</span>
+            </Link>
+            <Link
+              href={"/dashboard/user"}
+              className={cn(
+                "flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground text-black",
+              )}
+            >
+              <User className="h-4 w-4" />
+              <span className="inline-block">Account</span>
             </Link>
           </nav>
         </div>
