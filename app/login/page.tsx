@@ -53,7 +53,7 @@ export default async function LoginPage() {
               </div>
               <h1 className="text-2xl font-bold text-black mb-2">Welcome!</h1>
               <p className="text-gray-600">
-                Sign in to your Knowledgesmith account
+                Sign in to your Forged account
               </p>
             </div>
 
@@ -63,18 +63,6 @@ export default async function LoginPage() {
             </div>
           </div>
         </div>
-
-        {/* Bottom text */}
-        <p className="text-center text-sm text-gray-500 mt-6">
-          By continuing, you agree to our{" "}
-          <a href="#" className="text-black hover:underline">
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a href="#" className="text-black hover:underline">
-            Privacy Policy
-          </a>
-        </p>
       </div>
     </div>
   )

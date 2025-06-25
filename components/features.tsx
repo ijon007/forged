@@ -47,7 +47,7 @@ export function Features() {
 
       <div className="container relative mx-auto px-4">
         <div className="text-center">
-          <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">Why Choose Knowledgesmith?</h2>
+          <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">Why Choose Forged?</h2>
           <p className="mx-auto mb-16 max-w-2xl text-lg text-gray-600">
             No more boring PDFs written by ChatGPT. Create full-fledged courses that people actually want to buy.
           </p>

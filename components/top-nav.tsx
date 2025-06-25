@@ -1,15 +1,7 @@
 import Link from "next/link"
 import {
-  BadgeCheck,
-  Bell,
   BookOpen,
-  ChevronDown,
-  Command,
-  CreditCard,
-  LogOut,
-  PlusCircle,
-  Settings,
-  Sparkles,
+  Command
 } from "lucide-react"
 
 import {
@@ -20,10 +12,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -39,6 +28,7 @@ export async function TopNav() {
   if (!user) {
     redirect("/login")
   }
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between w-full px-6">
@@ -51,7 +41,7 @@ export async function TopNav() {
               <Command className="h-4 w-4" />
             </div>
             <span className="hidden font-semibold sm:inline-block">
-              Knowledgesmith
+              Forged
             </span>
           </Link>
 

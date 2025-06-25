@@ -33,17 +33,17 @@ const CourseJsonLd = ({
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Knowledgesmith",
+      "name": "Forged",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://knowledgesmith.vercel.app/logo.png"
+        "url": "https://tryforged.vercel.app/logo.png"
       }
     },
     "datePublished": createdAt?.toISOString(),
     "dateModified": updatedAt?.toISOString(),
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://knowledgesmith.vercel.app/${slug}`
+      "@id": `https://tryforged.vercel.app/${slug}`
     },
     "keywords": tags?.join(', '),
     "offers": {

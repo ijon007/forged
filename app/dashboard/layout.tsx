@@ -1,22 +1,21 @@
 import { TopNav } from "@/components/top-nav"
-
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Knowledgesmith - Dashboard",
-  description: "Dashboard",
+    title: "Dashboard",
+    description: "Dashboard",
 }
 
 export default function DashboardLayout({
-  children,
+    children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div>
-      <TopNav />
-      {children}
-    </div>
+    return (
+        <div>
+            <TopNav />
+            {children}
+        </div>
   )
 }
 

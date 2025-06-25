@@ -99,7 +99,7 @@ const Preferences = ({ previewData }: PreferencesProps) => {
     }
 
     const copyUrl = () => {
-        navigator.clipboard.writeText(`knowledgesmith.com/${formData.slug}`)
+        navigator.clipboard.writeText(`tryforged.vercel.app/${formData.slug}`)
         toast.success('URL copied to clipboard!')
     }
 
@@ -173,7 +173,7 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                 <div className="space-y-2">
                     <Label htmlFor="slug">URL Slug</Label>
                     <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground whitespace-nowrap">knowledgesmith.com/</span>
+                        <span className="text-sm text-muted-foreground whitespace-nowrap">tryforged.me/</span>
                         <div className="flex-1 relative">
                             <Input 
                                 id="slug" 

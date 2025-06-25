@@ -29,7 +29,7 @@ export default function SuccessPage() {
               <CheckCircle className="h-8 w-8" color="green" />
             </div>
             <CardTitle className="text-3xl font-bold text-gray-900 mb-3">
-              Welcome to Knowledgesmith!
+              Welcome to Forged!
             </CardTitle>
             <CardDescription className="text-lg text-gray-600 leading-relaxed">
               Your subscription is now active.

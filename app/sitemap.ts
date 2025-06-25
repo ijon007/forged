@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllPublishedCourses } from '@/actions/course-db-actions'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://knowledgesmith.vercel.app'
+  const baseUrl = 'https://tryforged.vercel.app'
   
   // Static routes
   const routes = [

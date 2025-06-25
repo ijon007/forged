@@ -1,8 +1,4 @@
-import { Star, Quote, Eye, Clock } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { Star, Quote, Clock } from "lucide-react"
 
 const testimonials = [
   {
@@ -10,7 +6,7 @@ const testimonials = [
     name: "Rea",
     role: "Marketing Consultant",
     avatar: "https://avatar.vercel.sh/sarah",
-    content: "Knowledgesmith transformed my scattered notes into a professional marketing course! Can't wait to see how it goes!",
+    content: "Forged transformed my scattered notes into a professional marketing course! Can't wait to see how it goes!",
     rating: 5,
     previewData: {
       title: "Digital Marketing Fundamentals: From Zero to Hero",

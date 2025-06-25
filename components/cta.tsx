@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function CTA() {
   return (
-    <section className="relative bg-gradient-to-br from-black via-gray-900 to-black py-20 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-11/12 rounded-4xl ml-20">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full filter blur-3xl animate-pulse" />

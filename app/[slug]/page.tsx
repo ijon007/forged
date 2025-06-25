@@ -28,11 +28,11 @@ export async function generateMetadata({
             }
         }
 
-        const title = `${dbCourse.title} | Knowledgesmith`
-        const description = dbCourse.description || 'Discover premium educational content on Knowledgesmith'
+        const title = `${dbCourse.title} | Forged`
+        const description = dbCourse.description || 'Discover premium educational content on Forged'
         const imageUrl = dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
         const price = dbCourse.price / 100
-        const url = `https://knowledgesmith.vercel.app/${slug}`
+        const url = `https://tryforged.vercel.app/${slug}`
 
         return {
             title,
@@ -40,7 +40,7 @@ export async function generateMetadata({
             keywords: dbCourse.tags?.join(', ') || 'education, learning, course, knowledge',
             authors: [{ name: dbCourse.userName }],
             creator: dbCourse.userName,
-            publisher: 'Knowledgesmith',
+            publisher: 'Forged',
             robots: {
                 index: true,
                 follow: true,
@@ -57,7 +57,7 @@ export async function generateMetadata({
                 title,
                 description,
                 url,
-                siteName: 'Knowledgesmith',
+                siteName: 'Forged',
                 images: [
                     {
                         url: imageUrl,
@@ -76,7 +76,7 @@ export async function generateMetadata({
                 description,
                 images: [imageUrl],
                 creator: `@${dbCourse.userName}`,
-                site: '@knowledgesmith',
+                site: '@forged',
             },
             alternates: {
                 canonical: url,
@@ -93,8 +93,8 @@ export async function generateMetadata({
     } catch (error) {
             console.error('Error generating metadata:', error)
         return {
-            title: 'Course | Knowledgesmith',
-            description: 'Discover premium educational content on Knowledgesmith',
+            title: 'Course | Forged',
+            description: 'Discover premium educational content on Forged',
         }
     }
 }

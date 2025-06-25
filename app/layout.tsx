@@ -13,14 +13,14 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: "Knowledgesmith - Turn Notes Into Sellable Courses",
-    template: "%s | Knowledgesmith"
+    default: "Forged - Turn Notes Into Sellable Courses",
+    template: "%s | Forged"
   },
   description: "Upload PDFs, get AI-generated courses, and start earning money from your knowledge. Create premium educational content with AI assistance.",
   keywords: ["online courses", "AI education", "knowledge monetization", "PDF to course", "e-learning", "educational content"],
-  authors: [{ name: "Knowledgesmith Team" }],
-  creator: "Knowledgesmith",
-  publisher: "Knowledgesmith",
+  authors: [{ name: "Forged Team" }],
+  creator: "Forged",
+  publisher: "Forged",
   robots: {
     index: true,
     follow: true,
@@ -34,31 +34,31 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    siteName: 'Knowledgesmith',
-    title: 'Knowledgesmith - Turn Notes Into Sellable Courses',
+    siteName: 'Forged',
+    title: 'Forged - Turn Notes Into Sellable Courses',
     description: 'Upload PDFs, get AI-generated courses, and start earning money from your knowledge.',
-    url: 'https://knowledgesmith.vercel.app',
+    url: 'https://tryforged.vercel.app',
     images: [
       {
-        url: 'https://knowledgesmith.vercel.app/og-image.png',
+        url: 'https://tryforged.vercel.app/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Knowledgesmith - Turn Notes Into Sellable Courses',
+        alt: 'Forged - Turn Notes Into Sellable Courses',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Knowledgesmith - Turn Notes Into Sellable Courses',
+    title: 'Forged - Turn Notes Into Sellable Courses',
     description: 'Upload PDFs, get AI-generated courses, and start earning money from your knowledge.',
-    images: ['https://knowledgesmith.vercel.app/og-image.png'],
-    site: '@knowledgesmith',
+    images: ['https://tryforged.vercel.app/og-image.png'],
+    site: '@forged',
   },
   verification: {
-    google: 'your-google-verification-code', // Replace with actual verification code
+    google: 'your-google-verification-code',
   },
   alternates: {
-    canonical: 'https://knowledgesmith.vercel.app',
+    canonical: 'https://tryforged.vercel.app',
   },
   manifest: '/manifest.json',
   icons: {
@@ -77,10 +77,10 @@ export default function RootLayout({
       <head>
         {/* Additional SEO meta tags */}
         <meta name="theme-color" content="#000000" />
-        <meta name="application-name" content="Knowledgesmith" />
+        <meta name="application-name" content="Forged" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Knowledgesmith" />
+        <meta name="apple-mobile-web-app-title" content="Forged" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
