@@ -11,7 +11,7 @@ const PublishedContent = ({ page }: { page: any }) => {
     return (
         <>
             {page.isPurchased ? (
-                <div className="prose prose-gray dark:prose-invert max-w-none">
+                <div className="prose prose-gray dark:prose-invert max-w-none prose-sm sm:prose-base">
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -29,7 +29,7 @@ const PublishedContent = ({ page }: { page: any }) => {
                         }
                         
                         return (
-                            <div className="my-4">
+                            <div className="my-4 overflow-x-auto">
                                 <SyntaxHighlighter
                                     style={vscDarkPlus}
                                     language={language || 'text'}
@@ -37,11 +37,12 @@ const PublishedContent = ({ page }: { page: any }) => {
                                     customStyle={{
                                         margin: 0,
                                         borderRadius: '0.5rem',
-                                        fontSize: '0.875rem',
+                                        fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
+                                        overflowX: 'auto'
                                     }}
                                     codeTagProps={{
                                         style: {
-                                            fontSize: '0.875rem',
+                                            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
                                             fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                                         },
                                     }}
@@ -73,8 +74,8 @@ const PublishedContent = ({ page }: { page: any }) => {
                   </ReactMarkdown>
                 </div>
               ) : (
-                <div className="space-y-8">
-                  <div className="prose prose-gray dark:prose-invert max-w-none">
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="prose prose-gray dark:prose-invert max-w-none prose-sm sm:prose-base">
                     <ReactMarkdown 
                       remarkPlugins={[remarkGfm]}
                       components={{
@@ -115,17 +116,17 @@ const PublishedContent = ({ page }: { page: any }) => {
                   </div>
                   
                   <Card className="border-dashed border-2 bg-muted/20">
-                    <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                      <Lock className="h-12 w-12 text-muted-foreground mb-4" />
-                      <CardTitle className="mb-2">Continue Reading</CardTitle>
-                      <CardDescription className="mb-6 max-w-md">
+                    <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12 text-center px-4 sm:px-6">
+                      <Lock className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mb-3 sm:mb-4" />
+                      <CardTitle className="mb-2 text-lg sm:text-xl">Continue Reading</CardTitle>
+                      <CardDescription className="mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
                         Unlock the full article to continue reading and get access to all the examples and insights.
                       </CardDescription>
                       
-                      <div className="space-y-4 w-full max-w-sm">
+                      <div className="space-y-3 sm:space-y-4 w-full max-w-sm">
                         <div className="text-center">
-                          <span className="text-3xl font-bold">${page.price}</span>
-                          <span className="text-muted-foreground ml-1">one-time</span>
+                          <span className="text-2xl sm:text-3xl font-bold">${page.price}</span>
+                          <span className="text-muted-foreground ml-1 text-sm sm:text-base">one-time</span>
                         </div>
                         
                         <Button size="lg" className="w-full">

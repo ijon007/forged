@@ -105,18 +105,20 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
             readTime={page.readTime}
             imageUrl={page.imageUrl}
           />
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-3">
+          <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="lg:col-span-3 min-w-0">
               <PublishedContent page={pageWithAccess} />
             </div>
-            <CourseSidebar
-              price={page.price}
-              keyPoints={page.keyPoints}
-              tags={page.tags}
-              links={page.links}
-              isPurchased={hasAccess}
-              courseId={page.id}
-            />
+            <div className="order-1 lg:order-last">
+              <CourseSidebar
+                price={page.price}
+                keyPoints={page.keyPoints.slice(0, 5)}
+                tags={page.tags}
+                links={page.links}
+                isPurchased={hasAccess}
+                courseId={page.id}
+              />
+            </div>
           </div>
         </div>
         <PoweredByBadge />
