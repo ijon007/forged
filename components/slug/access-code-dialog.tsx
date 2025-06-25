@@ -66,9 +66,10 @@ interface AccessCodeInputDialogProps {
     onSubmit: (code: string) => void
     isLoading: boolean
     error?: string
+    onClose: () => void
 }
   
-export function AccessCodeInputDialog({ isOpen, onSubmit, isLoading, error }: AccessCodeInputDialogProps) {
+export function AccessCodeInputDialog({ isOpen, onSubmit, isLoading, error, onClose }: AccessCodeInputDialogProps) {
     const [code, setCode] = useState("")
   
     const handleSubmit = (e: React.FormEvent) => {
@@ -105,6 +106,23 @@ export function AccessCodeInputDialog({ isOpen, onSubmit, isLoading, error }: Ac
             <Button type="submit" disabled={!code.trim() || isLoading} className="w-full">
               {isLoading ? "Checking..." : "Access Course"}
             </Button>
+            
+            <div className="space-y-2">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Don't have access?
+                  </span>
+                </div>
+              </div>
+              
+              <Button variant="outline" className="w-full" type="button" onClick={onClose}>
+                I don&apos;t have an access code
+              </Button>
+            </div>
           </form>
         </DialogContent>
       </Dialog>
