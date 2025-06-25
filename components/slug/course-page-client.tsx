@@ -2,7 +2,7 @@
 
 /* React */
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 /* Components */
 import CourseHeader from "./course-header"
@@ -13,7 +13,7 @@ import CourseJsonLd from "./course-json-ld"
 import { AccessCodeDialog, AccessCodeInputDialog } from "./access-code-dialog"
 
 /* Actions */
-import { checkFirstTimeAccess, validateAccessCode } from "@/actions/course-db-actions"
+// Removed database actions for now - using simple access code logic
 
 interface CoursePageClientProps {
   page: {
@@ -35,7 +35,7 @@ interface CoursePageClientProps {
   updatedAt: Date
 }
 
-export default function CoursePage({ page, accessCode, slug, createdAt, updatedAt }: CoursePageClientProps) {
+export default function CoursePage({ page, slug, createdAt, updatedAt }: CoursePageClientProps) {
   const [hasAccess, setHasAccess] = useState(false)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [showInputDialog, setShowInputDialog] = useState(false)
@@ -43,27 +43,22 @@ export default function CoursePage({ page, accessCode, slug, createdAt, updatedA
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    const checkAccess = async () => {
-      if (accessCode) {
-        const result = await checkFirstTimeAccess(page.id, accessCode)
-        if (result.success) {
-          if (result.isFirstTime) {
-            setGeneratedAccessCode(accessCode)
-            setShowSuccessDialog(true)
-          }
-          setHasAccess(true)
-        } else {
-          setShowInputDialog(true)
-        }
-      } else {
-        setShowInputDialog(true)
-      }
+    // Check for access_code in URL search params
+    const accessCodeFromUrl = searchParams.get('access_code')
+    
+    if (accessCodeFromUrl) {
+      // Access code exists in URL - show success dialog and grant access
+      setHasAccess(true)
+      setGeneratedAccessCode(accessCodeFromUrl)
+      setShowSuccessDialog(true)
+    } else {
+      // No access code in URL - show input dialog
+      setShowInputDialog(true)
     }
-
-    checkAccess()
-  }, [page.id, accessCode])
+  }, [searchParams])
 
   const handleSuccessDialogClose = () => {
     setShowSuccessDialog(false)
@@ -73,17 +68,12 @@ export default function CoursePage({ page, accessCode, slug, createdAt, updatedA
     setIsLoading(true)
     setError("")
 
-    const result = await validateAccessCode(page.id, code)
-    
-    if (result.success) {
-      setHasAccess(true)
-      setShowInputDialog(false)
-      const url = new URL(window.location.href)
-      url.searchParams.set('access_code', code)
-      router.replace(url.toString())
-    } else {
-      setError(result.error || "Invalid access code")
-    }
+    // For now, accept any access code and grant access
+    setHasAccess(true)
+    setShowInputDialog(false)
+    const url = new URL(window.location.href)
+    url.searchParams.set('access_code', code)
+    router.replace(url.toString())
     
     setIsLoading(false)
   }

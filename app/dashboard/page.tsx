@@ -6,7 +6,6 @@ import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
 import { getPolarConnectionStatus } from "@/actions/polar-actions"
-import { type Course } from "@/db/schemas/course-schema"
 import { authClient } from "@/lib/auth-client"
 import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper"
 

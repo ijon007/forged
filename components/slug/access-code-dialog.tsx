@@ -37,7 +37,7 @@ export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle }: A
           <div className="bg-muted p-4 rounded-lg">
             <p className="text-sm font-medium mb-2">Your Access Code:</p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-background p-2 rounded border font-mono text-lg font-bold">
+              <code className="flex-1 bg-background p-2 rounded-xl border font-mono text-lg font-bold">
                 {accessCode}
               </code>
               <Button size="sm" onClick={handleCopy}>
@@ -46,13 +46,13 @@ export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle }: A
             </div>
           </div>
           
-          <div className="bg-yellow-50 border border-yellow-200 p-3 rounded">
+          <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-xl">
             <p className="text-sm text-yellow-800">
               <strong>Important:</strong> Save this code! You'll need it to access this course from anywhere.
             </p>
           </div>
           
-          <Button onClick={onClose} className="w-full">
+          <Button onClick={onClose} className="w-full rounded-lg">
             Continue to Course
           </Button>
         </div>
