@@ -82,7 +82,7 @@ export const auth = betterAuth({
                                 // Look for a pending purchase token that matches this timeframe
                                 const recentPurchase = existingPurchase.find(p => 
                                     p.polarOrderId === null && 
-                                    p.userId === "anonymous" &&
+                                    p.userId === null &&
                                     (new Date().getTime() - p.createdAt.getTime()) < 600000 // Within 10 minutes
                                 );
                                 

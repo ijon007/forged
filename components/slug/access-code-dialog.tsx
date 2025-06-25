@@ -11,15 +11,23 @@ interface AccessCodeDialogProps {
   onClose: () => void
   accessCode: string
   courseTitle: string
+  onContinue?: () => void
 }
 
-export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle }: AccessCodeDialogProps) {
+export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle, onContinue }: AccessCodeDialogProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(accessCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleContinue = () => {
+    if (onContinue) {
+      onContinue()
+    }
+    onClose()
   }
 
   return (
@@ -52,7 +60,7 @@ export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle }: A
             </p>
           </div>
           
-          <Button onClick={onClose} className="w-full rounded-lg">
+          <Button onClick={handleContinue} className="w-full rounded-lg">
             Continue to Course
           </Button>
         </div>

@@ -59,11 +59,7 @@ const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }:
 
     return (
         <div className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col gap-3">
-                <Button variant="outline" className="w-full mb-3" onClick={handleShare}>
-                    <Share className="mr-2 h-4 w-4" />
-                    Share Article
-                </Button>
+            <div className="flex flex-col gap-2">
                 {!isPurchased && (
                     <Button 
                         className="w-full" 
@@ -78,6 +74,11 @@ const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }:
                         {isLoading ? "Processing..." : `Buy Now - $${price}`}
                     </Button>
                 )}
+                <Button variant="outline" className="w-full mb-3" onClick={handleShare}>
+                    <Share className="mr-2 h-4 w-4" />
+                    Share Article
+                </Button>
+                
             </div>
             {keyPoints && keyPoints.length > 0 && (
                 <Card>

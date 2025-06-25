@@ -71,6 +71,13 @@
       "when": 1750845239796,
       "tag": "0009_strong_lake",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1750875503165,
+      "tag": "0010_breezy_owl",
+      "breakpoints": true
     }
   ]
 }

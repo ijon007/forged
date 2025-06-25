@@ -13,7 +13,7 @@ import CourseJsonLd from "./course-json-ld"
 import { AccessCodeDialog, AccessCodeInputDialog } from "./access-code-dialog"
 
 /* Actions */
-// Removed database actions for now - using simple access code logic
+import { validateAccessCode, markPurchaseCompleted } from "@/actions/course-db-actions"
 
 interface CoursePageClientProps {
   page: {
@@ -51,16 +51,34 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
     const fromManualEntry = searchParams.get('manual') === 'true'
     
     if (accessCodeFromUrl) {
-      setHasAccess(true)
-      setGeneratedAccessCode(accessCodeFromUrl)
-      
-      if (!fromManualEntry) {
-        setShowSuccessDialog(true)
+      // Validate the access code from URL
+      const validateUrlAccessCode = async () => {
+        try {
+          const result = await validateAccessCode(page.id, accessCodeFromUrl)
+          
+          if (result.success) {
+            setHasAccess(true)
+            setGeneratedAccessCode(accessCodeFromUrl)
+            
+            if (!fromManualEntry) {
+              setShowSuccessDialog(true)
+            }
+          } else {
+            // Invalid access code in URL, show input dialog
+            setShowInputDialog(true)
+            setError("Invalid access code")
+          }
+        } catch (error) {
+          setShowInputDialog(true)
+          setError("Failed to validate access code")
+        }
       }
+      
+      validateUrlAccessCode()
     } else {
       setShowInputDialog(true)
     }
-  }, [searchParams])
+  }, [searchParams, page.id])
 
   const handleSuccessDialogClose = () => {
     setShowSuccessDialog(false)
@@ -70,14 +88,35 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
     setIsLoading(true)
     setError("")
 
-    setHasAccess(true)
-    setShowInputDialog(false)
-    const url = new URL(window.location.href)
-    url.searchParams.set('access_code', code)
-    url.searchParams.set('manual', 'true') 
-    router.replace(url.toString())
+    try {
+      const result = await validateAccessCode(page.id, code)
+      
+      if (result.success) {
+        setHasAccess(true)
+        setShowInputDialog(false)
+        const url = new URL(window.location.href)
+        url.searchParams.set('access_code', code)
+        url.searchParams.set('manual', 'true') 
+        router.replace(url.toString())
+      } else {
+        setError(result.error || "Invalid access code")
+      }
+    } catch (error) {
+      setError("Failed to validate access code")
+    }
     
     setIsLoading(false)
+  }
+
+  const handleContinueToCourse = async () => {
+    // Mark the purchase as completed in the database
+    try {
+      await markPurchaseCompleted(page.id, generatedAccessCode)
+      console.log('Purchase marked as completed')
+    } catch (error) {
+      console.error('Failed to mark purchase as completed:', error)
+      // Don't block the user from accessing the course if this fails
+    }
   }
 
   const pageWithAccess = { ...page, isPurchased: hasAccess }
@@ -129,6 +168,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
         onClose={handleSuccessDialogClose}
         accessCode={generatedAccessCode}
         courseTitle={page.title}
+        onContinue={handleContinueToCourse}
       />
 
       <AccessCodeInputDialog

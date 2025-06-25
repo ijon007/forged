@@ -33,7 +33,7 @@ export const course = pgTable("course", {
 // Simple table to track course purchases
 export const coursePurchase = pgTable("course_purchase", {
   id: text('id').primaryKey(),
-  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }), // Made nullable for anonymous purchases
   courseId: text('course_id').notNull().references(() => course.id, { onDelete: 'cascade' }),
   polarOrderId: text('polar_order_id'),
   unlockToken: text('unlock_token'),

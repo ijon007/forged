@@ -1,0 +1,1 @@
+ALTER TABLE "course_purchase" ALTER COLUMN "user_id" DROP NOT NULL;
