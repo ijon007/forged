@@ -46,16 +46,17 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Check for access_code in URL search params
     const accessCodeFromUrl = searchParams.get('access_code')
+    const fromManualEntry = searchParams.get('manual') === 'true'
     
     if (accessCodeFromUrl) {
-      // Access code exists in URL - show success dialog and grant access
       setHasAccess(true)
       setGeneratedAccessCode(accessCodeFromUrl)
-      setShowSuccessDialog(true)
+      
+      if (!fromManualEntry) {
+        setShowSuccessDialog(true)
+      }
     } else {
-      // No access code in URL - show input dialog
       setShowInputDialog(true)
     }
   }, [searchParams])
@@ -68,11 +69,11 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
     setIsLoading(true)
     setError("")
 
-    // For now, accept any access code and grant access
     setHasAccess(true)
     setShowInputDialog(false)
     const url = new URL(window.location.href)
     url.searchParams.set('access_code', code)
+    url.searchParams.set('manual', 'true') 
     router.replace(url.toString())
     
     setIsLoading(false)
