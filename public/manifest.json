@@ -1,0 +1,29 @@
+{
+  "name": "Forged - Turn Notes Into Sellable Courses",
+  "short_name": "Forged",
+  "description": "Upload PDFs, get AI-generated courses, and start earning money from your knowledge.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/forged-black.png",
+      "sizes": "437x122",
+      "type": "image/png",
+      "media": "(prefers-color-scheme: light)"
+    },
+    {
+      "src": "/forged-white.png",
+      "sizes": "437x122",
+      "type": "image/png",
+      "media": "(prefers-color-scheme: dark)"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "437x122",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    }
+  ]
+} 

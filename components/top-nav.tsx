@@ -1,7 +1,6 @@
 import Link from "next/link"
 import {
   BookOpen,
-  Command,
   User
 } from "lucide-react"
 
@@ -21,6 +20,7 @@ import { cn } from "@/lib/utils"
 import SignOut from "./login/sign-out"
 import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
+import Image from "next/image"
 
 
 export async function TopNav() {
@@ -38,12 +38,7 @@ export async function TopNav() {
         <div className="flex items-center space-x-6">
           {/* Logo and App Name */}
           <Link href="/dashboard" className="flex items-center space-x-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground">
-              <Command className="h-4 w-4" />
-            </div>
-            <span className="hidden font-semibold sm:inline-block">
-              Forged
-            </span>
+            <Image src="/forged-black.svg" alt="Forged" width={100} height={90} />
           </Link>
 
           {/* Navigation Links */}

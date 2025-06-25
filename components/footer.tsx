@@ -1,10 +1,12 @@
+import Image from "next/image";
+
 export function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-between gap-6">
           <div className="flex flex-col items-center">
-            <h3 className="text-xl font-bold text-black mb-2">Forged</h3>
+            <Image src="/forged-black.svg" alt="Forged" width={100} height={90} />
             <p className="text-gray-600 text-sm">Create and sell digital playbooks from your knowledge</p>
           </div>
         </div>

@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://tryforged.vercel.app/og-image.png',
-        width: 1200,
-        height: 630,
+        width: 437,
+        height: 122,
         alt: 'Forged - Turn Notes Into Sellable Courses',
       },
     ],
@@ -62,8 +62,24 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+      {
+        url: '/hammer-black.svg',
+        type: 'image/svg+xml',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/hammer-white.svg',
+        type: 'image/svg+xml',
+        media: '(prefers-color-scheme: dark)',
+      }
+    ],
+    apple: '/hammer-white.svg',
+    shortcut: '/favicon.svg',
   },
 }
 
@@ -76,7 +92,8 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <head>
         {/* Additional SEO meta tags */}
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)" />
         <meta name="application-name" content="Forged" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -86,6 +103,10 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="msapplication-tap-highlight" content="no" />
+        {/* Theme-aware favicon fallbacks */}
+        <link rel="icon" href="/hammer-black.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+        <link rel="icon" href="/hammer-white.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className={` ${geist.variable}`}>
         {children}
