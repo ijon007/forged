@@ -1,6 +1,13 @@
 import { pgTable, text, timestamp, integer, json, boolean } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema";
 
+export interface CourseLink {
+  id: string
+  url: string
+  platform: string // e.g., 'linkedin', 'twitter', 'website', 'github', etc.
+  label?: string // optional custom label
+}
+
 export const course = pgTable("course", {
   id: text('id').primaryKey(),
   slug: text('slug').notNull().unique(),
@@ -10,6 +17,7 @@ export const course = pgTable("course", {
   originalContent: text('original_content').notNull(),
   tags: json('tags').$type<string[]>().notNull().default([]),
   keyPoints: json('key_points').$type<string[]>().notNull().default([]),
+  links: json('links').$type<CourseLink[]>().notNull().default([]),
   estimatedReadTime: integer('estimated_read_time').notNull(),
   price: integer('price').notNull(), // Store price in cents to avoid floating point issues
   imageUrl: text('image_url'), // URL for blog post hero image

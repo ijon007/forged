@@ -28,6 +28,7 @@ interface CoursePageClientProps {
     content: string
     tags: string[]
     keyPoints: string[]
+    links: any[]
   }
   accessCode?: string
   slug: string
@@ -112,6 +113,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
               price={page.price}
               keyPoints={page.keyPoints}
               tags={page.tags}
+              links={page.links}
               isPurchased={hasAccess}
               courseId={page.id}
             />

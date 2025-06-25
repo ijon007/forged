@@ -5,7 +5,7 @@ import { headers } from "next/headers"
 
 /* DB */
 import { db } from "@/db/drizzle"
-import { course, coursePurchase, type NewCourse, type Course } from "@/db/schemas/course-schema"
+import { course, coursePurchase, type NewCourse, type Course, type CourseLink } from "@/db/schemas/course-schema"
 import { eq, desc, and } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { user } from "@/db/schemas/auth-schema"
@@ -27,6 +27,7 @@ export interface SaveCourseParams {
   originalContent: string
   tags: string[]
   keyPoints: string[]
+  links?: CourseLink[]
   estimatedReadTime: number
   price: number
   imageUrl?: string
@@ -38,6 +39,7 @@ export interface UpdateCourseParams {
   description?: string
   price?: number
   imageUrl?: string
+  links?: CourseLink[]
 }
 
 export async function saveCourse(courseData: SaveCourseParams): Promise<{ success: boolean; error?: string }> {
@@ -83,6 +85,7 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
       originalContent: courseData.originalContent,
       tags: courseData.tags,
       keyPoints: courseData.keyPoints,
+      links: courseData.links || [],
       estimatedReadTime: courseData.estimatedReadTime,
       price: priceInCents,
       imageUrl: courseData.imageUrl,
@@ -141,6 +144,9 @@ export async function updateCourse(courseData: UpdateCourseParams): Promise<{ su
     }
     if (courseData.imageUrl !== undefined) {
       updateData.imageUrl = courseData.imageUrl
+    }
+    if (courseData.links !== undefined) {
+      updateData.links = courseData.links
     }
 
     await db.update(course)
@@ -262,6 +268,7 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
         originalContent: course.originalContent,
         tags: course.tags,
         keyPoints: course.keyPoints,
+        links: course.links,
         estimatedReadTime: course.estimatedReadTime,
         price: course.price,
         imageUrl: course.imageUrl,
@@ -470,5 +477,44 @@ export async function validateAccessCode(courseId: string, accessCode: string): 
   } catch (error) {
     console.error('Error validating access code:', error);
     return { success: false, error: 'Failed to validate access code' };
+  }
+}
+
+export async function updateCourseLinks(courseId: string, links: CourseLink[]): Promise<{ success: boolean; error?: string }> {
+  try {
+    // Get current user session
+    const session = await auth.api.getSession({
+      headers: await headers()
+    })
+
+    if (!session?.user?.id) {
+      return { success: false, error: 'User not authenticated' }
+    }
+
+    // Check if course exists and belongs to user
+    const existingCourse = await getCourse(courseId)
+    if (!existingCourse) {
+      return { success: false, error: 'Course not found' }
+    }
+
+    if (existingCourse.userId !== session.user.id) {
+      return { success: false, error: 'Not authorized to update this course' }
+    }
+
+    // Update course links
+    await db.update(course)
+      .set({ 
+        links: links,
+        updatedAt: new Date()
+      })
+      .where(eq(course.id, courseId))
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating course links:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Failed to update course links' 
+    }
   }
 }

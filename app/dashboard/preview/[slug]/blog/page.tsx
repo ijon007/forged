@@ -10,6 +10,7 @@ import { getCourseWithUser } from "@/actions/course-db-actions"
 import { courseStore, formatCourseForPreview } from "@/lib/course-store"
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import Socials from '@/components/preview/socials'
 
 export default async function BlogPreviewPage({
   params,
@@ -59,7 +60,8 @@ export default async function BlogPreviewPage({
     author: dbCourse.userName,
     readTime: `${formattedCourse.estimatedReadTime} min read`,
     imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
-    content: formattedCourse.generatedContent
+    content: formattedCourse.generatedContent,
+    links: dbCourse.links || []
   }
 
   return (
@@ -187,6 +189,10 @@ export default async function BlogPreviewPage({
                 </div>
               </CardContent>
             </Card>
+
+            {page.links && page.links.length > 0 && (
+              <Socials initialLinks={page.links} readOnly={true} />
+            )}
 
             <Card className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
               <CardContent className="pt-6">

@@ -7,16 +7,19 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Share, DollarSign, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
+import Socials from "@/components/preview/socials"
+import type { CourseLink } from "@/db/schemas/course-schema"
 
 interface CourseSidebarProps {
   price: number
   keyPoints?: string[]
   tags?: string[]
+  links?: CourseLink[]
   isPurchased: boolean
   courseId: string
 }
 
-const CourseSidebar = ({ price, keyPoints, tags, isPurchased, courseId }: CourseSidebarProps) => {
+const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }: CourseSidebarProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePurchase = async () => {
@@ -85,6 +88,10 @@ const CourseSidebar = ({ price, keyPoints, tags, isPurchased, courseId }: Course
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {links && links.length > 0 && (
+        <Socials initialLinks={links} readOnly={true} />
       )}
 
       <Card>

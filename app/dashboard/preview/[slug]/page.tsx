@@ -5,6 +5,7 @@ import Content from "@/components/preview/content"
 import Preferences from "@/components/preview/preferences"
 import Preview from "@/components/preview/preview"
 import TopNav from "@/components/preview/top-nav"
+import Socials from "@/components/preview/socials"
 
 export default async function PreviewPage({
   params,
@@ -38,6 +39,7 @@ export default async function PreviewPage({
     originalContent: dbCourse.originalContent,
     tags: dbCourse.tags,
     keyPoints: dbCourse.keyPoints,
+    links: dbCourse.links,
     estimatedReadTime: dbCourse.estimatedReadTime,
   })
 
@@ -57,6 +59,7 @@ export default async function PreviewPage({
     generatedContent: generatedCourse.content,
     tags: generatedCourse.tags,
     keyPoints: generatedCourse.keyPoints,
+    links: dbCourse.links || [],
     estimatedReadTime: generatedCourse.estimatedReadTime,
     author: dbCourse.userName,
     createdAt: generatedCourse.createdAt.toISOString(),
@@ -71,6 +74,7 @@ export default async function PreviewPage({
           
           <div className="flex flex-col gap-6 xl:w-1/3 xl:min-w-[400px]">
             <Preferences previewData={previewData} />
+            <Socials courseId={dbCourse.id} initialLinks={dbCourse.links || []} />
             <Content previewData={previewData} />
           </div>
 

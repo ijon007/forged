@@ -1,5 +1,6 @@
 // Simple in-memory store for generated courses
 // In a production app, this would be replaced with a database
+import type { CourseLink } from "@/db/schemas/course-schema"
 
 interface GeneratedCourse {
   id: string
@@ -9,6 +10,7 @@ interface GeneratedCourse {
   originalContent: string
   tags: string[]
   keyPoints: string[]
+  links?: CourseLink[]
   estimatedReadTime: number
   createdAt: Date
 }
@@ -60,6 +62,7 @@ export function formatCourseForPreview(course: GeneratedCourse, priceInCents?: n
     generatedContent: course.content,
     tags: course.tags,
     keyPoints: course.keyPoints,
+    links: course.links || [],
     estimatedReadTime: course.estimatedReadTime,
     author: 'AI Generated',
     createdAt: course.createdAt.toISOString(),

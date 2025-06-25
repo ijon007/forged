@@ -115,19 +115,20 @@ export default async function BlogPage({
         notFound()
     }
     
-    const page = {
-        id: dbCourse.id,
-        title: dbCourse.title,
-        description: dbCourse.description,
-        price: dbCourse.price / 100,
-        isPurchased: false,
-        author: dbCourse.userName,
-        readTime: `${dbCourse.estimatedReadTime} min read`,
-        imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
-        content: dbCourse.content,
-        tags: dbCourse.tags,
-        keyPoints: dbCourse.keyPoints
-    }
+      const page = {
+    id: dbCourse.id,
+    title: dbCourse.title,
+    description: dbCourse.description,
+    price: dbCourse.price / 100,
+    isPurchased: false,
+    author: dbCourse.userName,
+    readTime: `${dbCourse.estimatedReadTime} min read`,
+    imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
+    content: dbCourse.content,
+    tags: dbCourse.tags,
+    keyPoints: dbCourse.keyPoints,
+    links: dbCourse.links || []
+  }
 
     return (
         <CoursePage

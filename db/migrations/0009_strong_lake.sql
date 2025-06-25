@@ -1,0 +1,1 @@
+ALTER TABLE "course" ADD COLUMN "links" json DEFAULT '[]'::json NOT NULL;

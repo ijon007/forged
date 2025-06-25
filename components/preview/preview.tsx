@@ -9,6 +9,8 @@ import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useTheme } from 'next-themes'
+import Socials from './socials'
+import type { CourseLink } from '@/db/schemas/course-schema'
 
 interface PreviewProps {
     previewData: {
@@ -18,6 +20,7 @@ interface PreviewProps {
         readTime?: string
         description?: string
         imageUrl?: string
+        links?: CourseLink[]
         [key: string]: any // Allow additional properties
     }
 }
@@ -161,6 +164,13 @@ const Preview = ({ previewData }: PreviewProps) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Author Links */}
+                        {previewData.links && previewData.links.length > 0 && (
+                            <div className="mt-6">
+                                <Socials initialLinks={previewData.links} readOnly={true} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </CardContent>

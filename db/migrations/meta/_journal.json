@@ -64,6 +64,13 @@
       "when": 1750790338974,
       "tag": "0008_rare_sentinel",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1750845239796,
+      "tag": "0009_strong_lake",
+      "breakpoints": true
     }
   ]
 }
