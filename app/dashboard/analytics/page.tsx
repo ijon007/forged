@@ -1,17 +1,34 @@
 import React from 'react'
 import { MoneyStats } from '@/components/dashboard/money-stats'
 import { RevenueChart } from '@/components/dashboard/revenue-chart'
-import { CustomerGrowthChart } from '@/components/dashboard/customer-growth-chart'
 import { CustomersTable } from '@/components/dashboard/customers-table'
+import { OrdersChart } from '@/components/dashboard/orders-chart'
+import { getAnalyticsStats, getMonthlyChartData, getRecentCustomers } from '@/actions/analytics-actions'
 
-function AnalyticsPage() {
-    const stats = {
-        totalRevenue: 45870,
-        monthlyRevenue: 6090,
-        revenueGrowth: 12.5,
-        totalSales: 705,
-        salesGrowth: 8.3
-    }
+async function AnalyticsPage() {
+    // Fetch real analytics data
+    const [stats, monthlyData, recentCustomers] = await Promise.all([
+        getAnalyticsStats(),
+        getMonthlyChartData(),
+        getRecentCustomers()
+    ])
+
+    // Debug logging
+    console.log('Analytics Debug:')
+    console.log('Stats:', stats)
+    console.log('Monthly Data:', monthlyData)
+    console.log('Recent Customers:', recentCustomers)
+
+    // Extract revenue and orders data for charts
+    const revenueData = monthlyData.map(item => ({
+        month: item.month,
+        revenue: item.revenue
+    }))
+
+    const ordersData = monthlyData.map(item => ({
+        month: item.month,
+        orders: item.orders
+    }))
 
      return (
         <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10 z-10">
@@ -26,12 +43,12 @@ function AnalyticsPage() {
 
             {/* Charts Section */}
             <div className="grid gap-6 lg:grid-cols-2">
-                <RevenueChart />
-                <CustomerGrowthChart />
+                <RevenueChart data={revenueData} />
+                <OrdersChart data={ordersData} />
             </div>
 
             {/* Customers Table */}
-            <CustomersTable />
+            <CustomersTable customers={recentCustomers} />
         </div>
     )
 }

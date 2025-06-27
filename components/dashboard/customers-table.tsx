@@ -15,85 +15,59 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 
-const customers = [
-  {
-    id: "CUST001",
-    name: "Sarah Johnson",
-    email: "sarah.johnson@email.com",
-    purchaseDate: "2024-01-15",
-    amount: "$299.00",
-    course: "Advanced React Mastery",
-  },
-  {
-    id: "CUST002", 
-    name: "Michael Chen",
-    email: "michael.chen@email.com",
-    purchaseDate: "2024-01-18",
-    amount: "$149.00",
-    course: "JavaScript Fundamentals",
-  },
-  {
-    id: "CUST003",
-    name: "Emily Davis",
-    email: "emily.davis@email.com", 
-    purchaseDate: "2024-01-22",
-    amount: "$399.00",
-    course: "Full Stack Development",
-  },
-  {
-    id: "CUST004",
-    name: "David Wilson",
-    email: "david.wilson@email.com",
-    purchaseDate: "2024-01-25",
-    amount: "$199.00", 
-    course: "Node.js Backend",
-  },
-  {
-    id: "CUST005",
-    name: "Lisa Thompson",
-    email: "lisa.thompson@email.com",
-    purchaseDate: "2024-01-28",
-    amount: "$249.00",
-    course: "TypeScript Essentials",
-  },
-  {
-    id: "CUST006",
-    name: "James Rodriguez",
-    email: "james.rodriguez@email.com",
-    purchaseDate: "2024-02-02",
-    amount: "$179.00",
-    course: "CSS & Design Systems",
-  },
-  {
-    id: "CUST007",
-    name: "Anna Martinez",
-    email: "anna.martinez@email.com",
-    purchaseDate: "2024-02-05",
-    amount: "$329.00",
-    course: "Advanced React Mastery",
-  },
-  {
-    id: "CUST008",
-    name: "Robert Brown",
-    email: "robert.brown@email.com",
-    purchaseDate: "2024-02-08",
-    amount: "$219.00",
-    course: "Database Design",
-  },
-]
+interface Customer {
+  id: string
+  name: string
+  email: string
+  purchaseDate: string
+  amount: string
+  course: string
+}
 
-export function CustomersTable() {
+interface CustomersTableProps {
+  customers: Customer[]
+}
+
+export function CustomersTable({ customers }: CustomersTableProps) {
   const getCourseColor = (course: string) => {
-    const colors = {
-      "Advanced React Mastery": "bg-blue-100 text-blue-800",
-      "JavaScript Fundamentals": "bg-yellow-100 text-yellow-800", 
-      "Full Stack Development": "bg-purple-100 text-purple-800",
-      "Node.js Backend": "bg-green-100 text-green-800",
-      "TypeScript Essentials": "bg-indigo-100 text-indigo-800",
-      "CSS & Design Systems": "bg-pink-100 text-pink-800",
-      "Database Design": "bg-orange-100 text-orange-800",
+    // Generate a consistent color based on course name hash
+    let hash = 0
+    for (let i = 0; i < course.length; i++) {
+      hash = course.charCodeAt(i) + ((hash << 5) - hash)
     }
-    return colors[course as keyof typeof colors] || "bg-gray-100 text-gray-800"
+    
+    const colors = [
+      "bg-blue-100 text-blue-800",
+      "bg-yellow-100 text-yellow-800", 
+      "bg-purple-100 text-purple-800",
+      "bg-green-100 text-green-800",
+      "bg-indigo-100 text-indigo-800",
+      "bg-pink-100 text-pink-800",
+      "bg-orange-100 text-orange-800",
+      "bg-red-100 text-red-800",
+      "bg-teal-100 text-teal-800",
+      "bg-cyan-100 text-cyan-800",
+    ]
+    
+    return colors[Math.abs(hash) % colors.length]
+  }
+
+  if (customers.length === 0) {
+    return (
+      <Card className="border rounded-3xl">
+        <CardHeader>
+          <CardTitle>Recent Customers</CardTitle>
+          <CardDescription>
+            A list of your recent customer purchases
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-muted-foreground">
+            No customers yet. Start promoting your courses to see data here!
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -101,7 +75,7 @@ export function CustomersTable() {
       <CardHeader>
         <CardTitle>Recent Customers</CardTitle>
         <CardDescription>
-          A list of your recent customer purchases
+          A list of your recent customer purchases ({customers.length} shown)
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -119,10 +93,10 @@ export function CustomersTable() {
           <TableBody>
             {customers.map((customer) => (
               <TableRow key={customer.id}>
-                <TableCell className="font-medium">{customer.id}</TableCell>
+                <TableCell className="font-medium">{customer.id.substring(0, 8)}...</TableCell>
                 <TableCell>{customer.name}</TableCell>
                 <TableCell className="text-muted-foreground">{customer.email}</TableCell>
-                <TableCell>{new Date(customer.purchaseDate).toLocaleDateString()}</TableCell>
+                <TableCell>{customer.purchaseDate}</TableCell>
                 <TableCell>
                   <Badge variant="secondary" className={getCourseColor(customer.course)}>
                     {customer.course}

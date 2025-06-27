@@ -15,40 +15,37 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { month: "January", customers: 28 },
-  { month: "February", customers: 45 },
-  { month: "March", customers: 38 },
-  { month: "April", customers: 62 },
-  { month: "May", customers: 34 },
-  { month: "June", customers: 78 },
-  { month: "July", customers: 56 },
-  { month: "August", customers: 71 },
-  { month: "September", customers: 49 },
-  { month: "October", customers: 84 },
-  { month: "November", customers: 67 },
-  { month: "December", customers: 93 },
-]
+interface OrdersData {
+  month: string
+  orders: number
+}
 
-const chartConfig = {
-  customers: {
-    label: "New Customers",
-    color: "hsl(217, 91%, 60%)",
-  },
-} satisfies ChartConfig
+interface OrdersChartProps {
+  data: OrdersData[]
+}
 
-export function CustomerGrowthChart() {
+export function OrdersChart({ data }: OrdersChartProps) {
+  const chartConfig = {
+    orders: {
+      label: "New Orders",
+      color: "hsl(217, 91%, 60%)",
+    },
+  } satisfies ChartConfig
+
+  // Calculate total orders for the period
+  const totalOrders = data.reduce((sum, item) => sum + item.orders, 0)
+
   return (
     <Card className="border rounded-3xl">
       <CardHeader>
-        <CardTitle>Customer Growth</CardTitle>
+        <CardTitle>Orders</CardTitle>
         <CardDescription>
-          New customers acquired each month
+          New orders each month • Total: {totalOrders.toLocaleString()}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -62,7 +59,7 @@ export function CustomerGrowthChart() {
               content={<ChartTooltipContent hideLabel />}
               labelClassName="gap-2"
             />
-            <Bar dataKey="customers" fill="var(--color-customers)" radius={8} />
+            <Bar dataKey="orders" fill="var(--color-orders)" radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>

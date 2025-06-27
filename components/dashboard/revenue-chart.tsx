@@ -15,45 +15,43 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { month: "January", revenue: 1860 },
-  { month: "February", revenue: 3050 },
-  { month: "March", revenue: 2370 },
-  { month: "April", revenue: 4230 },
-  { month: "May", revenue: 2090 },
-  { month: "June", revenue: 5140 },
-  { month: "July", revenue: 3890 },
-  { month: "August", revenue: 4950 },
-  { month: "September", revenue: 3640 },
-  { month: "October", revenue: 5280 },
-  { month: "November", revenue: 4170 },
-  { month: "December", revenue: 6090 },
-]
-
-// Calculate if overall trend is positive or negative
-const isGrowthTrend = () => {
-  const firstHalf = chartData.slice(0, 6).reduce((sum, item) => sum + item.revenue, 0)
-  const secondHalf = chartData.slice(6).reduce((sum, item) => sum + item.revenue, 0)
-  return secondHalf > firstHalf
+interface RevenueData {
+  month: string
+  revenue: number
 }
 
-const chartConfig = {
-  revenue: {
-    label: "Revenue",
-    color: isGrowthTrend() ? "hsl(142, 76%, 36%)" : "hsl(0, 84%, 60%)",
-  },
-} satisfies ChartConfig
+interface RevenueChartProps {
+  data: RevenueData[]
+}
 
-export function RevenueChart() {
+export function RevenueChart({ data }: RevenueChartProps) {
+  // Calculate if overall trend is positive or negative
+  const isGrowthTrend = () => {
+    if (data.length < 6) return true
+    const firstHalf = data.slice(0, 6).reduce((sum, item) => sum + item.revenue, 0)
+    const secondHalf = data.slice(6).reduce((sum, item) => sum + item.revenue, 0)
+    return secondHalf > firstHalf
+  }
+
+  const chartConfig = {
+    revenue: {
+      label: "Revenue",
+      color: isGrowthTrend() ? "hsl(142, 76%, 36%)" : "hsl(0, 84%, 60%)",
+    },
+  } satisfies ChartConfig
+
   const trendColor = isGrowthTrend() ? "text-green-600" : "text-red-600"
   const trendText = isGrowthTrend() ? "↗ Trending up" : "↘ Trending down"
+
+  // Calculate total revenue for the period
+  const totalRevenue = data.reduce((sum, item) => sum + item.revenue, 0)
 
   return (
     <Card className="border rounded-3xl">
       <CardHeader>
         <CardTitle>Revenue Overview</CardTitle>
         <CardDescription>
-          Monthly revenue for the past 12 months
+          Monthly revenue for the past 12 months • Total: ${totalRevenue.toLocaleString()}
           <span className={`ml-2 text-sm font-medium ${trendColor}`}>
             {trendText}
           </span>
@@ -63,7 +61,7 @@ export function RevenueChart() {
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
