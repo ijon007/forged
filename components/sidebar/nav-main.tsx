@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
-import { useState } from "react"
+import { useState, useRef, cloneElement, isValidElement } from "react"
 
 import {
   Collapsible,
@@ -26,7 +26,7 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon: LucideIcon
+    icon: React.ReactNode
     isActive?: boolean
     items?: {
       title: string
@@ -49,6 +49,28 @@ export function NavMain({
       <SidebarMenu className="flex flex-col gap-2">
         {items.map((item) => {
           const isOpen = openStates[item.title] ?? item.isActive
+          const iconRef = useRef<any>(null)
+          
+          const handleMouseEnter = () => {
+            if (iconRef.current && typeof iconRef.current.startAnimation === 'function') {
+              iconRef.current.startAnimation()
+            }
+          }
+
+          const handleMouseLeave = () => {
+            if (iconRef.current && typeof iconRef.current.stopAnimation === 'function') {
+              iconRef.current.stopAnimation()
+            }
+          }
+
+          // Clone the icon element to add ref and disable internal hover
+          const iconWithRef = isValidElement(item.icon) 
+            ? cloneElement(item.icon as React.ReactElement<any>, { 
+                ref: iconRef,
+                onMouseEnter: undefined,
+                onMouseLeave: undefined
+              })
+            : item.icon
           
           return (
             <Collapsible 
@@ -56,16 +78,20 @@ export function NavMain({
               asChild 
               open={isOpen}
               onOpenChange={(open) => setOpenStates(prev => ({ ...prev, [item.title]: open }))}
+              className="cursor-pointer"
             >
-              <SidebarMenuItem>
+              <SidebarMenuItem className="group cursor-pointer">
                 {item.items?.length ? (
                   <SidebarMenuButton 
                     asChild 
                     tooltip={item.title}
                     onClick={() => toggleOpen(item.title)}
+                    className="cursor-pointer"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     <button className="w-full">
-                      <item.icon />
+                      {iconWithRef}
                       <span>{item.title}</span>
                       <ChevronRight 
                         className={`ml-auto transition-transform duration-300 ease-out ${
@@ -75,9 +101,14 @@ export function NavMain({
                     </button>
                   </SidebarMenuButton>
                 ) : (
-                  <SidebarMenuButton asChild tooltip={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    tooltip={item.title}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
                     <a href={item.url}>
-                      <item.icon />
+                      {iconWithRef}
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>

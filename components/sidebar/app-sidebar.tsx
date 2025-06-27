@@ -21,6 +21,9 @@ import {
 import Image from "next/image"
 import { getUserCourses } from "@/actions/course-db-actions"
 import type { Course } from "@/db/schemas/course-schema"
+import { ChartColumnDecreasingIcon } from "../ui/chart-column-decreasing"
+import { LayoutPanelTopIcon } from "../ui/layout-panel-top"
+import { FoldersIcon } from "../ui/folders"
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
@@ -58,18 +61,18 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: LayoutDashboard,
+      icon: <LayoutPanelTopIcon />,
       isActive: true,
     },
     {
       title: "Analytics",
       url: "/dashboard/analytics",
-      icon: BarChart3,
+      icon: <ChartColumnDecreasingIcon />,
     },
     {
       title: "Preview",
       url: "/dashboard/preview",
-      icon: Eye,
+      icon: <FoldersIcon />,
       items: previewItems.length > 0 ? previewItems : undefined,
     },
   ]

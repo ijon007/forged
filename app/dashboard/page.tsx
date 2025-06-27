@@ -25,13 +25,7 @@ async function DashboardPage() {
     const polarStatus = await getPolarConnectionStatus();
 
     const userCourses = await getUserCourses()
-    const stats = {
-        totalRevenue: 0,
-        monthlyRevenue: 0,
-        revenueGrowth: 0,
-        totalSales: 0,
-        salesGrowth: 0
-    }
+
 
     const pageCards = userCourses.map(course => ({
         id: course.id,
@@ -45,10 +39,8 @@ async function DashboardPage() {
 
     return (
         <DashboardClientWrapper polarStatus={polarStatus}>
-            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10">
+            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10 z-10">
                 <DashboardHeader />
-
-                <MoneyStats {...stats} />
 
                 <div className="space-y-6">
                     {pageCards.length > 0 ? (

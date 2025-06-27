@@ -27,7 +27,7 @@ export default async function DashboardLayout({
                 email: user.email, 
                 image: user.image
             }} />
-            <SidebarInset className="border shadow-none">
+            <SidebarInset className="border shadow-none relative overflow-hidden">
                 {children}
             </SidebarInset>
         </SidebarProvider>
