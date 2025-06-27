@@ -78,6 +78,13 @@
       "when": 1750875503165,
       "tag": "0010_breezy_owl",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1751037240990,
+      "tag": "0011_giant_earthquake",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "polar_organization_id" text;

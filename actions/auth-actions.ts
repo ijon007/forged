@@ -43,6 +43,7 @@ export async function getUserData() {
             subscriptionEndsAt: user.subscriptionEndsAt,
             // Polar OAuth fields
             polarUserId: user.polarUserId,
+            polarOrganizationId: user.polarOrganizationId,
             polarConnectedAt: user.polarConnectedAt,
             polarTokenExpiresAt: user.polarTokenExpiresAt,
             createdAt: user.createdAt,

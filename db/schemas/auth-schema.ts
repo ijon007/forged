@@ -18,6 +18,7 @@ export const user = pgTable("user", {
  polarRefreshToken: text('polar_refresh_token'), // OAuth refresh token
  polarTokenExpiresAt: timestamp('polar_token_expires_at'), // Token expiry
  polarConnectedAt: timestamp('polar_connected_at'), // When they connected
+ polarOrganizationId: text('polar_organization_id'), // Their Polar organization ID for selling
  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull()
 				});

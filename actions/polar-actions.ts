@@ -59,6 +59,7 @@ export async function disconnectPolarAccount() {
     await db.update(user)
       .set({
         polarUserId: null,
+        polarOrganizationId: null,
         polarAccessToken: null,
         polarRefreshToken: null,
         polarTokenExpiresAt: null,
@@ -150,6 +151,7 @@ export async function createPolarProduct(courseData: {
       polarAccessToken: user.polarAccessToken,
       polarTokenExpiresAt: user.polarTokenExpiresAt,
       polarUserId: user.polarUserId,
+      polarOrganizationId: user.polarOrganizationId,
     })
     .from(user)
     .where(eq(user.id, session.user.id))
@@ -160,6 +162,10 @@ export async function createPolarProduct(courseData: {
     }
 
     const userPolarData = userData[0];
+
+    if (!userPolarData.polarOrganizationId) {
+      return { success: false, error: "Polar organization not found. Please reconnect your Polar account." };
+    }
     
     // Check if token is expired
     if (userPolarData.polarTokenExpiresAt && new Date() > userPolarData.polarTokenExpiresAt) {
@@ -193,11 +199,11 @@ export async function createPolarProduct(courseData: {
       server: "sandbox",
     });
 
-    // Create the product on Polar
+    // Create the product on Polar using creator's organization
     const productResponse = await userPolarClient.products.create({
       name: courseData.name,
       description: courseData.description,
-      organizationId: process.env.POLAR_ORG_ID!,
+      organizationId: userPolarData.polarOrganizationId!, // Creator's org, not yours!
       recurringInterval: null,
       prices: [
         {
@@ -238,6 +244,7 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
     const userData = await db.select({
       polarAccessToken: user.polarAccessToken,
       polarTokenExpiresAt: user.polarTokenExpiresAt,
+      polarOrganizationId: user.polarOrganizationId,
     })
     .from(user)
     .where(eq(user.id, session.user.id))
@@ -248,6 +255,10 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
     }
 
     const userPolarData = userData[0];
+
+    if (!userPolarData.polarOrganizationId) {
+      return { success: false, error: "Polar organization not found. Please reconnect your Polar account." };
+    }
     
     if (userPolarData.polarTokenExpiresAt && new Date() > userPolarData.polarTokenExpiresAt) {
       try {
