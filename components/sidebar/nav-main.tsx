@@ -1,24 +1,23 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronRight, FileText } from "lucide-react"
 import { useState, useRef, cloneElement, isValidElement } from "react"
 
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 export function NavMain({
   items,
@@ -107,10 +106,10 @@ export function NavMain({
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       {iconWithRef}
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 )}
                 
@@ -130,9 +129,10 @@ export function NavMain({
                           }}
                         >
                           <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
+                            <Link href={subItem.url}>
+                                <FileText className="w-4 h-4" />
+                                <span>{subItem.title}</span>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
