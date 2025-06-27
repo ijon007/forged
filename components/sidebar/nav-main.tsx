@@ -1,7 +1,7 @@
 "use client"
 
-import { ChevronRight, FileText } from "lucide-react"
-import { useState, useRef, cloneElement, isValidElement } from "react"
+import { ChevronRight } from "lucide-react"
+import { useState, useRef, cloneElement, isValidElement, createRef } from "react"
 
 import {
   Collapsible,
@@ -18,6 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { FileTextIcon } from "../ui/file-text"
 
 export function NavMain({
   items,
@@ -116,26 +117,46 @@ export function NavMain({
                 {item.items?.length ? (
                   <CollapsibleContent className="overflow-hidden transition-all duration-300 ease-out data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                     <SidebarMenuSub className="space-y-1 mt-2">
-                      {item.items?.map((subItem, index) => (
-                        <SidebarMenuSubItem 
-                          key={subItem.title}
-                          className={`transition-all duration-300 ease-out ${
-                            isOpen 
-                              ? 'opacity-100 translate-y-0' 
-                              : 'opacity-0 translate-y-[-10px]'
-                          }`}
-                          style={{
-                            transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
-                          }}
-                        >
-                          <SidebarMenuSubButton asChild>
-                            <Link href={subItem.url}>
-                                <FileText className="w-4 h-4" />
-                                <span>{subItem.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
+                      {item.items?.map((subItem, index) => {
+                        const subIconRef = createRef<any>()
+                        
+                        const handleSubMouseEnter = () => {
+                          if (subIconRef.current && typeof subIconRef.current.startAnimation === 'function') {
+                            subIconRef.current.startAnimation()
+                          }
+                        }
+
+                        const handleSubMouseLeave = () => {
+                          if (subIconRef.current && typeof subIconRef.current.stopAnimation === 'function') {
+                            subIconRef.current.stopAnimation()
+                          }
+                        }
+
+                        return (
+                          <SidebarMenuSubItem 
+                            key={subItem.title}
+                            className={`transition-all duration-300 ease-out ${
+                              isOpen 
+                                ? 'opacity-100 translate-y-0' 
+                                : 'opacity-0 translate-y-[-10px]'
+                            }`}
+                            style={{
+                              transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
+                            }}
+                          >
+                            <SidebarMenuSubButton 
+                              asChild
+                              onMouseEnter={handleSubMouseEnter}
+                              onMouseLeave={handleSubMouseLeave}
+                            >
+                              <Link href={subItem.url}>
+                                  <FileTextIcon ref={subIconRef} />
+                                  <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        )
+                      })}
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 ) : null}
