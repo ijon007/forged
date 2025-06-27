@@ -44,18 +44,11 @@ async function DashboardPage() {
 
                 <div className="space-y-6">
                     {pageCards.length > 0 ? (
-                        <>
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                                    Your Pages ({pageCards.length})
-                                </h2>
-                            </div>
-                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {pageCards.map((page) => (
-                                    <PageCard key={page.id} {...page} />
-                                ))}
-                            </div>
-                        </>
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {pageCards.map((page) => (
+                                <PageCard key={page.id} {...page} />
+                            ))}
+                        </div>
                     ) : (
                         <EmptyState />
                     )}

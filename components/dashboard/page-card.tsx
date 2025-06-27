@@ -92,7 +92,7 @@ export function PageCard({
 
         {/* Title and description */}
         <div className="space-y-2">
-          <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 line-clamp-1">
             {title}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
