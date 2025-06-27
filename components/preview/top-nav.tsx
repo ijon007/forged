@@ -77,12 +77,6 @@ const TopNav = ({ previewData }: TopNavProps) => {
             <div className="container mx-auto px-4 py-4 max-w-8xl">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <Link href="/dashboard">
-                            <Button variant="ghost" size="sm" className="hover:bg-muted">
-                                <ArrowLeft className="mr-2 h-4 w-4" />
-                            </Button>
-                        </Link>
-                        <div className="hidden sm:block w-px h-6 bg-border" />
                         <div>
                             <div className="flex items-center gap-3">
                                 <h1 className="text-lg font-semibold truncate max-w-[300px]">{previewData.title}</h1>
