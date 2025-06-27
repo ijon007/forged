@@ -68,17 +68,17 @@ export const metadata: Metadata = {
         type: 'image/svg+xml',
       },
       {
-        url: '/hammer-black.svg',
+        url: '/icon-black.svg',
         type: 'image/svg+xml',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/hammer-white.svg',
+        url: '/icon-white.svg',
         type: 'image/svg+xml',
         media: '(prefers-color-scheme: dark)',
       }
     ],
-    apple: '/hammer-white.svg',
+    apple: '/icon-white.svg',
     shortcut: '/favicon.svg',
   },
 }
@@ -103,10 +103,6 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="msapplication-tap-highlight" content="no" />
-        {/* Theme-aware favicon fallbacks */}
-        <link rel="icon" href="/hammer-black.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
-        <link rel="icon" href="/hammer-white.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className={` ${geist.variable}`}>
         {children}
