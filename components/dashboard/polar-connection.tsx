@@ -8,10 +8,13 @@ import {
     AlertTriangle, 
     CheckCircle, 
     RefreshCw, 
-    ExternalLink
+    ExternalLink,
+    Building
 } from "lucide-react"
 import { toast } from "sonner"
 import { disconnectPolarAccount } from "@/actions/polar-actions"
+import { PolarDisconnectDialog } from "./polar-disconnect-dialog"
+import { PolarReconnectDialog } from "./polar-reconnect-dialog"
 
 interface PolarStatus {
     isConnected: boolean
@@ -19,10 +22,19 @@ interface PolarStatus {
     connectedAt?: Date | null
     needsReconnection?: boolean
     error?: string
+    organizationInfo?: {
+        id: string
+        name: string
+        slug: string
+        email?: string | null
+        website?: string | null
+        avatar_url?: string | null
+    } | null
 }
 
 interface UserData {
     polarUserId: string | null
+    polarOrganizationId: string | null
     polarConnectedAt: Date | null
     polarTokenExpiresAt: Date | null
 }
@@ -34,6 +46,8 @@ interface PolarConnectionProps {
 
 export default function PolarConnection({ polarStatus, userData }: PolarConnectionProps) {
     const [isDisconnecting, setIsDisconnecting] = useState(false)
+    const [showDisconnectDialog, setShowDisconnectDialog] = useState(false)
+    const [showReconnectDialog, setShowReconnectDialog] = useState(false)
 
     const handleDisconnect = async () => {
         try {
@@ -45,6 +59,7 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
             toast.error("Failed to disconnect Polar account")
         } finally {
             setIsDisconnecting(false)
+            setShowDisconnectDialog(false)
         }
     }
 
@@ -58,7 +73,8 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            {/* Desktop Layout */}
+            <div className="hidden md:flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     {polarStatus.isConnected ? (
                         polarStatus.needsReconnection ? (
@@ -79,15 +95,34 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                         ) : (
                             <>
                                 <CheckCircle className="h-5 w-5 text-green-500" />
-                                <div>
+                                <div className="flex-1">
                                     <p className="font-medium text-green-700 dark:text-green-300">
                                         Connected
                                     </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        {polarStatus.connectedAt && 
-                                            `Connected on ${new Date(polarStatus.connectedAt).toLocaleDateString()}`
-                                        }
-                                    </p>
+                                    {polarStatus.organizationInfo ? (
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                                <Building className="h-3 w-3 text-muted-foreground" />
+                                                <span className="text-sm">
+                                                    <span className="font-medium">Organization:</span> {polarStatus.organizationInfo.name}
+                                                </span>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground ml-5">
+                                                <span className="font-medium">Username:</span> @{polarStatus.organizationInfo.slug}
+                                            </p>
+                                            {polarStatus.organizationInfo.email && (
+                                                <p className="text-xs text-muted-foreground ml-5">
+                                                    <span className="font-medium">Email:</span> {polarStatus.organizationInfo.email}
+                                                </p>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">
+                                            {polarStatus.connectedAt && 
+                                                `Connected on ${new Date(polarStatus.connectedAt).toLocaleDateString()}`
+                                            }
+                                        </p>
+                                    )}
                                 </div>
                                 <Badge variant="secondary" className="bg-green-100 text-green-700">
                                     Active
@@ -118,7 +153,7 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={handleReconnect}
+                                onClick={() => setShowReconnectDialog(true)}
                                 className="flex items-center gap-2"
                             >
                                 <RefreshCw className="h-4 w-4" />
@@ -127,11 +162,11 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={handleDisconnect}
+                                onClick={() => setShowDisconnectDialog(true)}
                                 disabled={isDisconnecting}
                                 className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-600"
                             >
-                                {isDisconnecting ? "Disconnecting..." : "Disconnect"}
+                                Disconnect
                             </Button>
                         </>
                     ) : (
@@ -139,6 +174,119 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                             size="sm"
                             onClick={handleConnect}
                             className="flex items-center gap-2"
+                        >
+                            <ExternalLink className="h-4 w-4" />
+                            Connect Polar
+                        </Button>
+                    )}
+                </div>
+            </div>
+
+            {/* Mobile Layout */}
+            <div className="md:hidden space-y-3">
+                <div className="flex items-start gap-3">
+                    {polarStatus.isConnected ? (
+                        polarStatus.needsReconnection ? (
+                            <>
+                                <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <p className="font-medium text-yellow-700 dark:text-yellow-300">
+                                            Connection Expired
+                                        </p>
+                                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-700 text-xs">
+                                            Expired
+                                        </Badge>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">
+                                        Your Polar account needs to be reconnected to create checkouts
+                                    </p>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <p className="font-medium text-green-700 dark:text-green-300">
+                                            Connected
+                                        </p>
+                                    </div>
+                                    {polarStatus.organizationInfo ? (
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                                <Building size={20} />
+                                                <span className="text-base font-medium truncate">
+                                                    <span className="font-medium">Organization:</span> {polarStatus.organizationInfo.name}
+                                                </span>
+                                            </div>
+                                            <p className="text-base text-muted-foreground ml-5">
+                                                <span className="font-medium">Username:</span> @{polarStatus.organizationInfo.slug}
+                                            </p>
+                                            {polarStatus.organizationInfo.email && (
+                                                <p className="text-base text-muted-foreground truncate ml-5">
+                                                    <span className="font-medium">Email:</span> {polarStatus.organizationInfo.email}
+                                                </p>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">
+                                            {polarStatus.connectedAt && 
+                                                `Connected on ${new Date(polarStatus.connectedAt).toLocaleDateString()}`
+                                            }
+                                        </p>
+                                    )}
+                                </div>
+                            </>
+                        )
+                    ) : (
+                        <>
+                            <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <p className="font-medium text-red-700 dark:text-red-300">
+                                        Not Connected
+                                    </p>
+                                    <Badge variant="secondary" className="bg-red-100 text-red-700 text-xs">
+                                        Disconnected
+                                    </Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground">
+                                    Connect your Polar account to start selling products
+                                </p>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {/* Mobile Action Buttons */}
+                <div className="flex flex-col gap-2 w-full">
+                    {polarStatus.isConnected ? (
+                        <>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowReconnectDialog(true)}
+                                className="w-full flex items-center justify-center gap-2"
+                            >
+                                <RefreshCw className="h-4 w-4" />
+                                Reconnect
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowDisconnectDialog(true)}
+                                disabled={isDisconnecting}
+                                className="w-full text-red-600 border-red-200 hover:bg-red-50 hover:text-red-600"
+                            >
+                                Disconnect
+                            </Button>
+                        </>
+                    ) : (
+                        <Button
+                            size="sm"
+                            onClick={handleConnect}
+                            className="w-full flex items-center justify-center gap-2"
                         >
                             <ExternalLink className="h-4 w-4" />
                             Connect Polar
@@ -165,6 +313,22 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                     </p>
                 </div>
             )}
+
+            {/* Confirmation Dialogs */}
+            <PolarDisconnectDialog
+                open={showDisconnectDialog}
+                onOpenChange={setShowDisconnectDialog}
+                onConfirm={handleDisconnect}
+                organizationName={polarStatus.organizationInfo?.name}
+                isLoading={isDisconnecting}
+            />
+
+            <PolarReconnectDialog
+                open={showReconnectDialog}
+                onOpenChange={setShowReconnectDialog}
+                onConfirm={handleReconnect}
+                organizationName={polarStatus.organizationInfo?.name}
+            />
         </div>
     )
 } 

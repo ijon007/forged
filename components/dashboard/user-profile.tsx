@@ -51,13 +51,6 @@ export default function UserProfile({ userData }: UserProfileProps) {
                             {new Date(userData.createdAt).toLocaleDateString()}
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">Last updated</span>
-                        <span className="text-sm font-medium">
-                            {new Date(userData.updatedAt).toLocaleDateString()}
-                        </span>
-                    </div>
                 </div>
             </div>
 

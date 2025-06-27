@@ -9,7 +9,7 @@ const SignOut = () => {
         await signOut()
     }
     return (
-        <Button variant="outline" onClick={handleSignOut} className='w-full cursor-pointer'>
+        <Button variant="outline" onClick={handleSignOut} className='w-full cursor-pointer text-red-500 hover:text-red-600'>
             <LogOut />
             Sign Out
         </Button>

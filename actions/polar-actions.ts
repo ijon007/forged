@@ -20,6 +20,8 @@ export async function getPolarConnectionStatus() {
 
     const userData = await db.select({
       polarUserId: user.polarUserId,
+      polarOrganizationId: user.polarOrganizationId,
+      polarAccessToken: user.polarAccessToken,
       polarConnectedAt: user.polarConnectedAt,
       polarTokenExpiresAt: user.polarTokenExpiresAt,
     })
@@ -37,11 +39,32 @@ export async function getPolarConnectionStatus() {
       ? new Date() > userPolarData.polarTokenExpiresAt 
       : false;
 
+    let organizationInfo = null;
+
+    // If connected and token is valid, fetch organization details
+    if (isConnected && !isTokenExpired && userPolarData.polarAccessToken && userPolarData.polarOrganizationId) {
+      try {
+        const orgResponse = await fetch(`https://sandbox-api.polar.sh/v1/organizations/${userPolarData.polarOrganizationId}`, {
+          headers: {
+            'Authorization': `Bearer ${userPolarData.polarAccessToken}`,
+          },
+        });
+
+        if (orgResponse.ok) {
+          organizationInfo = await orgResponse.json();
+        }
+      } catch (error) {
+        console.error("Error fetching organization info:", error);
+        // Don't fail the whole function if org fetch fails
+      }
+    }
+
     return {
       isConnected,
       isTokenExpired,
       connectedAt: userPolarData.polarConnectedAt,
       needsReconnection: isConnected && isTokenExpired,
+      organizationInfo,
     };
   } catch (error) {
     console.error("Error checking Polar connection status:", error);

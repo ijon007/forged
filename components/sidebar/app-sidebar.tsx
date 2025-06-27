@@ -1,11 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  BarChart3,
-  Eye,
-  LayoutDashboard,
-} from "lucide-react"
+import Image from "next/image"
 
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -18,12 +14,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import Image from "next/image"
-import { getUserCourses } from "@/actions/course-db-actions"
-import type { Course } from "@/db/schemas/course-schema"
 import { ChartColumnDecreasingIcon } from "../ui/chart-column-decreasing"
 import { LayoutPanelTopIcon } from "../ui/layout-panel-top"
 import { FoldersIcon } from "../ui/folders"
+import { SettingsGearIcon } from "../ui/settings-gear"
+
+import { getUserCourses } from "@/actions/course-db-actions"
+import type { Course } from "@/db/schemas/course-schema"
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
@@ -75,6 +72,11 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       icon: <FoldersIcon />,
       items: previewItems.length > 0 ? previewItems : undefined,
     },
+    {
+        title: "Settings",
+        url: "/dashboard/user",
+        icon: <SettingsGearIcon />
+      },
   ]
 
   return (
