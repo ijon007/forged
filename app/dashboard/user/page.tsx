@@ -1,23 +1,20 @@
-import { getSession, getUserData } from "@/actions/auth-actions"
+import { getUserData } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
 import { getPolarConnectionStatus } from "@/actions/polar-actions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { User, Zap } from "lucide-react"
+import { Zap } from "lucide-react"
 import UserProfile from "@/components/dashboard/user-profile"
 import PolarConnection from "@/components/dashboard/polar-connection"
 
 async function UserPage() {
-    const session = await getSession()
-    if (!session) {
-        redirect("/login")
-    }
+    const [userData, polarStatus] = await Promise.all([
+        getUserData(),
+        getPolarConnectionStatus()
+    ])
 
-    const userData = await getUserData()
     if (!userData) {
         redirect("/login")
     }
-
-    const polarStatus = await getPolarConnectionStatus()
 
     return (
         <div className="container mx-auto px-4 py-8 space-y-8">

@@ -129,9 +129,6 @@ export async function getAnalyticsStats(): Promise<AnalyticsStats> {
 
     const orders = await fetchPolarOrders(userData.polarAccessToken, userData.polarOrganizationId)
 
-    console.log('Fetched orders count:', orders.length)
-    console.log('First few orders:', JSON.stringify(orders.slice(0, 2), null, 2))
-
     // Calculate current month start and last month start
     const now = new Date()
     const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -139,17 +136,7 @@ export async function getAnalyticsStats(): Promise<AnalyticsStats> {
 
     // Filter completed orders only
     const completedOrders = orders.filter((order: any) => order.status === 'paid')
-    
-    console.log('Completed orders count:', completedOrders.length)
-    console.log('Order statuses:', orders.map((order: any) => order.status))
-    if (orders.length > 0) {
-      console.log('Sample order structure:', {
-        status: orders[0].status,
-        amount: orders[0].amount,
-        created_at: orders[0].created_at,
-        paid: orders[0].paid
-      })
-    }
+  
 
     // Calculate total revenue (convert from cents to dollars)
     const totalRevenue = completedOrders.reduce((sum: number, order: any) => {

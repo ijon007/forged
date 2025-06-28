@@ -6,8 +6,7 @@ import { nextCookies } from "better-auth/next-js";
 // Drizzle
 import { db } from "../db/drizzle";
 import { account, session, user, verification } from "@/db/schemas/auth-schema";
-import { course, coursePurchase } from "@/db/schemas/course-schema";
-import { eq, desc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 // Polar
 import { polar, checkout, webhooks } from "@polar-sh/better-auth";
@@ -55,66 +54,6 @@ export const auth = betterAuth({
                 }),
                 webhooks({
                     secret: process.env.POLAR_WEBHOOK_SECRET!,
-                    
-                    // Handle course purchases - works for both authenticated and anonymous users
-                    onOrderPaid: async (payload) => {
-                        console.log("Order paid", payload);
-                        
-                        const order = payload.data;
-                        
-                        // Find the course by polar product ID
-                        if (order.productId) {
-                            const courseData = await db.select()
-                                .from(course)
-                                .where(eq(course.polarProductId, order.productId))
-                                .limit(1);
-                            
-                            if (courseData.length > 0) {
-                                const courseId = courseData[0].id;
-                                
-                                // First, try to find an existing purchase token for this course
-                                const existingPurchase = await db.select()
-                                    .from(coursePurchase)
-                                    .where(eq(coursePurchase.courseId, courseId))
-                                    .orderBy(desc(coursePurchase.createdAt))
-                                    .limit(5); // Check last 5 purchases for this course
-                                
-                                // Look for a pending purchase token that matches this timeframe
-                                const recentPurchase = existingPurchase.find(p => 
-                                    p.polarOrderId === null && 
-                                    p.userId === null &&
-                                    (new Date().getTime() - p.createdAt.getTime()) < 600000 // Within 10 minutes
-                                );
-                                
-                                if (recentPurchase) {
-                                    // Update the existing token with order ID
-                                    await db.update(coursePurchase)
-                                        .set({ polarOrderId: order.id })
-                                        .where(eq(coursePurchase.id, recentPurchase.id));
-                                    
-                                    console.log(`Anonymous purchase completed: Token ${recentPurchase.id} for course ${courseId}`);
-                                } else {
-                                    // Try to find authenticated user purchase
-                                    const userData = await db.select()
-                                        .from(user)
-                                        .where(eq(user.polarCustomerId, order.customerId))
-                                        .limit(1);
-                                    
-                                    if (userData.length) {
-                                        // Authenticated user purchase
-                                        await db.insert(coursePurchase).values({
-                                            id: `purchase_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                                            userId: userData[0].id,
-                                            courseId: courseId,
-                                            polarOrderId: order.id,
-                                        });
-                                        
-                                        console.log(`Authenticated purchase recorded: User ${userData[0].id} bought course ${courseId}`);
-                                    }
-                                }
-                            }
-                        }
-                    },
                     
                     onSubscriptionActive: async (payload) => {
                         console.log("Subscription active", payload);

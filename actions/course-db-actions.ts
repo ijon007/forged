@@ -1,5 +1,8 @@
 "use server"
 
+/* React */
+import { cache } from "react"
+
 /* Next */
 import { headers } from "next/headers"
 
@@ -297,7 +300,7 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
   }
 }
 
-export async function getUserCourses(userId?: string): Promise<Course[]> {
+export const getUserCourses = cache(async (userId?: string): Promise<Course[]> => {
   try {
     let targetUserId = userId
 
@@ -324,7 +327,7 @@ export async function getUserCourses(userId?: string): Promise<Course[]> {
     console.error('Error getting user courses:', error)
     return []
   }
-}
+})
 
 export async function deleteCourse(courseId: string): Promise<{ success: boolean; error?: string }> {
   try {

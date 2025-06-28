@@ -1,7 +1,6 @@
 import { getSession } from "@/actions/auth-actions"
 import { redirect } from "next/navigation"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { MoneyStats } from "@/components/dashboard/money-stats"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
@@ -16,16 +15,16 @@ async function DashboardPage() {
         redirect("/login")
     }
 
+    const [polarStatus, userCourses] = await Promise.all([
+        getPolarConnectionStatus(),
+        getUserCourses()
+    ])
+
     const { data: customerState } = await authClient.customer.state();
+    console.log(customerState)
     if(customerState?.activeSubscriptions.length === 0) {
         redirect("/pricing")
     }
-
-    // Check Polar connection status
-    const polarStatus = await getPolarConnectionStatus();
-
-    const userCourses = await getUserCourses()
-
 
     const pageCards = userCourses.map(course => ({
         id: course.id,

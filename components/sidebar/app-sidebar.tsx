@@ -19,7 +19,6 @@ import { LayoutPanelTopIcon } from "../ui/layout-panel-top"
 import { FoldersIcon } from "../ui/folders"
 import { SettingsGearIcon } from "../ui/settings-gear"
 
-import { getUserCourses } from "@/actions/course-db-actions"
 import type { Course } from "@/db/schemas/course-schema"
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
@@ -28,29 +27,14 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
     email: string
     image?: string | null
   }
+  userCourses?: Course[]
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
-  const [userCourses, setUserCourses] = React.useState<Course[]>([])
-
-  React.useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const courses = await getUserCourses()
-        setUserCourses(courses)
-      } catch (error) {
-        console.error('Error fetching user courses:', error)
-        setUserCourses([])
-      }
-    }
-    
-    fetchCourses()
-  }, [])
-
+export function AppSidebar({ user, userCourses = [], ...props }: AppSidebarProps) {
   const previewItems = userCourses.length > 0 
     ? userCourses.map(course => ({
         title: course.title,
-        url: `/dashboard/preview/${course.id}`,
+        url: `/dashboard/preview/${course.slug}`,
       }))
     : []
 

@@ -1,5 +1,8 @@
 "use server";
 
+/* React */
+import { cache } from "react";
+
 /* Next */
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -8,12 +11,13 @@ import { db } from "@/db/drizzle";
 import { user } from "@/db/schemas/auth-schema";
 import { eq } from "drizzle-orm";
 
-export const getSession = async () => {
+// Cache session for the duration of the request to prevent multiple DB calls
+export const getSession = cache(async () => {
     const session = await auth.api.getSession({
         headers: await headers()
     })
     return session;
-}
+})
 
 export const signOut = async () => {
     await auth.api.signOut({
@@ -22,7 +26,8 @@ export const signOut = async () => {
     redirect("/");
 }
 
-export async function getUserData() {
+// Cache user data for the duration of the request
+export const getUserData = cache(async () => {
     try {
         const session = await getSession();
         if (!session) {
@@ -62,4 +67,4 @@ export async function getUserData() {
         console.error("Error fetching user data:", error);
         return null;
     }
-}
+})

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { CreateCourseDialog } from "@/components/create-course-dialog"
+import { CreateCourseDialog } from "@/components/dashboard/create-course-dialog"
 import { ArrowRight } from "lucide-react"
 import { SidebarTrigger } from "../ui/sidebar"
 
