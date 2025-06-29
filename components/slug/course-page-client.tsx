@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 /* Components */
 import CourseHeader from "./course-header"
-import PublishedContent from "./content"
 import CourseSidebar from "./course-sidebar"
 import PoweredByBadge from "./powered-by-badge"
 import CourseJsonLd from "./course-json-ld"
@@ -14,6 +13,7 @@ import { AccessCodeDialog, AccessCodeInputDialog } from "./access-code-dialog"
 
 /* Actions */
 import { validateAccessCode, markPurchaseCompleted } from "@/actions/course-db-actions"
+import PublishedContent from "./content"
 
 interface CoursePageClientProps {
   page: {
