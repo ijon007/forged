@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { publishCourse, unpublishCourse } from '@/actions/course-db-actions'
 import { toast } from 'sonner'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 
 interface TopNavProps {
     previewData: {
@@ -73,18 +74,19 @@ const TopNav = ({ previewData }: TopNavProps) => {
     const isPublished = previewData.published || previewData.status === 'published'
     
     return (
-        <div className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 py-4 max-w-8xl">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col lg:flex-row items-center justify-between">
                     <div className="flex items-center gap-4">
+                        <SidebarTrigger className="block md:hidden" />
                         <div>
                             <div className="flex items-center gap-3">
-                                <h1 className="text-lg font-semibold truncate max-w-[300px]">{previewData.title}</h1>
+                                <h1 className="text-lg font-semibold truncate max-w-[200px] sm:max-w-[300px]">{previewData.title}</h1>
                                 <Badge variant={isPublished ? "default" : "outline"} className={isPublished ? "bg-green-500 text-white" : "text-xs"}>
                                     {isPublished ? 'Published' : 'Draft'}
                                 </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground hidden sm:block">
+                            <p className="text-sm text-muted-foreground hidden md:block">
                                 {isPublished ? 'Your course is live and accessible to users' : 'Preview and edit your generated page'}
                             </p>
                         </div>
@@ -98,14 +100,14 @@ const TopNav = ({ previewData }: TopNavProps) => {
                             size="lg"
                         >
                             <Eye className="h-4 w-4 sm:mr-2" />
-                            <span className="hidden sm:inline ">Preview</span>
+                            <span className="hidden md:inline text-sm">Preview</span>
                         </Button>
 
                         {isPublished && (
                             <Link href={`/${previewData.id}`} target="_blank">
                                 <Button variant="outline" className="hover:bg-muted py-2 rounded-xl" size="lg">
                                     <ExternalLink className="h-4 w-4 sm:mr-2" />
-                                    <span className="hidden sm:inline">View Live</span>
+                                    <span className="hidden md:inline text-sm">View Live</span>
                                 </Button>
                             </Link>
                         )}
@@ -118,7 +120,7 @@ const TopNav = ({ previewData }: TopNavProps) => {
                                 isPublished 
                                     ? 'bg-red-600 hover:bg-red-700 text-white' 
                                     : 'bg-black text-white hover:bg-gray-800'
-                            } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 sm:size-xl`}
+                            } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
                         >
                             <div className={`absolute inset-0 ${
                                 isPublished 
@@ -130,7 +132,7 @@ const TopNav = ({ previewData }: TopNavProps) => {
                             ) : (
                                 <Check className="h-4 w-4 relative sm:mr-2" />
                             )}
-                            <span className='relative text-white hidden sm:inline'>
+                            <span className='relative text-white hidden md:inline text-sm'>
                                 {isPublished ? 'Unpublish' : 'Publish'}
                             </span>
                         </Button>

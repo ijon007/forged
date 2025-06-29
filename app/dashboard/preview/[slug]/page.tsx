@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import { courseStore } from "@/lib/course-store"
 import { getCourseWithUser } from "@/actions/course-db-actions"
-import Content from "@/components/preview/content"
 import Preferences from "@/components/preview/preferences"
 import Preview from "@/components/preview/preview"
 import TopNav from "@/components/preview/top-nav"
@@ -75,7 +74,6 @@ export default async function PreviewPage({
           <div className="flex flex-col gap-6 xl:w-1/3 xl:min-w-[400px]">
             <Preferences previewData={previewData} />
             <Socials courseId={dbCourse.id} initialLinks={dbCourse.links || []} />
-            <Content previewData={previewData} />
           </div>
 
           <div className="flex-1 xl:w-2/3">
