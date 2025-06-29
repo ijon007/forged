@@ -142,14 +142,14 @@ export function Hero() {
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-up animation-delay-600">
             <Link href="/login">
-            <Button
-              size="lg"
-              className="group relative bg-black text-white hover:bg-gray-800 rounded-2xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl w-full py-6 px-10 sm:w-auto"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative">Generate Playbook</span>
-              <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+                <Button
+                    size="lg"
+                    className="group relative bg-black text-white hover:bg-gray-800 rounded-2xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl w-full py-6 px-10 sm:w-auto"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="relative">Generate Playbook</span>
+                    <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
             </Link>
           </div>
         </div>

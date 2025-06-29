@@ -9,7 +9,7 @@ import { account, session, user, verification } from "@/db/schemas/auth-schema";
 import { eq } from "drizzle-orm";
 
 // Polar
-import { polar, checkout, webhooks } from "@polar-sh/better-auth";
+import { polar, checkout, webhooks, portal } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
 
 export const polarClient = new Polar({
@@ -52,6 +52,7 @@ export const auth = betterAuth({
                     successUrl: process.env.POLAR_SUCCESS_URL,
                     authenticatedUsersOnly: true,
                 }),
+                portal(),
                 webhooks({
                     secret: process.env.POLAR_WEBHOOK_SECRET!,
                     
