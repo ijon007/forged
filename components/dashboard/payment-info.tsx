@@ -1,16 +1,14 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { 
     CreditCard, 
     Calendar, 
-    DollarSign, 
     Crown, 
     CheckCircle, 
     AlertTriangle,
-    ExternalLink 
+    Wallet
 } from "lucide-react"
 import {
     isSubscriptionActive,
@@ -23,6 +21,7 @@ import {
     type SubscriptionStatus,
     type PlanType
 } from "@/utils/subscription"
+import { Button } from "../ui/button"
 
 interface UserData {
     polarCustomerId: string | null
@@ -52,17 +51,17 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
         const getIcon = () => {
             switch (status) {
                 case "active":
-                    return <CheckCircle className="h-3 w-3 mr-1" />
+                    return <CheckCircle className="h-3 w-3" />
                 case "canceled":
                 case "revoked":
-                    return <AlertTriangle className="h-3 w-3 mr-1" />
+                    return <AlertTriangle className="h-3 w-3" />
                 default:
                     return null
             }
         }
 
         return (
-            <Badge variant={statusVariant.variant} className={statusVariant.className}>
+            <Badge variant={statusVariant.variant} className={`${statusVariant.className} flex items-center gap-1.5`}>
                 {getIcon()}
                 {label}
             </Badge>
@@ -71,138 +70,68 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
 
     const getPlanIcon = () => {
         if (planType === "yearly") {
-            return <Crown className="h-4 w-4 text-yellow-500" />
+            return <Crown className="h-4 w-4 text-amber-500" />
         }
-        return <CreditCard className="h-4 w-4" />
-    }
-
-    const handleManageBilling = () => {
-        // TODO: Implement billing portal redirect
-        window.open("https://polar.sh/billing", "_blank")
-    }
-
-    const handleUpgrade = () => {
-        // Redirect to pricing page
-        window.location.href = "/pricing"
+        return <CreditCard className="h-4 w-4 text-slate-500" />
     }
 
     return (
-        <div className="space-y-6">
-            {/* Subscription Status */}
-            <div className="space-y-2">
-                <Label className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    Subscription Status
-                </Label>
-                <div className="flex items-center gap-2">
-                    {getStatusBadge()}
-                    {isExpired && (
-                        <Badge variant="secondary" className="bg-red-100 text-red-700">
-                            Expired
-                        </Badge>
-                    )}
-                    {hasActiveSubscription && daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry > 0 && (
-                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">
-                            Expires in {daysUntilExpiry} day{daysUntilExpiry !== 1 ? 's' : ''}
-                        </Badge>
-                    )}
-                </div>
-            </div>
-
-            {/* Plan Information */}
-            <div className="space-y-2">
-                <Label className="flex items-center gap-2">
-                    {getPlanIcon()}
-                    Current Plan
-                </Label>
-                <div className="flex items-center justify-between">
-                    <span className="font-medium">{getPlanTypeLabel(planType)}</span>
-                    {!hasActiveSubscription && (
-                        <Button size="sm" onClick={handleUpgrade}>
-                            Upgrade
-                        </Button>
-                    )}
-                </div>
-            </div>
-
-            {/* Subscription Details */}
-            {userData.subscriptionId && (
-                <>
-                    <div className="space-y-2">
-                        <Label>Subscription ID</Label>
-                        <div className="font-mono text-sm bg-muted p-2 rounded border">
-                            {userData.subscriptionId}
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                    <Wallet className="h-5 w-5 text-green-500" />
+                    Subscription
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            {getPlanIcon()}
+                            <span className="font-medium">{getPlanTypeLabel(planType)}</span>
                         </div>
+                        {getStatusBadge()}
                     </div>
 
                     {endsAt && (
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2">
-                                <Calendar className="h-4 w-4" />
-                                {hasActiveSubscription ? "Next Billing Date" : "Expires On"}
-                            </Label>
-                            <div className="flex items-center gap-2">
-                                <span className="font-medium">
-                                    {formatSubscriptionEndDate(endsAt)}
-                                </span>
-                                {isExpired && (
-                                    <Badge variant="secondary" className="bg-red-100 text-red-700">
-                                        Expired
-                                    </Badge>
-                                )}
-                            </div>
+                        <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                {hasActiveSubscription ? "Next billing" : "Expires"}
+                            </span>
+                            <span className="font-medium">{formatSubscriptionEndDate(endsAt)}</span>
                         </div>
                     )}
-                </>
-            )}
 
-            {/* Customer ID */}
-            {userData.polarCustomerId && (
-                <div className="space-y-2">
-                    <Label>Customer ID</Label>
-                    <div className="font-mono text-sm bg-muted p-2 rounded border">
-                        {userData.polarCustomerId}
-                    </div>
+                    {daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry > 0 && (
+                        <div className="text-sm text-amber-600 bg-amber-50 dark:bg-amber-950/20 px-3 py-2 rounded-md">
+                            Expires in {daysUntilExpiry} day{daysUntilExpiry !== 1 ? 's' : ''}
+                        </div>
+                    )}
+
+                    {isExpired && (
+                        <div className="text-sm text-red-600 bg-red-50 dark:bg-red-950/20 px-3 py-2 rounded-md">
+                            Subscription expired
+                        </div>
+                    )}
                 </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="space-y-3 pt-4 border-t">
-                {hasActiveSubscription ? (
-                    <div className="space-y-2">
+                <div className="pt-4 border-t mt-5">
+                    <div className="flex flex-col sm:flex-row gap-3">
                         <Button
-                            onClick={handleManageBilling}
-                            className="w-full"
-                            variant="outline"
+                            onClick={() => {
+                                // Open Polar customer portal
+                                window.open('https://polar.sh/dashboard/personal/billing', '_blank')
+                            }}
+                            className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/20 dark:text-blue-400 dark:hover:bg-blue-950/30 rounded-md transition-colors"
                         >
-                            <ExternalLink className="h-4 w-4 mr-2" />
+                            <CreditCard className="h-4 w-4" />
                             Manage Billing
                         </Button>
-                        <p className="text-xs text-muted-foreground text-center">
-                            Access your billing portal to update payment methods, download invoices, and manage your subscription
-                        </p>
+                        <div className="text-sm text-muted-foreground flex items-center">
+                            <span>You can upgrade or change your plan anytime through the billing portal</span>
+                        </div>
                     </div>
-                ) : (
-                    <div className="space-y-2">
-                        <Button onClick={handleUpgrade} className="w-full">
-                            <Crown className="h-4 w-4 mr-2" />
-                            Subscribe Now
-                        </Button>
-                        <p className="text-xs text-muted-foreground text-center">
-                            Get access to premium features with a subscription
-                        </p>
-                    </div>
-                )}
-            </div>
-
-            {/* Additional Info */}
-            <div className="text-xs text-muted-foreground space-y-1">
-                <p>• All subscription management is handled through Polar</p>
-                <p>• Changes may take a few minutes to reflect</p>
-                {status === "canceled" && hasActiveSubscription && (
-                    <p className="text-orange-600">• Your subscription is canceled but remains active until {formatSubscriptionEndDate(endsAt)}</p>
-                )}
-            </div>
-        </div>
+                </div>
+            </CardContent>
+        </Card>
     )
 } 

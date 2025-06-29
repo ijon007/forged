@@ -18,7 +18,7 @@ async function UserPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 space-y-8">
+        <div className="container mx-auto px-4 lg:px-32 py-8 space-y-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
                     Profile
@@ -29,27 +29,32 @@ async function UserPage() {
             </div>
 
             <div className="flex flex-col gap-6">
-                <Card>
-                    <CardContent>
-                        <UserProfile userData={userData} />
-                    </CardContent>
-                </Card>
+                <div className="space-y-6">
+                    <Card>
+                        <CardContent>
+                            <UserProfile userData={userData} />
+                        </CardContent>
+                    </Card>
 
-                <Card className="md:col-span-1 lg:col-span-2">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Zap className="h-5 w-5 text-blue-500" />
-                            Polar Account Integration
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <PolarConnection
-                            polarStatus={polarStatus} 
-                            userData={userData} 
-                        />
-                    </CardContent>
-                </Card>
-                <PaymentInfo userData={userData} />
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Zap className="h-5 w-5 text-blue-500" />
+                                Polar Account Integration
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <PolarConnection
+                                polarStatus={polarStatus} 
+                                userData={userData} 
+                            />
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <div>
+                    <PaymentInfo userData={userData} />
+                </div>
             </div>
         </div>
     )
