@@ -12,6 +12,17 @@ import {
     AlertTriangle,
     ExternalLink 
 } from "lucide-react"
+import {
+    isSubscriptionActive,
+    isSubscriptionExpired,
+    getSubscriptionStatusLabel,
+    getPlanTypeLabel,
+    getSubscriptionStatusVariant,
+    formatSubscriptionEndDate,
+    getDaysUntilExpiry,
+    type SubscriptionStatus,
+    type PlanType
+} from "@/utils/subscription"
 
 interface UserData {
     polarCustomerId: string | null
@@ -26,61 +37,43 @@ interface PaymentInfoProps {
 }
 
 export function PaymentInfo({ userData }: PaymentInfoProps) {
-    const hasActiveSubscription = userData.subscriptionStatus === "active"
-    const isExpired = userData.subscriptionEndsAt 
-        ? new Date() > userData.subscriptionEndsAt 
-        : false
+    const status = userData.subscriptionStatus as SubscriptionStatus
+    const planType = userData.planType as PlanType
+    const endsAt = userData.subscriptionEndsAt
+
+    const hasActiveSubscription = isSubscriptionActive(status, endsAt)
+    const isExpired = isSubscriptionExpired(endsAt)
+    const daysUntilExpiry = getDaysUntilExpiry(endsAt)
 
     const getStatusBadge = () => {
-        if (!userData.subscriptionStatus) {
-            return (
-                <Badge variant="secondary" className="bg-gray-100 text-gray-700">
-                    No Subscription
-                </Badge>
-            )
+        const statusVariant = getSubscriptionStatusVariant(status)
+        const label = getSubscriptionStatusLabel(status)
+
+        const getIcon = () => {
+            switch (status) {
+                case "active":
+                    return <CheckCircle className="h-3 w-3 mr-1" />
+                case "canceled":
+                case "revoked":
+                    return <AlertTriangle className="h-3 w-3 mr-1" />
+                default:
+                    return null
+            }
         }
 
-        switch (userData.subscriptionStatus) {
-            case "active":
-                return (
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
-                        <CheckCircle className="h-3 w-3 mr-1" />
-                        Active
-                    </Badge>
-                )
-            case "cancelled":
-                return (
-                    <Badge variant="secondary" className="bg-orange-100 text-orange-700">
-                        <AlertTriangle className="h-3 w-3 mr-1" />
-                        Cancelled
-                    </Badge>
-                )
-            case "revoked":
-                return (
-                    <Badge variant="secondary" className="bg-red-100 text-red-700">
-                        <AlertTriangle className="h-3 w-3 mr-1" />
-                        Revoked
-                    </Badge>
-                )
-            default:
-                return (
-                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">
-                        {userData.subscriptionStatus}
-                    </Badge>
-                )
-        }
+        return (
+            <Badge variant={statusVariant.variant} className={statusVariant.className}>
+                {getIcon()}
+                {label}
+            </Badge>
+        )
     }
 
     const getPlanIcon = () => {
-        if (userData.planType === "yearly") {
+        if (planType === "yearly") {
             return <Crown className="h-4 w-4 text-yellow-500" />
         }
         return <CreditCard className="h-4 w-4" />
-    }
-
-    const getPlanName = () => {
-        if (!userData.planType) return "No Plan"
-        return userData.planType === "yearly" ? "Yearly Plan" : "Monthly Plan"
     }
 
     const handleManageBilling = () => {
@@ -108,6 +101,11 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
                             Expired
                         </Badge>
                     )}
+                    {hasActiveSubscription && daysUntilExpiry !== null && daysUntilExpiry <= 7 && daysUntilExpiry > 0 && (
+                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">
+                            Expires in {daysUntilExpiry} day{daysUntilExpiry !== 1 ? 's' : ''}
+                        </Badge>
+                    )}
                 </div>
             </div>
 
@@ -118,7 +116,7 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
                     Current Plan
                 </Label>
                 <div className="flex items-center justify-between">
-                    <span className="font-medium">{getPlanName()}</span>
+                    <span className="font-medium">{getPlanTypeLabel(planType)}</span>
                     {!hasActiveSubscription && (
                         <Button size="sm" onClick={handleUpgrade}>
                             Upgrade
@@ -137,7 +135,7 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
                         </div>
                     </div>
 
-                    {userData.subscriptionEndsAt && (
+                    {endsAt && (
                         <div className="space-y-2">
                             <Label className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
@@ -145,7 +143,7 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
                             </Label>
                             <div className="flex items-center gap-2">
                                 <span className="font-medium">
-                                    {new Date(userData.subscriptionEndsAt).toLocaleDateString()}
+                                    {formatSubscriptionEndDate(endsAt)}
                                 </span>
                                 {isExpired && (
                                     <Badge variant="secondary" className="bg-red-100 text-red-700">
@@ -198,14 +196,13 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
             </div>
 
             {/* Additional Info */}
-            {!hasActiveSubscription && (
-                <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p className="text-sm text-blue-700 dark:text-blue-300">
-                        <strong>Need a subscription?</strong> Subscribe to access premium features 
-                        including unlimited pages, custom domains, and priority support.
-                    </p>
-                </div>
-            )}
+            <div className="text-xs text-muted-foreground space-y-1">
+                <p>• All subscription management is handled through Polar</p>
+                <p>• Changes may take a few minutes to reflect</p>
+                {status === "canceled" && hasActiveSubscription && (
+                    <p className="text-orange-600">• Your subscription is canceled but remains active until {formatSubscriptionEndDate(endsAt)}</p>
+                )}
+            </div>
         </div>
     )
 } 

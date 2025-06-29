@@ -1,16 +1,13 @@
-import { getSession } from "@/actions/auth-actions"
+import { requireAuth, hasActiveSubscription } from "@/actions/auth-actions"
 import { PlanSelection } from "@/components/plan-selection"
-import { authClient } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
 
 export default async function PricingPage() {
-  const session = await getSession()
-  if (!session) {
-    redirect("/login")
-  }
+  await requireAuth()
 
-  const { data: customerState } = await authClient.customer.state();
-  if(customerState?.activeSubscriptions) {
+  // Check if user already has active subscription
+  const isActive = await hasActiveSubscription()
+  if (isActive) {
     redirect("/dashboard")
   }
 

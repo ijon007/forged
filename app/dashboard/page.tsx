@@ -1,30 +1,20 @@
-import { getSession } from "@/actions/auth-actions"
-import { redirect } from "next/navigation"
+import { requireAuth, requireActiveSubscription } from "@/actions/auth-actions"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { PageCard } from "@/components/dashboard/page-card"
 import { EmptyState } from "@/components/dashboard/empty-state"
 import { getUserCourses } from "@/actions/course-db-actions"
 import { getPolarConnectionStatus } from "@/actions/polar-actions"
-import { authClient } from "@/lib/auth-client"
 import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper"
 
-
 async function DashboardPage() {
-    const session = await getSession()
-    if (!session) {
-        redirect("/login")
-    }
+    // Require authentication and active subscription
+    await requireAuth()
+    await requireActiveSubscription()
 
     const [polarStatus, userCourses] = await Promise.all([
         getPolarConnectionStatus(),
         getUserCourses()
     ])
-
-    const { data: customerState } = await authClient.customer.state();
-    console.log(customerState)
-    if(customerState?.activeSubscriptions.length === 0) {
-        redirect("/pricing")
-    }
 
     const pageCards = userCourses.map(course => ({
         id: course.id,
@@ -40,7 +30,6 @@ async function DashboardPage() {
         <DashboardClientWrapper polarStatus={polarStatus}>
             <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10 z-10">
                 <DashboardHeader />
-
                 <div className="space-y-6">
                     {pageCards.length > 0 ? (
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

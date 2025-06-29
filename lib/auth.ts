@@ -16,6 +16,29 @@ export const polarClient = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN,
     server: "sandbox",
 });
+
+// Helper function to determine plan type from product ID
+const getPlanTypeFromProductId = (productId: string): string => {
+    if (productId === "3196f5a1-28d3-4c44-9758-bb82bd1e38e9") {
+        return "yearly";
+    }
+    return "monthly";
+};
+
+// Helper function to update user subscription
+const updateUserSubscription = async (customerId: string, updates: any) => {
+    try {
+        const result = await db.update(user)
+            .set({ ...updates, updatedAt: new Date() })
+            .where(eq(user.polarCustomerId, customerId));
+        
+        console.log(`Updated user subscription for customer ${customerId}:`, updates);
+        return result;
+    } catch (error) {
+        console.error(`Failed to update user subscription for customer ${customerId}:`, error);
+        throw error;
+    }
+};
  
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -57,106 +80,160 @@ export const auth = betterAuth({
                     secret: process.env.POLAR_WEBHOOK_SECRET!,
                     
                     onSubscriptionActive: async (payload) => {
-                        console.log("Subscription active", payload);
+                        console.log("Subscription active webhook:", payload);
                         
-                        // Update user subscription status
-                        const subscription = payload.data;
-                        const customerId = subscription.customerId;
-                        
-                        // Determine plan type based on product
-                        let planType = "monthly";
-                        if (subscription.productId === "3196f5a1-28d3-4c44-9758-bb82bd1e38e9") {
-                            planType = "yearly";
-                        }
-                        
-                        await db.update(user)
-                            .set({
+                        try {
+                            const subscription = payload.data;
+                            const customerId = subscription.customerId;
+                            const planType = getPlanTypeFromProductId(subscription.productId);
+                            
+                            await updateUserSubscription(customerId, {
                                 subscriptionId: subscription.id,
                                 subscriptionStatus: "active",
                                 planType: planType,
                                 subscriptionEndsAt: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
-                                updatedAt: new Date()
-                            })
-                            .where(eq(user.polarCustomerId, customerId));
+                            });
+                        } catch (error) {
+                            console.error("Error in onSubscriptionActive webhook:", error);
+                        }
                     },
+
                     onSubscriptionRevoked: async (payload) => {
-                        console.log("Subscription revoked", payload);
+                        console.log("Subscription revoked webhook:", payload);
                         
-                        // Update user subscription status to revoked
-                        const subscription = payload.data;
-                        const customerId = subscription.customerId;
-                        
-                        await db.update(user)
-                            .set({
+                        try {
+                            const subscription = payload.data;
+                            const customerId = subscription.customerId;
+                            
+                            await updateUserSubscription(customerId, {
                                 subscriptionStatus: "revoked",
                                 subscriptionEndsAt: subscription.endedAt ? new Date(subscription.endedAt) : new Date(),
-                                updatedAt: new Date()
-                            })
-                            .where(eq(user.polarCustomerId, customerId));
+                            });
+                        } catch (error) {
+                            console.error("Error in onSubscriptionRevoked webhook:", error);
+                        }
                     },
+
+                    onSubscriptionCanceled: async (payload) => {
+                        console.log("Subscription canceled webhook:", payload);
+                        
+                        try {
+                            const subscription = payload.data;
+                            const customerId = subscription.customerId;
+                            
+                            // When canceled, subscription remains active until period end
+                            await updateUserSubscription(customerId, {
+                                subscriptionStatus: "canceled",
+                                subscriptionEndsAt: subscription.canceledAt ? new Date(subscription.canceledAt) : null,
+                            });
+                        } catch (error) {
+                            console.error("Error in onSubscriptionCanceled webhook:", error);
+                        }
+                    },
+
+                    onSubscriptionUpdated: async (payload) => {
+                        console.log("Subscription updated webhook:", payload);
+                        
+                        try {
+                            const subscription = payload.data;
+                            const customerId = subscription.customerId;
+                            const planType = getPlanTypeFromProductId(subscription.productId);
+                            
+                            // Update subscription details
+                            await updateUserSubscription(customerId, {
+                                subscriptionId: subscription.id,
+                                planType: planType,
+                                subscriptionEndsAt: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
+                            });
+                        } catch (error) {
+                            console.error("Error in onSubscriptionUpdated webhook:", error);
+                        }
+                    },
+
                     onCustomerStateChanged: async (payload) => {
-                        console.log("Customer state changed", payload);
+                        console.log("Customer state changed webhook:", payload);
                         
-                        // Update polar customer ID if needed
-                        if (payload.data.email) {
-                            await db.update(user)
-                                .set({ 
-                                    polarCustomerId: payload.data.id,
-                                    updatedAt: new Date()
-                                })
-                                .where(eq(user.email, payload.data.email));
+                        try {
+                            // Update polar customer ID if needed
+                            if (payload.data.email) {
+                                await db.update(user)
+                                    .set({ 
+                                        polarCustomerId: payload.data.id,
+                                        updatedAt: new Date()
+                                    })
+                                    .where(eq(user.email, payload.data.email));
+                            }
+                        } catch (error) {
+                            console.error("Error in onCustomerStateChanged webhook:", error);
                         }
                     },
+
                     onCustomerCreated: async (payload) => {
-                        console.log("Customer created", payload);
+                        console.log("Customer created webhook:", payload);
                         
-                        // Link newly created Polar customer to existing user
-                        const customer = payload.data;
-                        if (customer.email) {
-                            await db.update(user)
-                                .set({
-                                    polarCustomerId: customer.id,
-                                    updatedAt: new Date()
-                                })
-                                .where(eq(user.email, customer.email));
+                        try {
+                            // Link newly created Polar customer to existing user
+                            const customer = payload.data;
+                            if (customer.email) {
+                                await db.update(user)
+                                    .set({
+                                        polarCustomerId: customer.id,
+                                        updatedAt: new Date()
+                                    })
+                                    .where(eq(user.email, customer.email));
+                            }
+                        } catch (error) {
+                            console.error("Error in onCustomerCreated webhook:", error);
                         }
                     },
+
                     onCustomerDeleted: async (payload) => {
-                        console.log("Customer deleted", payload);
+                        console.log("Customer deleted webhook:", payload);
                         
-                        // Remove Polar customer ID and clear subscription data
-                        const customer = payload.data;
-                        await db.update(user)
-                            .set({
+                        try {
+                            // Remove Polar customer ID and clear subscription data
+                            const customer = payload.data;
+                            await updateUserSubscription(customer.id, {
                                 polarCustomerId: null,
                                 subscriptionId: null,
                                 subscriptionStatus: null,
                                 planType: null,
                                 subscriptionEndsAt: null,
-                                updatedAt: new Date()
-                            })
-                            .where(eq(user.polarCustomerId, customer.id));
-                    },
-                    onCustomerUpdated: async (payload) => {
-                        console.log("Customer updated", payload);
-                        
-                        // Update customer information
-                        const customer = payload.data;
-                        const updateData: any = {
-                            updatedAt: new Date()
-                        };
-                        
-                        // Update email if it changed (match by polarCustomerId)
-                        if (customer.email) {
-                            updateData.email = customer.email;
+                            });
+                        } catch (error) {
+                            console.error("Error in onCustomerDeleted webhook:", error);
                         }
-                        
-                        await db.update(user)
-                            .set(updateData)
-                            .where(eq(user.polarCustomerId, customer.id));
                     },
+
+                    onCustomerUpdated: async (payload) => {
+                        console.log("Customer updated webhook:", payload);
+                        
+                        try {
+                            // Update customer information
+                            const customer = payload.data;
+                            const updateData: any = {
+                                updatedAt: new Date()
+                            };
+                            
+                            // Update email if it changed (match by polarCustomerId)
+                            if (customer.email) {
+                                updateData.email = customer.email;
+                            }
+                            
+                            await db.update(user)
+                                .set(updateData)
+                                .where(eq(user.polarCustomerId, customer.id));
+                        } catch (error) {
+                            console.error("Error in onCustomerUpdated webhook:", error);
+                        }
+                    },
+
                     onPayload: async (payload) => {
-                        console.log("Webhook payload received", payload);
+                        console.log("Webhook payload received:", {
+                            type: payload.type,
+                            timestamp: new Date().toISOString(),
+                            data: payload.data
+                        });
                     }
                 })
             ],

@@ -7,15 +7,14 @@ import { ArrowLeft, Sparkles } from "lucide-react"
 import { GoogleLoginButton } from "@/components/login/login-google"
 
 /* Actions */
-import { getSession } from "@/actions/auth-actions"
-import { authClient } from "@/lib/auth-client"
+import { getSession, shouldShowPricing } from "@/actions/auth-actions"
 
 export default async function LoginPage() {
   const session = await getSession()
 
   if (session) {
-    const { data: customerState } = await authClient.customer.state();
-    if(customerState?.activeSubscriptions.length === 0) {
+    const needsPricing = await shouldShowPricing()
+    if (needsPricing) {
         redirect("/pricing")
     }
     redirect("/dashboard")

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Zap } from "lucide-react"
 import UserProfile from "@/components/dashboard/user-profile"
 import PolarConnection from "@/components/dashboard/polar-connection"
+import { PaymentInfo } from "@/components/dashboard/payment-info"
 
 async function UserPage() {
     const [userData, polarStatus] = await Promise.all([
@@ -48,6 +49,7 @@ async function UserPage() {
                         />
                     </CardContent>
                 </Card>
+                <PaymentInfo userData={userData} />
             </div>
         </div>
     )
