@@ -4,13 +4,7 @@ import Link from "next/link"
 
 export function CTA() {
   return (
-    <section className="relative bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-11/12 rounded-4xl ml-20">
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full filter blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full filter blur-3xl animate-pulse animation-delay-1000" />
-      </div>
-
+    <section id="cta" className="flex self-center bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-11/12 rounded-4xl ml-5 md:ml-10 lg:ml-12 xl:ml-20">
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
 

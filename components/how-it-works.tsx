@@ -28,7 +28,7 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className="relative bg-gradient-to-b from-gray-50 to-white py-20">
+    <section id="how-it-works" className="relative bg-gradient-to-b from-gray-50 to-white py-20">
       <div className="container mx-auto px-4">
         <div className="text-center">
           <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">How It Works</h2>

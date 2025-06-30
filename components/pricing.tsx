@@ -9,7 +9,7 @@ export function Pricing() {
   const [isYearly, setIsYearly] = useState(false)
 
   return (
-    <section className="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
+    <section id="pricing" className="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
       {/* Subtle Background elements */}
       <div className="absolute top-10 left-10 w-64 h-64 bg-gray-200/30 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-gray-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse animation-delay-2000" />

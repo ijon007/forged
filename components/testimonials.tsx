@@ -132,7 +132,7 @@ const TestimonialBlogCard = ({ testimonial }: { testimonial: typeof testimonials
 
 export function Testimonials() {
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <section id="testimonials" className="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.05),transparent_50%)] pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(139,92,246,0.05),transparent_50%)] pointer-events-none" />
       

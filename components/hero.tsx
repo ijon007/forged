@@ -120,7 +120,7 @@ export function Hero() {
             </div>
           </div>
 
-          <h1 className="mb-6 text-3xl font-bold tracking-tight text-black sm:text-5xl lg:text-6xl xl:text-7xl relative">
+          <h1 className="mb-6 font-bold tracking-tight text-black text-start sm:text-center text-5xl lg:text-6xl xl:text-7xl relative">
             <span className="inline-block animate-fade-in-up">Create & Sell Your Custom</span>
             <br />
             <span className="relative inline-block animate-fade-in-up animation-delay-200">
@@ -136,11 +136,11 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mx-auto mb-8 max-w-2xl text-base text-gray-600 sm:text-lg lg:text-xl leading-relaxed animate-fade-in-up animation-delay-400">
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600 sm:text-lg lg:text-xl leading-relaxed text-start sm:text-center animate-fade-in-up animation-delay-400">
             Upload your notes, generate beautifully formatted content, and start earning, no writing required.
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-up animation-delay-600">
+          <div className="flex flex-col items-start justify-center gap-4 sm:flex-row animate-fade-in-up animation-delay-600">
             <Link href="/login">
                 <Button
                     size="lg"
