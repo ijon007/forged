@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { updateCourseLinks } from '@/actions/course-db-actions'
 import type { CourseLink } from '@/db/schemas/course-schema'
 import { toast } from 'sonner'
-import { XIcon } from '@/constants/lucide-icon'
+import { RedditIcon, XIcon } from '@/constants/lucide-icon'
 
 interface SocialsProps {
   courseId?: string
@@ -24,6 +24,7 @@ const platformIcons: Record<string, any> = {
   github: Github,
   youtube: Youtube,
   instagram: Instagram,
+  reddit: RedditIcon,
   default: ExternalLink
 }
 
@@ -33,6 +34,7 @@ const platformColors: Record<string, string> = {
   github: 'text-gray-700 dark:text-gray-300',
   youtube: 'text-red-600',
   instagram: 'text-pink-600',
+  reddit: 'text-orange-600',
   website: 'text-green-600',
   default: 'text-gray-600'
 }
@@ -53,6 +55,7 @@ const Socials = ({ courseId, initialLinks = [], readOnly = false }: SocialsProps
         if (domain.includes('github.com')) return 'github'
         if (domain.includes('youtube.com')) return 'youtube'
         if (domain.includes('instagram.com')) return 'instagram'
+        if (domain.includes('reddit.com')) return 'reddit'
         return 'website'
     }
 

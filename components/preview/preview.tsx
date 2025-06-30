@@ -8,7 +8,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { useTheme } from 'next-themes'
 import Socials from './socials'
 import type { CourseLink } from '@/db/schemas/course-schema'
 
@@ -21,14 +20,11 @@ interface PreviewProps {
         description?: string
         imageUrl?: string
         links?: CourseLink[]
-        [key: string]: any // Allow additional properties
+        [key: string]: any
     }
 }
 
 const Preview = ({ previewData }: PreviewProps) => {
-    const { theme } = useTheme()
-    
-    // Set default values for missing data
     const author = previewData.author || "John Doe"
     const readTime = previewData.readTime || "5 min read"
     const price = previewData.price || 29.99
@@ -48,10 +44,7 @@ const Preview = ({ previewData }: PreviewProps) => {
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden">
                 <div className="h-full overflow-y-auto border rounded-lg bg-white dark:bg-background">
-                    {/* Simulated Blog Page Layout */}
                     <div className="p-6 space-y-6">
-                        
-                        {/* Header */}
                         <div className="space-y-4">
                             <Badge variant="secondary">Blog Post</Badge>
                             <h1 className="text-2xl font-bold leading-tight">{previewData.title}</h1>
@@ -68,7 +61,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                         
                         <Separator />
 
-                        {/* Hero Image Placeholder */}
                         {previewData.imageUrl ? (
                             <div>
                                 <img 
@@ -83,7 +75,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                             </div>
                         )}
 
-                        {/* Content - Now properly rendered markdown */}
                         <div className="prose prose-gray dark:prose-invert max-w-none prose-sm">
                             <ReactMarkdown 
                                 remarkPlugins={[remarkGfm]}
@@ -95,14 +86,14 @@ const Preview = ({ previewData }: PreviewProps) => {
                                         
                                         if (isInline) {
                                             return (
-                                                <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                                                <code className="bg-muted/60 text-foreground px-1.5 py-0.5 rounded text-sm font-mono border" {...props}>
                                                     {children}
                                                 </code>
                                             )
                                         }
                                         
                                         return (
-                                            <div className="my-4">
+                                            <div className="my-4 not-prose">
                                                 <SyntaxHighlighter
                                                     style={vscDarkPlus}
                                                     language={language || 'text'}
@@ -111,11 +102,14 @@ const Preview = ({ previewData }: PreviewProps) => {
                                                         margin: 0,
                                                         borderRadius: '0.5rem',
                                                         fontSize: '0.875rem',
+                                                        lineHeight: '1.5',
+                                                        border: '1px solid #374151',
                                                     }}
                                                     codeTagProps={{
                                                         style: {
                                                             fontSize: '0.875rem',
                                                             fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                                                            lineHeight: '1.5',
                                                         },
                                                     }}
                                                 >
@@ -146,7 +140,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                             </ReactMarkdown>
                         </div>
 
-                        {/* Sidebar Info (simplified) */}
                         <div className="mt-8 p-4 bg-muted/20 rounded-lg">
                             <h4 className="font-medium mb-3">About this article</h4>
                             <div className="space-y-2 text-sm">
@@ -165,7 +158,6 @@ const Preview = ({ previewData }: PreviewProps) => {
                             </div>
                         </div>
 
-                        {/* Author Links */}
                         {previewData.links && previewData.links.length > 0 && (
                             <div className="mt-6">
                                 <Socials initialLinks={previewData.links} readOnly={true} />
