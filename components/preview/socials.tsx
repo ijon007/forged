@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 import { updateCourseLinks } from '@/actions/course-db-actions'
 import type { CourseLink } from '@/db/schemas/course-schema'
 import { toast } from 'sonner'
+import { XIcon } from '@/constants/lucide-icon'
 
 interface SocialsProps {
   courseId?: string
@@ -18,7 +19,7 @@ interface SocialsProps {
 
 const platformIcons: Record<string, any> = {
   linkedin: Linkedin,
-  twitter: Twitter,
+  twitter: XIcon,
   website: Globe,
   github: Github,
   youtube: Youtube,
@@ -28,7 +29,7 @@ const platformIcons: Record<string, any> = {
 
 const platformColors: Record<string, string> = {
   linkedin: 'text-blue-600',
-  twitter: 'text-blue-400',
+  twitter: 'text-black',
   github: 'text-gray-700 dark:text-gray-300',
   youtube: 'text-red-600',
   instagram: 'text-pink-600',
