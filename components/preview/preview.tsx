@@ -11,6 +11,13 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Socials from './socials'
 import type { CourseLink } from '@/db/schemas/course-schema'
 
+/* Plate js notes for integration
+ - use editor plain
+ - add simple toolbar
+ - use plate markdown for content
+ - add mcp
+*/
+
 interface PreviewProps {
     previewData: {
         title: string
