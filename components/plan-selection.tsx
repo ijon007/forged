@@ -12,7 +12,7 @@ export function PlanSelection() {
     setIsLoading('monthly')
     await authClient.checkout({
       products: ["4106f4b6-7fe4-4878-a585-e841be593ea1"],
-      slug: "Knowledgesmith",
+      slug: "forged",
     });
   }
 
@@ -20,7 +20,7 @@ export function PlanSelection() {
     setIsLoading('yearly')
     await authClient.checkout({
       products: ["3196f5a1-28d3-4c44-9758-bb82bd1e38e9"],
-      slug: "Knowledgesmith-Yearly",
+      slug: "forged-yearly",
     });
   }
 
