@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Sparkles, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -19,7 +19,6 @@ export function FloatingNav() {
   }, [])
 
   const navItems = [
-    { name: "How it Works", href: "#how-it-works" },
     { name: "Pricing", href: "#pricing" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "FAQ", href: "#faq" },
@@ -33,7 +32,7 @@ export function FloatingNav() {
           : 'translate-y-2 opacity-90'
       }`}>
         <div className="bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-full px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center gap-24">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 group">
                 <Image src="/forged-black.svg" alt="Forged" width={80} height={80} />

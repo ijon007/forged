@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Forged"
   },
   description: "Upload PDFs, get AI-generated courses, and start earning money from your knowledge. Create premium educational content with AI assistance.",
-  keywords: ["online courses", "AI education", "knowledge monetization", "PDF to course", "e-learning", "educational content"],
+  keywords: ["AI generated courses", "knowledge monetization", "PDF to course", "educational content", "blog pages", "listicles", "listicles generator", "listicles creator", "listicles generator", "listicles creator", "listicles generator", "listicles creator", "course pages", "course pages generator", "course pages creator", "course pages generator", "course pages creator", "course pages generator", "course pages creator"],
   authors: [{ name: "Forged Team" }],
   creator: "Forged",
   publisher: "Forged",
@@ -54,32 +54,23 @@ export const metadata: Metadata = {
     images: ['https://tryforged.vercel.app/og-image.png'],
     site: '@forged',
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
   alternates: {
     canonical: 'https://tryforged.vercel.app',
   },
-  manifest: '/manifest.json',
   icons: {
     icon: [
       {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      },
-      {
-        url: '/icon-black.svg',
-        type: 'image/svg+xml',
         media: '(prefers-color-scheme: light)',
+        url: '/icon-dark.svg',
+        href: '/icon-dark.svg',
       },
       {
-        url: '/icon-white.svg',
-        type: 'image/svg+xml',
         media: '(prefers-color-scheme: dark)',
-      }
+        url: '/icon-white.svg',
+        href: '/icon-white.svg',
+      },
     ],
-    apple: '/icon-white.svg',
-    shortcut: '/favicon.svg',
+    apple: '/apple-icon.png',
   },
 }
 
