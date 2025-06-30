@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 const PublishedContent = ({ page }: { page: any }) => {
     return (
         <>
-            {page.isPurchased ? (
+            {page.isPurchased || page.price === 0 ? (
                 <div className="prose prose-gray dark:prose-invert max-w-none prose-sm sm:prose-base">
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
@@ -117,7 +117,7 @@ const PublishedContent = ({ page }: { page: any }) => {
                   
                   <Card className="border-dashed border-2 bg-muted/20">
                     <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12 text-center px-4 sm:px-6">
-                      <Lock className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mb-3 sm:mb-4" />
+                      <Lock className="h-10 w-10 sm:h-12 sm:w-12 text-black mb-3 sm:mb-4" />
                       <CardTitle className="mb-2 text-lg sm:text-xl">Continue Reading</CardTitle>
                       <CardDescription className="mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
                         Unlock the full article to continue reading and get access to all the examples and insights.
@@ -128,11 +128,6 @@ const PublishedContent = ({ page }: { page: any }) => {
                           <span className="text-2xl sm:text-3xl font-bold">${page.price}</span>
                           <span className="text-muted-foreground ml-1 text-sm sm:text-base">one-time</span>
                         </div>
-                        
-                        <Button size="lg" className="w-full">
-                          <DollarSign className="mr-2 h-4 w-4" />
-                          Unlock Full Article
-                        </Button>
                         
                         <div className="text-xs text-muted-foreground">
                           Instant access • No subscription

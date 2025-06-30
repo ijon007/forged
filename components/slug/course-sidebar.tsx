@@ -60,7 +60,7 @@ const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }:
     return (
         <div className="space-y-4 sm:space-y-6">
             <div className="flex flex-col gap-2">
-                {!isPurchased && (
+                {!isPurchased && price > 0 && (
                     <Button 
                         className="w-full" 
                         onClick={handlePurchase}
