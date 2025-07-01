@@ -1,0 +1,1 @@
+ALTER TABLE "course" ADD COLUMN "content_type" text DEFAULT 'blog' NOT NULL;

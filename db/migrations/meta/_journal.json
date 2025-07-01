@@ -85,6 +85,13 @@
       "when": 1751037240990,
       "tag": "0011_giant_earthquake",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1751353462945,
+      "tag": "0012_clean_madame_masque",
+      "breakpoints": true
     }
   ]
 }

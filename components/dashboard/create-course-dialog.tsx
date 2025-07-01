@@ -5,241 +5,178 @@ import { useRouter } from "next/navigation"
 import { generateCourseFromPDF, validatePDFFile } from "@/actions/course-actions"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Progress } from "@/components/ui/progress"
-import { Upload, FileText, PlusCircle, X } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { ContentType, CONTENT_TYPES } from "@/db/schemas/course-schema"
+import UploadStep from "./steps/upload-step"
+import ContentTypeStep from "./steps/content-type-step"
+import DetailsStep from "./steps/details-step"
+import GeneratingStep from "./steps/generating-step"
 
 interface CreateCourseDialogProps {
-  children: React.ReactNode
+    children: React.ReactNode
+}
+
+interface PageData {
+    title: string
+    description: string
+    price: string
 }
 
 export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
-  const router = useRouter()
-  const [open, setOpen] = useState(false)
-  const [step, setStep] = useState<"upload" | "details" | "generating">("upload")
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [generationProgress, setGenerationProgress] = useState(0)
-  const [file, setFile] = useState<File | null>(null)
-  const [pageData, setPageData] = useState({
-    title: "",
-    description: "",
-    price: ""
-  })
+    const router = useRouter()
+    const [open, setOpen] = useState(false)
+    const [step, setStep] = useState<"upload" | "contentType" | "details" | "generating">("upload")
+    const [uploadProgress, setUploadProgress] = useState(0)
+    const [generationProgress, setGenerationProgress] = useState(0)
+    const [file, setFile] = useState<File | null>(null)
+    const [contentType, setContentType] = useState<ContentType>(CONTENT_TYPES.BLOG)
+    const [pageData, setPageData] = useState<PageData>({
+        title: "",
+        description: "",
+        price: ""
+    })
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0]
-    if (!selectedFile) return
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files?.[0]
+        if (!selectedFile) return
 
-    // Validate the file
-    const validation = await validatePDFFile(selectedFile)
-    if (!validation.valid) {
-      toast.error(validation.error || "Invalid file")
-      return
+        const validation = await validatePDFFile(selectedFile)
+        if (!validation.valid) {
+            toast.error(validation.error || "Invalid file")
+            return
+        }
+
+        setFile(selectedFile)
+        let progress = 0
+        const interval = setInterval(() => {
+            progress += 10
+            setUploadProgress(progress)
+            if (progress >= 100) {
+                clearInterval(interval)
+                setTimeout(() => setStep("contentType"), 500)
+            }
+        }, 200)
     }
 
-    setFile(selectedFile)
-    // Simulate upload progress
-    let progress = 0
-    const interval = setInterval(() => {
-      progress += 10
-      setUploadProgress(progress)
-      if (progress >= 100) {
-        clearInterval(interval)
-        setTimeout(() => setStep("details"), 500)
-      }
-    }, 200)
-  }
+    const handleSubmit = async () => {
+        if (!file) {
+            toast.error("Please select a PDF file")
+            return
+        }
 
-  const handleSubmit = async () => {
-    if (!file) {
-      toast.error("Please select a PDF file")
-      return
-    }
-
-    setStep("generating")
-    
-    try {
-      // Create form data
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('title', pageData.title)
-      formData.append('description', pageData.description)
-      formData.append('price', pageData.price)
-
-      // Simulate progress while generating
-      const progressInterval = setInterval(() => {
-        setGenerationProgress(prev => {
-          if (prev >= 90) return prev
-          return prev + Math.random() * 10
-        })
-      }, 500)
-
-      // Call the server action
-      const result = await generateCourseFromPDF(formData)
-
-      clearInterval(progressInterval)
-      setGenerationProgress(100)
-
-      if (result.success && result.data) {
-        toast.success("Course generated successfully!")
+        setStep("generating")
         
-        // Brief completion state
-        setTimeout(() => {
-          setOpen(false)
-          // Reset state
-          setStep("upload")
-          setFile(null)
-          setUploadProgress(0)
-          setGenerationProgress(0)
-          setPageData({ title: "", description: "", price: "" })
-          
-          // Navigate to preview page with generated ID
-          router.push(`/dashboard/preview/${result.data!.id}`)
-        }, 1000)
-      } else {
-        toast.error(result.error || "Failed to generate course")
-        setStep("details") // Go back to details step
-        setGenerationProgress(0)
-      }
-    } catch (error) {
-      console.error('Generation error:', error)
-      toast.error("An unexpected error occurred")
-      setStep("details")
-      setGenerationProgress(0)
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('title', pageData.title)
+            formData.append('description', pageData.description)
+            formData.append('price', pageData.price)
+            formData.append('contentType', contentType)
+
+            const progressInterval = setInterval(() => {
+                setGenerationProgress(prev => {
+                if (prev >= 90) return prev
+                    return prev + Math.random() * 10
+                })
+            }, 500)
+
+            const result = await generateCourseFromPDF(formData)
+
+            clearInterval(progressInterval)
+            setGenerationProgress(100)
+
+            if (result.success && result.data) {
+                toast.success("Course generated successfully!")
+                
+                setTimeout(() => {
+                    setOpen(false)
+                    
+                    setStep("upload")
+                    setFile(null)
+                    setUploadProgress(0)
+                    setGenerationProgress(0)
+                    setContentType(CONTENT_TYPES.BLOG)
+                    setPageData({ title: "", description: "", price: "" })
+                    
+                    router.push(`/dashboard/preview/${result.data!.id}`)
+                }, 1000)
+            } else {
+                toast.error(result.error || "Failed to generate course")
+                setStep("details")
+                setGenerationProgress(0)
+            }
+        } catch (error) {
+            console.error('Generation error:', error)
+            toast.error("An unexpected error occurred")
+            setStep("details")
+            setGenerationProgress(0)
+        }
     }
-  }
 
-  const handleReset = () => {
-    setStep("upload")
-    setFile(null)
-    setUploadProgress(0)
-    setGenerationProgress(0)
-  }
+    const handleReset = () => {
+        setStep("upload")
+        setFile(null)
+        setUploadProgress(0)
+        setGenerationProgress(0)
+        setContentType(CONTENT_TYPES.BLOG)
+    }
 
-  const getGenerationMessage = () => {
-    if (generationProgress < 30) return "Extracting content from PDF..."
-    if (generationProgress < 60) return "Analyzing structure and key points..."
-    if (generationProgress < 90) return "Generating blog post content..."
-    return "Finalizing your page..."
-  }
+    const renderCurrentStep = () => {
+        switch (step) {
+            case "upload":
+                return (
+                    <UploadStep
+                        file={file}
+                        uploadProgress={uploadProgress}
+                        onFileUpload={handleFileUpload}
+                        onReset={handleReset}
+                    />
+                )
+            case "contentType":
+                return (
+                    <ContentTypeStep
+                        contentType={contentType}
+                        onContentTypeChange={setContentType}
+                        onBack={handleReset}
+                        onContinue={() => setStep("details")}
+                    />
+                )
+            case "details":
+                return (
+                    <DetailsStep
+                        pageData={pageData}
+                        onPageDataChange={setPageData}
+                        onBack={() => setStep("contentType")}
+                        onSubmit={handleSubmit}
+                    />
+                )
+            case "generating":
+                return (
+                    <GeneratingStep
+                        generationProgress={generationProgress}
+                        contentType={contentType}
+                    />
+                )
+            default:
+                return null
+        }
+    }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] rounded-xl">
-        <DialogHeader>
-          <DialogTitle>Create New Page</DialogTitle>
-          <DialogDescription>
-            Upload a PDF and we'll generate a beautiful blog page for you
-          </DialogDescription>
-        </DialogHeader>
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                {children}
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] rounded-xl">
+                <DialogHeader>
+                    <DialogTitle>Create New Content</DialogTitle>
+                    <DialogDescription>
+                        Upload a PDF and we'll generate beautiful content for you
+                    </DialogDescription>
+                </DialogHeader>
 
-        {step === "upload" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-center w-full">
-              <label htmlFor="pdf-upload" className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/80 border-muted-foreground/25">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
-                  <p className="mb-2 text-sm text-muted-foreground">
-                    <span className="font-semibold">Click to upload</span> your PDF
-                  </p>
-                  <p className="text-xs text-muted-foreground">PDF files only</p>
-                </div>
-                <input 
-                  id="pdf-upload" 
-                  type="file" 
-                  className="hidden" 
-                  accept=".pdf"
-                  onChange={handleFileUpload}
-                />
-              </label>
-            </div>
-            
-            {file && (
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-2">
-                    <FileText className="h-4 w-4" />
-                    <span className="text-sm font-medium">{file.name}</span>
-                    <Button variant="ghost" size="sm" onClick={handleReset}>
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <Progress value={uploadProgress} className="mt-2" />
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        )}
-
-        {step === "details" && (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Page Title</Label>
-              <Input
-                id="title"
-                placeholder="Enter your page title"
-                value={pageData.title}
-                onChange={(e) => setPageData({ ...pageData, title: e.target.value })}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                placeholder="Brief description of your content"
-                value={pageData.description}
-                onChange={(e) => setPageData({ ...pageData, description: e.target.value })}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
-              <Input
-                id="price"
-                type="number"
-                placeholder="19.99"
-                value={pageData.price}
-                onChange={(e) => setPageData({ ...pageData, price: e.target.value })}
-              />
-            </div>
-            
-            <div className="flex gap-2 pt-4">
-              <Button variant="outline" onClick={handleReset} className="flex-1">
-                Back
-              </Button>
-              <Button onClick={handleSubmit} className="flex-1">
-                Generate Page
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {step === "generating" && (
-          <div className="space-y-6 text-center py-8">
-            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <PlusCircle className="w-8 h-8 text-primary animate-pulse" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-lg">Generating your page...</h3>
-              <p className="text-sm text-muted-foreground">
-                {getGenerationMessage()}
-              </p>
-            </div>
-            <div className="space-y-2">
-              <Progress value={generationProgress} className="w-full" />
-              <p className="text-xs text-muted-foreground">{generationProgress.toFixed(2)}% complete</p>
-            </div>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
-  )
+                {renderCurrentStep()}
+            </DialogContent>
+        </Dialog>
+    )
 } 

@@ -28,6 +28,7 @@ export interface SaveCourseParams {
   description: string
   content: string
   originalContent: string
+  contentType?: string
   tags: string[]
   keyPoints: string[]
   links?: CourseLink[]
@@ -86,6 +87,7 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
       description: courseData.description,
       content: courseData.content,
       originalContent: courseData.originalContent,
+      contentType: courseData.contentType || 'blog',
       tags: courseData.tags,
       keyPoints: courseData.keyPoints,
       links: courseData.links || [],

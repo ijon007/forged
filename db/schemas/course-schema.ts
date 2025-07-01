@@ -4,9 +4,17 @@ import { user } from "./auth-schema";
 export interface CourseLink {
   id: string
   url: string
-  platform: string // e.g., 'linkedin', 'twitter', 'website', 'github', etc.
-  label?: string // optional custom label
+  platform: string
+  label?: string
 }
+
+export const CONTENT_TYPES = {
+  BLOG: 'blog',
+  LISTICLE: 'listicle',
+  COURSE: 'course',
+} as const;
+
+export type ContentType = typeof CONTENT_TYPES[keyof typeof CONTENT_TYPES];
 
 export const course = pgTable("course", {
   id: text('id').primaryKey(),
@@ -15,25 +23,24 @@ export const course = pgTable("course", {
   description: text('description').notNull(),
   content: text('content').notNull(),
   originalContent: text('original_content').notNull(),
+  contentType: text('content_type').notNull().default(CONTENT_TYPES.BLOG).$type<ContentType>(),
   tags: json('tags').$type<string[]>().notNull().default([]),
   keyPoints: json('key_points').$type<string[]>().notNull().default([]),
   links: json('links').$type<CourseLink[]>().notNull().default([]),
   estimatedReadTime: integer('estimated_read_time').notNull(),
-  price: integer('price').notNull(), // Store price in cents to avoid floating point issues
-  imageUrl: text('image_url'), // URL for blog post hero image
+  price: integer('price').notNull(),
+  imageUrl: text('image_url'),
   published: boolean('published').notNull().default(false),
-  // Polar product fields
-  polarProductId: text('polar_product_id'), // Polar product ID
-  polarProductSlug: text('polar_product_slug'), // Polar product slug
+  polarProductId: text('polar_product_id'),
+  polarProductSlug: text('polar_product_slug'),
   userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').$defaultFn(() => new Date()).notNull(),
   updatedAt: timestamp('updated_at').$defaultFn(() => new Date()).notNull()
 });
 
-// Simple table to track course purchases
 export const coursePurchase = pgTable("course_purchase", {
   id: text('id').primaryKey(),
-  userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }), // Made nullable for anonymous purchases
+  userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
   courseId: text('course_id').notNull().references(() => course.id, { onDelete: 'cascade' }),
   polarOrderId: text('polar_order_id'),
   unlockToken: text('unlock_token'),

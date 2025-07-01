@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Eye, Check, Save, ExternalLink, ArrowRight, X } from 'lucide-react'
+import { Eye, Check, ExternalLink, X } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -16,8 +16,9 @@ interface TopNavProps {
         title: string
         status: string
         slug: string
+        contentType?: string
         published?: boolean
-        [key: string]: any // Allow additional properties
+        [key: string]: any
     }
 }
 
@@ -28,7 +29,6 @@ const TopNav = ({ previewData }: TopNavProps) => {
 
     const handleSave = async () => {
         setIsSaving(true)
-        // Simulate save operation
         await new Promise(resolve => setTimeout(resolve, 1000))
         setIsSaving(false)
     }
@@ -39,7 +39,6 @@ const TopNav = ({ previewData }: TopNavProps) => {
             const isCurrentlyPublished = previewData.published || previewData.status === 'published'
             
             if (isCurrentlyPublished) {
-                // Unpublish the course
                 const result = await unpublishCourse(previewData.id)
                 if (result.success) {
                     toast.success('Course unpublished successfully!')
@@ -48,11 +47,9 @@ const TopNav = ({ previewData }: TopNavProps) => {
                     toast.error('Failed to unpublish: ' + (result.error || 'Unknown error'))
                 }
             } else {
-                // Publish the course
                 const result = await publishCourse(previewData.id)
                 if (result.success) {
                     toast.success('Course published successfully!')
-                    // Redirect to the published blog post
                     router.push(`/${previewData.id}`)
                 } else {
                     toast.error('Failed to publish: ' + (result.error || 'Unknown error'))
@@ -67,8 +64,10 @@ const TopNav = ({ previewData }: TopNavProps) => {
     }
 
     const handlePreview = () => {
-        // Open blog preview in new tab
-        window.open(`/dashboard/preview/${previewData.id}/blog`, '_blank')
+        const previewRoute = previewData.contentType === 'listicle' 
+            ? `/dashboard/preview/${previewData.id}/listicle`
+            : `/dashboard/preview/${previewData.id}/blog`
+        window.open(previewRoute, '_blank')
     }
 
     const isPublished = previewData.published || previewData.status === 'published'
