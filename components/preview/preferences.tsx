@@ -184,14 +184,6 @@ const Preferences = ({ previewData }: PreferencesProps) => {
                                 disabled
                             />
                         </div>
-                        <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={generateSlug}
-                            className="whitespace-nowrap"
-                        >
-                            Auto-generate
-                        </Button>
                     </div>
                     <div className="flex items-center justify-between">
                         <Button variant="ghost" size="sm" onClick={copyUrl} className="text-xs h-6 px-2">

@@ -1,6 +1,8 @@
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Clock } from "lucide-react"
+import { Clock, ListOrdered, FileIcon } from "lucide-react"
+import { CONTENT_TYPES } from "@/db/schemas/course-schema"
+import { getContentTypeLabel } from "@/lib/course-store"
 
 interface CourseHeaderProps {
   title: string
@@ -8,14 +10,25 @@ interface CourseHeaderProps {
   author: string
   readTime: string
   imageUrl?: string
+  contentType?: string
 }
 
-const CourseHeader = ({ title, description, author, readTime, imageUrl }: CourseHeaderProps) => {
+const CourseHeader = ({ title, description, author, readTime, imageUrl, contentType }: CourseHeaderProps) => {
+  const isListicle = contentType === CONTENT_TYPES.LISTICLE
+  const contentLabel = contentType ? getContentTypeLabel(contentType as any) : 'Blog Post'
+  
   return (
     <>
       <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
         <div className="space-y-3 sm:space-y-4">
-          <Badge variant="secondary">Blog Post</Badge>
+          <div className="flex items-center gap-2">
+            {isListicle ? (
+              <ListOrdered className="h-4 w-4 text-primary" />
+            ) : (
+              <FileIcon className="h-4 w-4 text-primary" />
+            )}
+            <Badge variant="secondary">{contentLabel}</Badge>
+          </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">{title}</h1>
           <p className="text-lg sm:text-xl text-muted-foreground">{description}</p>
         </div>

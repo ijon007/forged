@@ -5,6 +5,9 @@ import { notFound } from "next/navigation"
 /* Actions */
 import { getCourseWithUser } from "@/actions/course-db-actions"
 
+/* Types */
+import { CONTENT_TYPES } from "@/db/schemas/course-schema"
+
 /* Components */
 import CoursePage from "@/components/slug/course-page-client"
 
@@ -33,11 +36,13 @@ export async function generateMetadata({
         const imageUrl = dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
         const price = dbCourse.price / 100
         const url = `https://tryforged.vercel.app/${slug}`
+        const contentType = dbCourse.contentType || CONTENT_TYPES.BLOG
+        const isListicle = contentType === CONTENT_TYPES.LISTICLE
 
         return {
             title,
             description,
-            keywords: dbCourse.tags?.join(', ') || 'education, learning, course, knowledge',
+            keywords: dbCourse.tags?.join(', ') || (isListicle ? 'listicle, tips, guide, list, educational content' : 'education, learning, course, knowledge'),
             authors: [{ name: dbCourse.userName }],
             creator: dbCourse.userName,
             publisher: 'Forged',
@@ -120,6 +125,7 @@ export default async function BlogPage({
     title: dbCourse.title,
     description: dbCourse.description,
     price: dbCourse.price / 100,
+    contentType: dbCourse.contentType || CONTENT_TYPES.BLOG,
     isPurchased: false,
     author: dbCourse.userName,
     readTime: `${dbCourse.estimatedReadTime} min read`,

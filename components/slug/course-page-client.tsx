@@ -21,6 +21,7 @@ interface CoursePageClientProps {
         title: string
         description: string
         price: number
+        contentType: string
         isPurchased: boolean
         author: string
         readTime: string
@@ -128,6 +129,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                 slug={slug}
                 tags={page.tags}
                 price={page.price}
+                contentType={page.contentType}
                 createdAt={createdAt}
                 updatedAt={updatedAt}
             />
@@ -140,6 +142,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                         author={page.author}
                         readTime={page.readTime}
                         imageUrl={page.imageUrl}
+                        contentType={page.contentType}
                     />
                     <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6 lg:gap-8">
                         <div className="lg:col-span-3 min-w-0">

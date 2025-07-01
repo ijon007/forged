@@ -8,7 +8,7 @@ import { headers } from "next/headers"
 
 /* DB */
 import { db } from "@/db/drizzle"
-import { course, coursePurchase, type NewCourse, type Course, type CourseLink } from "@/db/schemas/course-schema"
+import { course, coursePurchase, type NewCourse, type Course, type CourseLink, ContentType } from "@/db/schemas/course-schema"
 import { eq, desc, and, isNull } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { user } from "@/db/schemas/auth-schema"
@@ -28,7 +28,7 @@ export interface SaveCourseParams {
   description: string
   content: string
   originalContent: string
-  contentType?: string
+  contentType: ContentType
   tags: string[]
   keyPoints: string[]
   links?: CourseLink[]
@@ -87,7 +87,7 @@ export async function saveCourse(courseData: SaveCourseParams): Promise<{ succes
       description: courseData.description,
       content: courseData.content,
       originalContent: courseData.originalContent,
-      contentType: courseData.contentType || 'blog',
+      contentType: courseData.contentType,
       tags: courseData.tags,
       keyPoints: courseData.keyPoints,
       links: courseData.links || [],
@@ -271,6 +271,7 @@ export async function getCourseWithUser(courseId: string): Promise<(Course & { u
         description: course.description,
         content: course.content,
         originalContent: course.originalContent,
+        contentType: course.contentType,
         tags: course.tags,
         keyPoints: course.keyPoints,
         links: course.links,

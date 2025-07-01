@@ -6,8 +6,10 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
 import { Lock, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { CONTENT_TYPES } from '@/db/schemas/course-schema'
 
 const PublishedContent = ({ page }: { page: any }) => {
+    const isListicle = page.contentType === CONTENT_TYPES.LISTICLE
     return (
         <>
             {page.isPurchased || page.price === 0 ? (
@@ -53,7 +55,26 @@ const PublishedContent = ({ page }: { page: any }) => {
                         )
                     },
                     h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-3 first:mt-0">{children}</h1>,
-                    h2: ({ children }) => <h2 className="text-xl font-semibold mt-6 mb-3">{children}</h2>,
+                    h2: ({ children }) => {
+                        if (isListicle) {
+                            const childString = String(children)
+                            const isNumberedItem = /^\d+\./.test(childString.trim())
+                            
+                            if (isNumberedItem) {
+                                return (
+                                    <h2 className="text-xl font-semibold mt-8 mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                                {childString.match(/^(\d+)/)?.[1]}
+                                            </div>
+                                            <span>{childString.replace(/^\d+\.\s*/, '')}</span>
+                                        </div>
+                                    </h2>
+                                )
+                            }
+                        }
+                        return <h2 className="text-xl font-semibold mt-6 mb-3">{children}</h2>
+                    },
                     h3: ({ children }) => <h3 className="text-lg font-medium mt-4 mb-2">{children}</h3>,
                     h4: ({ children }) => <h4 className="text-base font-medium mt-3 mb-2">{children}</h4>,
                     p: ({ children }) => <p className="mb-3 leading-6 text-gray-700 dark:text-gray-300">{children}</p>,
@@ -94,7 +115,26 @@ const PublishedContent = ({ page }: { page: any }) => {
                           )
                         },
                         h1: ({ children }) => <h1 className="text-3xl font-bold mt-8 mb-4 first:mt-0">{children}</h1>,
-                        h2: ({ children }) => <h2 className="text-2xl font-semibold mt-8 mb-4">{children}</h2>,
+                        h2: ({ children }) => {
+                            if (isListicle) {
+                                const childString = String(children)
+                                const isNumberedItem = /^\d+\./.test(childString.trim())
+                                
+                                if (isNumberedItem) {
+                                    return (
+                                        <h2 className="text-2xl font-semibold mt-8 mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                                    {childString.match(/^(\d+)/)?.[1]}
+                                                </div>
+                                                <span>{childString.replace(/^\d+\.\s*/, '')}</span>
+                                            </div>
+                                        </h2>
+                                    )
+                                }
+                            }
+                            return <h2 className="text-2xl font-semibold mt-8 mb-4">{children}</h2>
+                        },
                         h3: ({ children }) => <h3 className="text-xl font-medium mt-6 mb-3">{children}</h3>,
                         h4: ({ children }) => <h4 className="text-lg font-medium mt-4 mb-2">{children}</h4>,
                         p: ({ children }) => <p className="mb-4 leading-7 text-gray-700 dark:text-gray-300">{children}</p>,

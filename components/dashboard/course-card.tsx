@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { MoreHorizontal, Eye, Edit, DollarSign, Share } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, DollarSign, Share, ListOrdered, FileIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
+import { CONTENT_TYPES, type ContentType } from "@/db/schemas/course-schema"
+import { getContentTypeLabel } from "@/lib/course-store"
 
 interface CourseCardProps {
   id: string
@@ -22,6 +24,7 @@ interface CourseCardProps {
   progress?: number
   imageUrl?: string
   slug?: string
+  contentType?: ContentType
 }
 
 export function CourseCard({
@@ -34,7 +37,8 @@ export function CourseCard({
   sales,
   progress,
   imageUrl,
-  slug
+  slug,
+  contentType = CONTENT_TYPES.BLOG
 }: CourseCardProps) {
   const getStatusBadge = () => {
     switch (status) {
@@ -47,6 +51,20 @@ export function CourseCard({
       default:
         return <Badge variant="outline">Unknown</Badge>
     }
+  }
+
+  const getContentTypeBadge = () => {
+    const isListicle = contentType === CONTENT_TYPES.LISTICLE
+    return (
+      <Badge variant="outline" className="flex items-center gap-1">
+        {isListicle ? (
+          <ListOrdered className="h-3 w-3" />
+        ) : (
+          <FileIcon className="h-3 w-3" />
+        )}
+        {getContentTypeLabel(contentType)}
+      </Badge>
+    )
   }
 
   const getEditLink = () => {
@@ -99,10 +117,11 @@ export function CourseCard({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {getStatusBadge()}
+          {getContentTypeBadge()}
           {status === "generating" && progress !== undefined && (
-            <div className="flex-1">
+            <div className="flex-1 min-w-[100px]">
               <Progress value={progress} className="h-2" />
             </div>
           )}

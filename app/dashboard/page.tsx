@@ -24,6 +24,7 @@ async function DashboardPage() {
         status: course.published ? "published" as const : "draft" as const,
         price: (course.price || 0) / 100, // Convert from cents to dollars
         slug: course.id,
+        contentType: course.contentType,
     }))
 
     return (
