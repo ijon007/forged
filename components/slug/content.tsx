@@ -58,18 +58,21 @@ const PublishedContent = ({ page }: { page: any }) => {
                     h2: ({ children }) => {
                         if (isListicle) {
                             const childString = String(children)
-                            const isNumberedItem = /^\d+\./.test(childString.trim())
+                            const numberMatch = childString.match(/^(\d+)\.\s*(.+)/)
                             
-                            if (isNumberedItem) {
+                            if (numberMatch) {
+                                const [, number, title] = numberMatch
                                 return (
-                                    <h2 className="text-xl font-semibold mt-8 mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                                {childString.match(/^(\d+)/)?.[1]}
+                                    <div className="my-8 first:mt-4">
+                                        <div className="flex items-start gap-4 mb-6">
+                                            <div className="flex-shrink-0 w-9 h-9 bg-black text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                                {number}
                                             </div>
-                                            <span>{childString.replace(/^\d+\.\s*/, '')}</span>
+                                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-1 leading-tight">
+                                                {title}
+                                            </h2>
                                         </div>
-                                    </h2>
+                                    </div>
                                 )
                             }
                         }
@@ -118,18 +121,21 @@ const PublishedContent = ({ page }: { page: any }) => {
                         h2: ({ children }) => {
                             if (isListicle) {
                                 const childString = String(children)
-                                const isNumberedItem = /^\d+\./.test(childString.trim())
+                                const numberMatch = childString.match(/^(\d+)\.\s*(.+)/)
                                 
-                                if (isNumberedItem) {
+                                if (numberMatch) {
+                                    const [, number, title] = numberMatch
                                     return (
-                                        <h2 className="text-2xl font-semibold mt-8 mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                                    {childString.match(/^(\d+)/)?.[1]}
+                                        <div className="my-10 first:mt-6">
+                                            <div className="flex items-start gap-4 mb-6">
+                                                <div className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">
+                                                    {number}
                                                 </div>
-                                                <span>{childString.replace(/^\d+\.\s*/, '')}</span>
+                                                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 leading-tight">
+                                                    {title}
+                                                </h2>
                                             </div>
-                                        </h2>
+                                        </div>
                                     )
                                 }
                             }

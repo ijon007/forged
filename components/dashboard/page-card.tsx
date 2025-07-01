@@ -48,13 +48,6 @@ export function PageCard({
         }
     }
 
-    const getEditLink = () => {
-        if (status === "published" && slug) {
-            return `/${slug}`
-        }
-        return `/dashboard/preview/${id}`
-    }
-
     const getContentTypeBadge = () => {
         const isListicle = contentType === CONTENT_TYPES.LISTICLE
         return (
@@ -74,11 +67,11 @@ export function PageCard({
             <div className="p-6 pb-4 flex-shrink-0">
                 <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-2 flex-wrap">
+                        {getContentTypeBadge()}
                         <div className={`w-2 h-2 rounded-full ${statusConfig[status].dot}`} />
                         <Badge variant="outline" className={`${statusConfig[status].color} text-xs font-medium`}>
                             {statusConfig[status].badge}
                         </Badge>
-                        {getContentTypeBadge()}
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -131,7 +124,7 @@ export function PageCard({
                         ${price}
                     </div>
                     <div className="flex gap-2">
-                        <Link href={getEditLink()}>
+                        <Link href={`/dashboard/preview/${slug}`}>
                             <Button variant="outline" size="sm" className="h-8 rounded-lg">
                                 <Edit className="w-4 h-4 mr-1" />
                                 Preview

@@ -50,38 +50,56 @@ export function getBlogSystemPrompt(title?: string, description?: string, price?
 }
 
 export function getListicleSystemPrompt(title?: string, description?: string, price?: string): string {
-    return `You are an expert content strategist who specializes in creating engaging, scannable listicles that deliver maximum value in an easily digestible format. Your task is to transform PDF content into a compelling numbered list article.
+    return `You are an expert content strategist who specializes in creating engaging, comprehensive listicles that rival the best content from sites like BuzzFeed, Vox, and Medium. Your task is to transform PDF content into a compelling numbered list article that provides significant value and keeps readers engaged.
 
     LISTICLE CONTENT STANDARDS:
     - Create a catchy, numbered title (e.g., "7 Essential Tips for...", "10 Proven Strategies to...")
-    - Structure content as a clear numbered list with distinct, actionable points
-    - Each list item should be substantial yet concise (2-4 paragraphs max)
-    - Use engaging subheadings for each numbered point
-    - Focus on practical, implementable advice
+    - Structure content as a clear numbered list with substantial, detailed points
+    - Each list item should be comprehensive (4-8 paragraphs with examples, explanations, and actionable advice)
+    - Use engaging, descriptive subheadings for each numbered point
+    - Include practical examples, case studies, and real-world applications
+    - Add supporting details, tips, and explanations that make each point valuable
     - Make each point stand alone while contributing to the overall theme
 
     LISTICLE FORMATTING REQUIREMENTS:
-    - Start with a brief introduction explaining what readers will learn
-    - Number each main point clearly (## 1. First Point Title)
-    - Include 5-15 main points (optimal range: 7-10)
-    - Use bullet points or sub-lists within each numbered section when helpful
-    - End with a brief conclusion that reinforces the key takeaways
-    - Ensure each point provides immediate, actionable value
+    - Start with a compelling introduction (2-3 paragraphs) that hooks readers and explains the value they'll get
+    - Number each main point clearly (## 1. Compelling Point Title)
+    - Include 7-12 main points (optimal range: 8-10 for maximum engagement)
+    - Each numbered section should have:
+      * A clear, benefit-focused heading
+      * 4-8 paragraphs of detailed explanation
+      * Specific examples, tips, or tools
+      * Actionable steps readers can take
+      * Supporting details that add real value
+    - Use bullet points and sub-lists within sections to break up text
+    - Include relevant subheadings (### ) within each numbered section
+    - End with a strong conclusion that reinforces key takeaways and motivates action
 
-    ENGAGEMENT FOCUS:
-    - Write scannable content that readers can quickly digest
-    - Use specific examples and concrete advice in each point
-    - Include practical tips, tools, or resources where relevant
-    - Maintain consistent value across all numbered points
-    - Create compelling point titles that make readers want to continue
+    CONTENT DEPTH REQUIREMENTS:
+    - Each numbered point should be 300-500 words minimum
+    - Include specific examples, case studies, or scenarios
+    - Provide step-by-step instructions where applicable
+    - Add context, background information, and expert insights
+    - Include practical tips, tools, resources, and actionable advice
+    - Make content scannable with bullet points and subheadings
+    - Ensure each section provides genuine, implementable value
+
+    ENGAGEMENT OPTIMIZATION:
+    - Write compelling section titles that create curiosity
+    - Use conversational, engaging tone throughout
+    - Include specific numbers, statistics, and concrete examples
+    - Add personal anecdotes or relatable scenarios where appropriate
+    - Create smooth transitions between sections
+    - Use formatting to make content easily digestible
+    - Include calls-to-action and reflection questions
 
     IMPORTANT: You must return a JSON object with EXACTLY these field names:
-    - title: string (catchy, numbered title like "X Essential Tips for...")
-    - description: string (compelling description highlighting the list's value)
-    - content: string (complete listicle in markdown format with numbered sections)
+    - title: string (catchy, numbered title like "X Essential Strategies for...")
+    - description: string (compelling description highlighting the list's comprehensive value)
+    - content: string (complete detailed listicle in markdown format with numbered sections)
     - tags: array of strings (relevant tags for the content)
     - keyPoints: array of strings (key takeaways from the listicle)
-    - estimatedReadTime: number (reading time in minutes)
+    - estimatedReadTime: number (reading time in minutes - aim for 8-15 minutes)
     - price: number (price in USD as a number, not string)
 
     The user provided these preferences:
@@ -89,7 +107,7 @@ export function getListicleSystemPrompt(title?: string, description?: string, pr
     - Description preference: ${description || 'Not specified'}
     - Price point: $${price || 'Not specified'}
 
-    Focus on creating engaging, scannable content that provides immediate value in a list format.`
+    Focus on creating comprehensive, detailed content that provides exceptional value and keeps readers engaged throughout.`
 }
 
 export function getBlogPrompt(extractedText: string): string {
@@ -135,41 +153,55 @@ export function getBlogPrompt(extractedText: string): string {
 }
 
 export function getListiclePrompt(extractedText: string): string {
-    return `Please analyze this PDF content and transform it into an engaging, numbered listicle:
+    return `Please analyze this PDF content and transform it into a comprehensive, engaging numbered listicle:
 
     ${extractedText}
 
     LISTICLE TRANSFORMATION OBJECTIVES:
-    1. Identify 5-15 key points, tips, strategies, or insights from the content
-    2. Create compelling titles for each numbered point
-    3. Structure each point to be self-contained yet part of the overall theme
-    4. Focus on actionable, practical advice readers can implement
-    5. Make the content scannable and easy to digest
-    6. Ensure consistent value and quality across all numbered points
+    1. Identify 7-12 key points, strategies, insights, or actionable tips from the content
+    2. Create compelling, benefit-focused titles for each numbered point
+    3. Develop each point into a substantial section (300-500 words minimum)
+    4. Include specific examples, case studies, and practical applications
+    5. Add actionable steps, tools, and resources readers can use immediately
+    6. Make the content comprehensive yet easy to scan and digest
+    7. Ensure consistent high value across all numbered points
 
-    LISTICLE FORMATTING REQUIREMENTS:
-    - Create a numbered title that promises specific value (e.g., "8 Proven Methods to...")
-    - Write a brief, engaging introduction (2-3 sentences)
+    COMPREHENSIVE CONTENT REQUIREMENTS:
+    - Write a compelling introduction (2-3 paragraphs) that hooks readers
     - Structure content as clearly numbered sections (## 1. Point Title)
-    - Keep each numbered point substantial but concise (2-4 paragraphs)
-    - Include specific examples, tips, or actionable advice in each point
-    - End with a brief conclusion that reinforces the main benefits
-    - Use markdown formatting for optimal readability
+    - Each numbered point must include:
+      * Detailed explanation (4-8 paragraphs)
+      * Specific examples or case studies
+      * Actionable steps or implementation tips
+      * Supporting details and context
+      * Relevant tools, resources, or techniques
+    - Use subheadings (### ) within each section to organize information
+    - Include bullet points and lists to break up text and improve readability
+    - Add practical tips, warnings, or best practices within each section
+    - End with a strong conclusion that reinforces the main benefits and encourages action
 
-    ENGAGEMENT STANDARDS:
-    - Make each point immediately useful and actionable
-    - Use specific examples rather than vague concepts
-    - Include practical tips, tools, or resources where relevant
-    - Ensure the list flows logically from point to point
-    - Create compelling section headers that draw readers in
-    - Balance brevity with substantive content
+    DETAILED FORMATTING STANDARDS:
+    - Create numbered titles that promise specific, valuable benefits
+    - Use engaging, conversational tone throughout
+    - Include specific examples rather than vague concepts
+    - Add supporting paragraphs that dive deep into implementation
+    - Use formatting (bullet points, subheadings) to improve scannability
+    - Include transition sentences that connect points logically
+    - Make each section substantial enough to stand alone as valuable content
 
-    LISTICLE BEST PRACTICES:
-    - Aim for 7-10 main points for optimal engagement
-    - Each point should deliver on the promise made in the title
-    - Use consistent formatting and structure throughout
-    - Include concrete, implementable advice in every section
-    - Make the content scannable for busy readers
+    QUALITY BENCHMARKS:
+    - Aim for 8-15 minute read time (2000-4000 words total)
+    - Each numbered point should feel like a mini-article with complete information
+    - Include enough detail that readers can immediately implement the advice
+    - Balance depth with readability using proper formatting
+    - Ensure the content rivals the best listicles from major publications
+
+    ENGAGEMENT ELEMENTS:
+    - Use compelling section headers that create curiosity
+    - Include specific numbers, statistics, and concrete data
+    - Add relatable scenarios or examples readers can connect with
+    - Provide clear, actionable next steps in each section
+    - Create natural stopping points that encourage continued reading
 
     Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`
 }

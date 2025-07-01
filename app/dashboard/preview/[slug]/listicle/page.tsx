@@ -66,142 +66,184 @@ export default async function ListiclePreviewPage({
     }
 
     return (
-        <div className="min-h-screen bg-background">
-            <div className="container mx-auto px-4 py-8 max-w-8xl">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="container mx-auto px-4 py-8 max-w-7xl">
                 
-                <div className="flex flex-row items-center justify-between">
-                    <div className="mb-2 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-xl w-[55%] lg:w-full">
-                        <div className="flex flex-col items-start gap-2">
-                            <div className="flex items-center gap-2">
-                                <Eye className="h-5 w-5 text-green-600" />
-                                <span className="font-medium text-green-800 dark:text-green-200">Listicle Preview Mode</span>
-                            </div>
+                {/* Preview Mode Banner */}
+                <div className="flex flex-row items-center justify-between mb-8">
+                    <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg w-full max-w-md">
+                        <div className="flex items-center gap-2">
+                            <Eye className="h-5 w-5 text-green-600" />
+                            <span className="font-medium text-green-800 dark:text-green-200">Listicle Preview Mode</span>
                         </div>
                     </div>
                     <SidebarTrigger className="block md:hidden" />
                 </div>
                 
-                <div className="space-y-6 mb-8">
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <div className="space-y-4">
-                            <div className="flex items-center gap-2">
-                                <ListOrdered className="h-5 w-5 text-primary" />
-                                <Badge variant="secondary">Listicle</Badge>
-                            </div>
-                            <h1 className="text-4xl font-bold leading-tight">{page.title}</h1>
-                            <p className="text-xl text-muted-foreground">{page.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                        <span>By {page.author}</span>
-                        <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{page.readTime}</span>
-                        </div>
-                    </div>
-                    
-                    <Separator />
-                </div>
-
-                <div className="mb-8">
-                    <Image 
-                        src={page.imageUrl} 
-                        alt={page.title}
-                        width={1000}
-                        height={1000}
-                        className="w-full h-64 object-cover rounded-lg"
-                    />
-                </div>
-
                 <div className="grid lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-3">
-                        <div className="prose prose-gray dark:prose-invert max-w-none listicle-content">
-                        <ReactMarkdown 
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                                code({ className, children, ...props }: any) {
-                                    const match = /language-(\w+)/.exec(className || '')
-                                    const language = match ? match[1] : ''
-                                    const isInline = !className?.includes('language-')
-                                    
-                                    if (isInline) {
-                                        return (
-                                            <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
-                                                {children}
-                                            </code>
-                                        )
-                                    }
-                                    
-                                    return (
-                                        <div className="my-4">
-                                            <SyntaxHighlighter
-                                                style={vscDarkPlus}
-                                                language={language || 'text'}
-                                                PreTag="div"
-                                                customStyle={{
-                                                    margin: 0,
-                                                    borderRadius: '0.5rem',
-                                                    fontSize: '0.875rem',
-                                                }}
-                                                codeTagProps={{
-                                                    style: {
-                                                        fontSize: '0.875rem',
-                                                        fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                                                    },
-                                                }}
-                                            >
-                                                {String(children).replace(/\n$/, '')}
-                                            </SyntaxHighlighter>
-                                        </div>
-                                    )
-                                },
-                                h1: ({ children }) => <h1 className="text-3xl font-bold mt-8 mb-4 first:mt-0 text-primary">{children}</h1>,
-                                h2: ({ children }) => {
-                                const childString = String(children)
-                                const isNumberedItem = /^\d+\./.test(childString.trim())
+                        {/* Article Container */}
+                        <article className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+                            {/* Header */}
+                            <header className="px-8 py-10 border-b border-gray-100 dark:border-gray-700">
+                                <div className="flex items-center gap-2 mb-6">
+                                    <ListOrdered className="h-5 w-5 text-blue-600" />
+                                    <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
+                                        Listicle
+                                    </Badge>
+                                </div>
                                 
-                                return (
-                                    <h2 
-                                        className={`text-2xl font-bold mt-10 mb-6 ${
-                                            isNumberedItem 
-                                                ? 'p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-xl' 
-                                                : ''
-                                            }`
-                                        }
+                                <div className="space-y-6">
+                                    <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+                                        {page.title}
+                                    </h1>
+                                    {page.description && (
+                                        <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+                                            {page.description}
+                                        </p>
+                                    )}
+                                </div>
+                                
+                                <div className="flex items-center gap-8 mt-8 text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="font-medium">By {page.author}</span>
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="h-4 w-4" />
+                                        <span>{page.readTime}</span>
+                                    </div>
+                                </div>
+                            </header>
+
+                            {/* Featured Image */}
+                            <div className="px-8 py-8">
+                                <Image 
+                                    src={page.imageUrl} 
+                                    alt={page.title}
+                                    width={1000}
+                                    height={600}
+                                    className="w-full h-80 object-cover rounded-lg"
+                                />
+                            </div>
+
+                            {/* Content */}
+                            <div className="px-8 pb-10">
+                                <div className="prose prose-xl prose-gray dark:prose-invert max-w-none">
+                                    <ReactMarkdown 
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            code({ className, children, ...props }: any) {
+                                                const match = /language-(\w+)/.exec(className || '')
+                                                const language = match ? match[1] : ''
+                                                const isInline = !className?.includes('language-')
+                                                
+                                                if (isInline) {
+                                                    return (
+                                                        <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-base font-mono text-gray-800 dark:text-gray-200" {...props}>
+                                                            {children}
+                                                        </code>
+                                                    )
+                                                }
+                                                
+                                                return (
+                                                    <div className="my-8">
+                                                        <SyntaxHighlighter
+                                                            style={vscDarkPlus}
+                                                            language={language || 'text'}
+                                                            PreTag="div"
+                                                            customStyle={{
+                                                                margin: 0,
+                                                                borderRadius: '0.5rem',
+                                                                fontSize: '1rem',
+                                                            }}
+                                                        >
+                                                            {String(children).replace(/\n$/, '')}
+                                                        </SyntaxHighlighter>
+                                                    </div>
+                                                )
+                                            },
+                                            h1: ({ children }) => (
+                                                <h1 className="text-4xl font-bold mt-16 mb-8 first:mt-10 text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-4">
+                                                    {children}
+                                                </h1>
+                                            ),
+                                            h2: ({ children }) => {
+                                                const childString = String(children)
+                                                const numberMatch = childString.match(/^(\d+)\.\s*(.+)/)
+                                                
+                                                if (numberMatch) {
+                                                    const [, number, title] = numberMatch
+                                                    return (
+                                                        <div className="my-12 first:mt-8">
+                                                            <div className="flex items-start gap-6 mb-8">
+                                                                <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                                                                    {number}
+                                                                </div>
+                                                                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2 leading-tight">
+                                                                    {title}
+                                                                </h2>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                                
+                                                return (
+                                                    <h2 className="text-3xl font-bold mt-12 mb-8 text-gray-900 dark:text-gray-100">
+                                                        {children}
+                                                    </h2>
+                                                )
+                                            },
+                                            h3: ({ children }) => (
+                                                <h3 className="text-2xl font-semibold mt-10 mb-6 text-gray-900 dark:text-gray-100">
+                                                    {children}
+                                                </h3>
+                                            ),
+                                            h4: ({ children }) => (
+                                                <h4 className="text-xl font-medium mt-8 mb-4 text-gray-900 dark:text-gray-100">
+                                                    {children}
+                                                </h4>
+                                            ),
+                                            p: ({ children }) => (
+                                                <p className="mb-6 leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
+                                                    {children}
+                                                </p>
+                                            ),
+                                            ul: ({ children }) => (
+                                                <ul className="mb-8 pl-8 space-y-4 list-disc list-outside text-gray-700 dark:text-gray-300">
+                                                    {children}
+                                                </ul>
+                                            ),
+                                            ol: ({ children }) => (
+                                                <ol className="mb-8 pl-8 space-y-4 list-decimal list-outside text-gray-700 dark:text-gray-300">
+                                                    {children}
+                                                </ol>
+                                            ),
+                                            li: ({ children }) => (
+                                                <li className="leading-relaxed text-lg">
+                                                    {children}
+                                                </li>
+                                            ),
+                                            blockquote: ({ children }) => (
+                                                <blockquote className="border-l-4 border-blue-500 pl-8 my-8 bg-gray-50 dark:bg-gray-700 py-6 rounded-r-lg">
+                                                    <div className="text-gray-700 dark:text-gray-300 italic text-xl">
+                                                        {children}
+                                                    </div>
+                                                </blockquote>
+                                            ),
+                                            strong: ({ children }) => (
+                                                <strong className="font-semibold text-gray-900 dark:text-gray-100">
+                                                    {children}
+                                                </strong>
+                                            ),
+                                            em: ({ children }) => <em className="italic">{children}</em>,
+                                            hr: () => (
+                                                <hr className="my-12 border-gray-200 dark:border-gray-700" />
+                                            ),
+                                        }}
                                     >
-                                        {isNumberedItem && (
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-lg font-bold">
-                                                    {childString.match(/^(\d+)/)?.[1]}
-                                                </div>
-                                            </div>
-                                        )}
-                                        {children}
-                                    </h2>
-                                )
-                                },
-                                h3: ({ children }) => <h3 className="text-xl font-semibold mt-6 mb-4">{children}</h3>,
-                                h4: ({ children }) => <h4 className="text-lg font-medium mt-4 mb-3">{children}</h4>,
-                                p: ({ children }) => <p className="mb-4 leading-7 text-gray-700 dark:text-gray-300">{children}</p>,
-                                ul: ({ children }) => <ul className="mb-6 pl-6 space-y-3 list-disc list-outside">{children}</ul>,
-                                ol: ({ children }) => <ol className="mb-6 pl-6 space-y-3 list-decimal list-outside">{children}</ol>,
-                                li: ({ children }) => <li className="leading-7 text-gray-700 dark:text-gray-300">{children}</li>,
-                                blockquote: ({ children }) => (
-                                    <blockquote className="border-l-4 border-primary pl-6 italic text-gray-600 dark:text-gray-400 mb-6 bg-muted/50 py-4 rounded-r-lg">
-                                        {children}
-                                    </blockquote>
-                                ),
-                                strong: ({ children }) => <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>,
-                                em: ({ children }) => <em className="italic">{children}</em>,
-                                hr: () => <hr className="my-8 border-gray-200 dark:border-gray-700" />,
-                            }}
-                        >
-                            {page.content}
-                        </ReactMarkdown>
-                        </div>
+                                        {page.content}
+                                    </ReactMarkdown>
+                                </div>
+                            </div>
+                        </article>
                     </div>
 
                     <div className="order-1 lg:order-last">

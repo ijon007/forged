@@ -1,14 +1,24 @@
 'use client'
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Clock, ListOrdered } from 'lucide-react'
+import { Separator } from '@/components/ui/separator'
+import { Clock, FileText } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import Socials from './socials'
 import type { CourseLink } from '@/db/schemas/course-schema'
 
-interface ListiclePreviewProps {
+/* Plate js notes for integration
+ - use editor plain
+ - add simple toolbar
+ - use plate markdown for content
+ - add mcp
+*/
+
+interface BlogPreviewProps {
     previewData: {
         title: string
         generatedContent: string
@@ -21,16 +31,20 @@ interface ListiclePreviewProps {
     }
 }
 
-export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
-    const { title, generatedContent, author, readTime, description, imageUrl } = previewData
+const BlogPreview = ({ previewData }: BlogPreviewProps) => {
+    const { title, generatedContent, author, readTime, description, imageUrl, links } = previewData
+    const displayAuthor = author || "John Doe"
+    const displayReadTime = readTime || "5 min read"
+    const price = previewData.price || 29.99
+    const displayDescription = description || "AI-generated blog post content"
 
     return (
-        <article className="w-full max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+        <article className="w-full max-w-4xl mx-auto bg-white">
             <header className="px-6 py-8 border-b border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2 mb-4">
-                    <ListOrdered className="h-5 w-5 text-blue-600" />
-                    <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
-                        Listicle
+                    <FileText className="h-5 w-5 text-green-600" />
+                    <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50 dark:bg-green-950 dark:border-green-800">
+                        Blog Post
                     </Badge>
                 </div>
                 
@@ -38,33 +52,33 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
                     <h1 className="text-3xl md:text-4xl font-bold leading-tight text-gray-900 dark:text-gray-100">
                         {title}
                     </h1>
-                    {description && (
-                        <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                            {description}
-                        </p>
-                    )}
+                    <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                        {displayDescription}
+                    </p>
                 </div>
                 
                 <div className="flex items-center gap-6 mt-6 text-sm text-gray-500 dark:text-gray-400">
-                    {author && (
-                        <span className="font-medium">By {author}</span>
-                    )}
-                    {readTime && (
-                        <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{readTime}</span>
-                        </div>
-                    )}
+                    <span className="font-medium">By {displayAuthor}</span>
+                    <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{displayReadTime}</span>
+                    </div>
                 </div>
             </header>
 
-            {imageUrl && (
+            {imageUrl ? (
                 <div className="px-6 py-6">
                     <img 
                         src={imageUrl} 
                         alt={title}
                         className="w-full h-64 md:h-80 object-cover rounded-lg"
                     />
+                </div>
+            ) : (
+                <div className="px-6 py-6">
+                    <div className="w-full h-64 md:h-80 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400">
+                        Hero Image Placeholder
+                    </div>
                 </div>
             )}
 
@@ -108,32 +122,11 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
                                     {children}
                                 </h1>
                             ),
-                            h2: ({ children }) => {
-                                const childString = String(children)
-                                const numberMatch = childString.match(/^(\d+)\.\s*(.+)/)
-                                
-                                if (numberMatch) {
-                                    const [, number, title] = numberMatch
-                                    return (
-                                        <div className="my-10 first:mt-6">
-                                            <div className="flex items-start gap-4 mb-6">
-                                                <div className="bg-black text-white rounded-full flex items-center justify-center text-lg font-bold w-9 h-9">
-                                                    {number}
-                                                </div>
-                                                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 leading-tight">
-                                                    {title}
-                                                </h2>
-                                            </div>
-                                        </div>
-                                    )
-                                }
-                                
-                                return (
-                                    <h2 className="text-2xl font-bold mt-10 mb-6 text-gray-900 dark:text-gray-100">
-                                        {children}
-                                    </h2>
-                                )
-                            },
+                            h2: ({ children }) => (
+                                <h2 className="text-2xl font-bold mt-10 mb-6 text-gray-900 dark:text-gray-100">
+                                    {children}
+                                </h2>
+                            ),
                             h3: ({ children }) => (
                                 <h3 className="text-xl font-semibold mt-8 mb-4 text-gray-900 dark:text-gray-100">
                                     {children}
@@ -165,7 +158,7 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
                                 </li>
                             ),
                             blockquote: ({ children }) => (
-                                <blockquote className="border-l-4 border-blue-500 pl-6 my-6 bg-gray-50 dark:bg-gray-800 py-4 rounded-r-lg">
+                                <blockquote className="border-l-4 border-green-500 pl-6 my-6 bg-gray-50 dark:bg-gray-800 py-4 rounded-r-lg">
                                     <div className="text-gray-700 dark:text-gray-300 italic text-lg">
                                         {children}
                                     </div>
@@ -185,7 +178,15 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
                         {generatedContent}
                     </ReactMarkdown>
                 </div>
+
+                {links && links.length > 0 && (
+                    <div className="mt-8">
+                        <Socials initialLinks={links} readOnly={true} />
+                    </div>
+                )}
             </div>
         </article>
     )
-} 
+}
+
+export default BlogPreview

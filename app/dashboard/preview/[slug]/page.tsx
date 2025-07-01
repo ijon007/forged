@@ -3,10 +3,10 @@ import { courseStore } from "@/lib/course-store"
 import { getCourseWithUser } from "@/actions/course-db-actions"
 import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 import Preferences from "@/components/preview/preferences"
-import Preview from "@/components/preview/preview"
 import ListiclePreview from "@/components/preview/listicle-preview"
 import TopNav from "@/components/preview/top-nav"
 import Socials from "@/components/preview/socials"
+import BlogPreview from "@/components/preview/blog-preview"
 
 export default async function PreviewPage({
     params,
@@ -84,7 +84,7 @@ export default async function PreviewPage({
                         {previewData.contentType === CONTENT_TYPES.LISTICLE ? (
                             <ListiclePreview previewData={previewData} />
                         ) : (
-                            <Preview previewData={previewData} />
+                            <BlogPreview previewData={previewData} />
                         )}
                     </div>
                 </div>
