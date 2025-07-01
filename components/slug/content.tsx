@@ -128,7 +128,7 @@ const PublishedContent = ({ page }: { page: any }) => {
                                     return (
                                         <div className="my-10 first:mt-6">
                                             <div className="flex items-start gap-4 mb-6">
-                                                <div className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">
+                                                <div className="flex-shrink-0 w-9 h-9 bg-black text-white rounded-full flex items-center justify-center text-base font-bold">
                                                     {number}
                                                 </div>
                                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 leading-tight">

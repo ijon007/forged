@@ -127,7 +127,7 @@ export function PageCard({
                         <Link href={`/dashboard/preview/${slug}`}>
                             <Button variant="outline" size="sm" className="h-8 rounded-lg">
                                 <Edit className="w-4 h-4 mr-1" />
-                                Preview
+                                Edit
                             </Button>
                         </Link>
                         {status === "published" && (

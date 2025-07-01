@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Clock, Eye } from "lucide-react"
+import { Clock, Eye, FileText, ListOrdered } from "lucide-react"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getCourseWithUser } from "@/actions/course-db-actions"
@@ -10,6 +9,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import CourseSidebar from "@/components/slug/course-sidebar"
+import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 import Image from "next/image"
 
 export default async function BlogPreviewPage({
@@ -58,64 +58,84 @@ export default async function BlogPreviewPage({
         title: formattedCourse.title,
         description: formattedCourse.description,
         price: formattedCourse.price,
+        contentType: generatedCourse.contentType,
         author: dbCourse.userName,
         readTime: `${formattedCourse.estimatedReadTime} min read`,
-        imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
+        imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
         content: formattedCourse.generatedContent,
         links: dbCourse.links || []
     }
 
+    const isListicle = page.contentType === CONTENT_TYPES.LISTICLE
+
     return (
-        <div className="min-h-screen bg-background">
-            <div className="container mx-auto px-4 py-8 max-w-8xl">
+        <div className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4 py-8 max-w-7xl">
                 
-                <div className="flex flex-row items-center justify-between">
-                    <div className="mb-2 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200 dark:border-blue-800 rounded-xl w-[55%] lg:w-full">
-                        <div className="flex flex-col items-start gap-2">
-                            <div className="flex items-center gap-2">
-                                <Eye className="h-5 w-5 text-blue-600" />
-                                <span className="font-medium text-blue-800 dark:text-blue-200">Blog Preview Mode</span>
-                            </div>
+                <div className="flex flex-row items-center justify-between mb-8">
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg w-full max-w-md">
+                        <div className="flex items-center gap-2">
+                            <Eye className="h-5 w-5 text-green-600" />
+                            <span className="font-medium text-green-800">Preview Mode</span>
                         </div>
                     </div>
                     <SidebarTrigger className="block md:hidden" />
                 </div>
                 
-                <div className="space-y-6 mb-8">
-                <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <div className="space-y-4">
-                        <Badge variant="secondary">Blog Post</Badge>
-                        <h1 className="text-4xl font-bold leading-tight">{page.title}</h1>
-                        <p className="text-xl text-muted-foreground">{page.description}</p>
+                <article className="overflow-hidden mb-8">
+                    <header className="px-8 py-10 border-b border-gray-100">
+                        <div className="flex items-center gap-2 mb-6">
+                            {isListicle ? (
+                                <>
+                                    <ListOrdered className="h-5 w-5 text-blue-600" />
+                                    <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50">
+                                        Listicle
+                                    </Badge>
+                                </>
+                            ) : (
+                                <>
+                                    <FileText className="h-5 w-5 text-green-600" />
+                                    <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
+                                        Blog Post
+                                    </Badge>
+                                </>
+                            )}
                         </div>
-                    </div>
-                </div>
-                
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                    <span>By {page.author}</span>
-                    <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{page.readTime}</span>
-                    </div>
-                </div>
-                
-                <Separator />
-                </div>
+                        
+                        <div className="space-y-6">
+                            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-900">
+                                {page.title}
+                            </h1>
+                            {page.description && (
+                                <p className="text-xl text-gray-600 leading-relaxed">
+                                    {page.description}
+                                </p>
+                            )}
+                        </div>
+                        
+                        <div className="flex items-center gap-8 mt-8 text-sm text-gray-500">
+                            <span className="font-medium">By {page.author}</span>
+                            <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                <span>{page.readTime}</span>
+                            </div>
+                        </div>
+                    </header>
 
-                <div className="mb-8">
-                    <Image 
-                        src={page.imageUrl} 
-                        alt={page.title}
-                        width={1000}
-                        height={1000}
-                        className="w-full h-64 object-cover rounded-lg"
-                    />
-                </div>
+                    <div className="px-8 py-8">
+                        <Image 
+                            src={page.imageUrl} 
+                            alt={page.title}
+                            width={1000}
+                            height={600}
+                            className="w-full h-80 object-cover rounded-lg"
+                        />
+                    </div>
+                </article>
 
                 <div className="grid lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-3">
-                        <div className="prose prose-gray dark:prose-invert max-w-none">
+                        <div className="prose prose-xl prose-gray max-w-none">
                             <ReactMarkdown 
                                 remarkPlugins={[remarkGfm]}
                                 components={{
@@ -126,14 +146,14 @@ export default async function BlogPreviewPage({
                                         
                                         if (isInline) {
                                             return (
-                                                <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                                                <code className="bg-gray-100 px-2 py-1 rounded text-base font-mono text-gray-800" {...props}>
                                                     {children}
                                                 </code>
                                             )
                                         }
                                         
                                         return (
-                                            <div className="my-4">
+                                            <div className="my-8">
                                                 <SyntaxHighlighter
                                                     style={vscDarkPlus}
                                                     language={language || 'text'}
@@ -141,13 +161,7 @@ export default async function BlogPreviewPage({
                                                     customStyle={{
                                                         margin: 0,
                                                         borderRadius: '0.5rem',
-                                                        fontSize: '0.875rem',
-                                                    }}
-                                                    codeTagProps={{
-                                                        style: {
-                                                            fontSize: '0.875rem',
-                                                            fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                                                        },
+                                                        fontSize: '1rem',
                                                     }}
                                                 >
                                                     {String(children).replace(/\n$/, '')}
@@ -155,22 +169,84 @@ export default async function BlogPreviewPage({
                                             </div>
                                         )
                                     },
-                                    h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-3 first:mt-0">{children}</h1>,
-                                    h2: ({ children }) => <h2 className="text-xl font-semibold mt-6 mb-3">{children}</h2>,
-                                    h3: ({ children }) => <h3 className="text-lg font-medium mt-4 mb-2">{children}</h3>,
-                                    h4: ({ children }) => <h4 className="text-base font-medium mt-3 mb-2">{children}</h4>,
-                                    p: ({ children }) => <p className="mb-3 leading-6 text-gray-700 dark:text-gray-300">{children}</p>,
-                                    ul: ({ children }) => <ul className="mb-4 pl-6 space-y-2 list-disc list-outside">{children}</ul>,
-                                    ol: ({ children }) => <ol className="mb-4 pl-6 space-y-2 list-decimal list-outside">{children}</ol>,
-                                    li: ({ children }) => <li className="leading-6 text-gray-700 dark:text-gray-300">{children}</li>,
-                                    blockquote: ({ children }) => (
-                                        <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-3 italic text-gray-600 dark:text-gray-400 mb-3">
+                                    h1: ({ children }) => (
+                                        <h1 className="text-4xl font-bold text-gray-900 border-gray-200 pb-4">
                                             {children}
+                                        </h1>
+                                    ),
+                                    h2: ({ children }) => {
+                                        if (isListicle) {
+                                            const childString = String(children)
+                                            const numberMatch = childString.match(/^(\d+)\.\s*(.+)/)
+                                            
+                                            if (numberMatch) {
+                                                const [, number, title] = numberMatch
+                                                return (
+                                                    <div className="my-12 first:mt-8">
+                                                        <div className="flex items-start gap-6 mb-8">
+                                                            <div className="bg-black text-white rounded-full flex items-center justify-center text-lg font-bold w-9 h-9">
+                                                                {number}
+                                                            </div>
+                                                            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 leading-tight">
+                                                                {title}
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                        }
+                                        return (
+                                            <h2 className="text-3xl font-bold mt-12 mb-8 text-gray-900">
+                                                {children}
+                                            </h2>
+                                        )
+                                    },
+                                    h3: ({ children }) => (
+                                        <h3 className="text-2xl font-semibold mt-10 mb-6 text-gray-900">
+                                            {children}
+                                        </h3>
+                                    ),
+                                    h4: ({ children }) => (
+                                        <h4 className="text-xl font-medium mt-8 mb-4 text-gray-900">
+                                            {children}
+                                        </h4>
+                                    ),
+                                    p: ({ children }) => (
+                                        <p className="mb-6 leading-relaxed text-gray-700 text-lg">
+                                            {children}
+                                        </p>
+                                    ),
+                                    ul: ({ children }) => (
+                                        <ul className="mb-8 pl-8 space-y-4 list-disc list-outside text-gray-700">
+                                            {children}
+                                        </ul>
+                                    ),
+                                    ol: ({ children }) => (
+                                        <ol className="mb-8 pl-8 space-y-4 list-decimal list-outside text-gray-700">
+                                            {children}
+                                        </ol>
+                                    ),
+                                    li: ({ children }) => (
+                                        <li className="leading-relaxed text-lg">
+                                            {children}
+                                        </li>
+                                    ),
+                                    blockquote: ({ children }) => (
+                                        <blockquote className={`border-l-4 ${isListicle ? 'border-blue-500' : 'border-green-500'} pl-8 my-8 bg-gray-50 py-6 rounded-r-lg`}>
+                                            <div className="text-gray-700 italic text-xl">
+                                                {children}
+                                            </div>
                                         </blockquote>
                                     ),
-                                    strong: ({ children }) => <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>,
+                                    strong: ({ children }) => (
+                                        <strong className="font-semibold text-gray-900">
+                                            {children}
+                                        </strong>
+                                    ),
                                     em: ({ children }) => <em className="italic">{children}</em>,
-                                    hr: () => <hr className="my-6 border-gray-200 dark:border-gray-700" />,
+                                    hr: () => (
+                                        <hr className="my-12 border-gray-200" />
+                                    ),
                                 }}
                             >
                                 {page.content}
@@ -180,12 +256,12 @@ export default async function BlogPreviewPage({
 
                     <div className="order-1 lg:order-last">
                         <CourseSidebar
-                        price={page.price}
-                        keyPoints={generatedCourse.keyPoints.slice(0, 5)}
-                        tags={generatedCourse.tags}
-                        links={page.links}
-                        isPurchased={false}
-                        courseId={page.id}
+                            price={page.price}
+                            keyPoints={generatedCourse.keyPoints.slice(0, 5)}
+                            tags={generatedCourse.tags}
+                            links={page.links}
+                            isPurchased={false}
+                            courseId={page.id}
                         />
                     </div>
                 </div>
