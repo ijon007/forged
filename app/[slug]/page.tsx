@@ -5,6 +5,9 @@ import { notFound } from "next/navigation"
 /* Actions */
 import { getCourseWithUser } from "@/actions/course-db-actions"
 
+/* Utils */
+import { formatCourseForPreview } from "@/lib/course-store"
+
 /* Types */
 import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 
@@ -31,7 +34,7 @@ export async function generateMetadata({
             }
         }
 
-        const title = `${dbCourse.title} | Forged`
+        const title = `${dbCourse.title}`
         const description = dbCourse.description || 'Discover premium educational content on Forged'
         const imageUrl = dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
         const price = dbCourse.price / 100
@@ -66,7 +69,7 @@ export async function generateMetadata({
                 },
             },
             openGraph: {
-                type: 'article', // Keep as article for all content types for better social media compatibility
+                type: 'article',
                 title,
                 description,
                 url,
@@ -131,6 +134,23 @@ export default async function BlogPage({
     const contentType = dbCourse.contentType || CONTENT_TYPES.BLOG
     const isCourse = contentType === CONTENT_TYPES.COURSE
     
+    // Create generatedCourse object for formatting
+    const generatedCourse = {
+        id: dbCourse.id,
+        title: dbCourse.title,
+        description: dbCourse.description,
+        content: dbCourse.content,
+        originalContent: typeof dbCourse.originalContent === 'string' ? dbCourse.originalContent : '',
+        contentType: contentType,
+        tags: dbCourse.tags,
+        keyPoints: dbCourse.keyPoints,
+        estimatedReadTime: dbCourse.estimatedReadTime,
+        createdAt: dbCourse.createdAt,
+    }
+    
+    // Format the course content properly
+    const formattedCourse = formatCourseForPreview(generatedCourse, dbCourse.price)
+    
     // Calculate appropriate display time/info based on content type
     let displayTime = `${dbCourse.estimatedReadTime} min read`
     if (isCourse) {
@@ -148,21 +168,21 @@ export default async function BlogPage({
         }
     }
     
-      const page = {
-    id: dbCourse.id,
-    title: dbCourse.title,
-    description: dbCourse.description,
-    price: dbCourse.price / 100,
-    contentType,
-    isPurchased: false,
-    author: dbCourse.userName,
-    readTime: displayTime,
-    imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
-    content: dbCourse.content,
-    tags: dbCourse.tags,
-    keyPoints: dbCourse.keyPoints,
-    links: dbCourse.links || []
-  }
+    const page = {
+        id: dbCourse.id,
+        title: dbCourse.title,
+        description: dbCourse.description,
+        price: dbCourse.price / 100,
+        contentType,
+        isPurchased: false,
+        author: dbCourse.userName,
+        readTime: displayTime,
+        imageUrl: dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
+        content: formattedCourse.generatedContent,
+        tags: dbCourse.tags,
+        keyPoints: dbCourse.keyPoints,
+        links: dbCourse.links || []
+    }
 
     return (
         <CoursePage

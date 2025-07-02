@@ -11,6 +11,12 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import CourseSidebar from "@/components/slug/course-sidebar"
 import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 import Image from "next/image"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Preview | Dashboard",
+    description: "Preview Mode",
+}
 
 export default async function ListiclePreviewPage({
   params,

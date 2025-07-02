@@ -2,8 +2,8 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Preview",
-    description: "Preview Mode",
+    title: "Edit",
+    description: "Edit Mode",
 }
 
 export default async function DashboardLayout({

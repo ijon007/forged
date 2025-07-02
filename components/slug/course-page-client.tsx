@@ -38,10 +38,11 @@ interface CoursePageClientProps {
     slug: string
     createdAt: Date
     updatedAt: Date
+    isPreview?: boolean
 }
 
-export default function CoursePage({ page, slug, createdAt, updatedAt }: CoursePageClientProps) {
-    const [hasAccess, setHasAccess] = useState(false)
+export default function CoursePage({ page, slug, createdAt, updatedAt, isPreview = false }: CoursePageClientProps) {
+    const [hasAccess, setHasAccess] = useState(isPreview ? true : false)
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const [showInputDialog, setShowInputDialog] = useState(false)
     const [generatedAccessCode, setGeneratedAccessCode] = useState("")
@@ -51,6 +52,12 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
     const searchParams = useSearchParams()
 
     useEffect(() => {
+        // Skip all access code logic in preview mode
+        if (isPreview) {
+            setHasAccess(true)
+            return
+        }
+
         const accessCodeFromUrl = searchParams.get('access_code')
         const fromManualEntry = searchParams.get('manual') === 'true'
         
@@ -82,7 +89,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                 setShowInputDialog(true)
             }
         }
-    }, [searchParams, page.id])
+    }, [searchParams, page.id, isPreview])
 
     const handleSuccessDialogClose = () => {
         setShowSuccessDialog(false)
@@ -167,7 +174,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                 <PoweredByBadge />
             </div>
 
-            {page.price > 0 && (
+            {!isPreview && page.price > 0 && (
                 <>
                     <AccessCodeDialog
                         isOpen={showSuccessDialog}
@@ -183,7 +190,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                         isLoading={isLoading}
                         error={error}
                         onClose={() => setShowInputDialog(false)}
-                />
+                    />
                 </>
             )}
         </>

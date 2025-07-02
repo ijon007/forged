@@ -1,16 +1,33 @@
+/* Next */
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import Image from "next/image"
+
+/* Components */
 import { Badge } from "@/components/ui/badge"
 import { Clock, Eye, FileText, ListOrdered } from "lucide-react"
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { getCourseWithUser } from "@/actions/course-db-actions"
-import { courseStore, formatCourseForPreview } from "@/lib/course-store"
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import CourseSidebar from "@/components/slug/course-sidebar"
+
+/* Actions */
+import { getCourseWithUser } from "@/actions/course-db-actions"
+
+/* Utils */
+import { courseStore, formatCourseForPreview } from "@/lib/course-store"
+
+/* Types */
 import { CONTENT_TYPES } from "@/db/schemas/course-schema"
-import Image from "next/image"
+
+/* Markdown */
+import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
+export const metadata: Metadata = {
+    title: "Preview | Dashboard",
+    description: "Preview Mode",
+}
 
 export default async function BlogPreviewPage({
     params,
