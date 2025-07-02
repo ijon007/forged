@@ -1,15 +1,23 @@
 'use client'
 
+/* React */
+import { useState } from 'react'
+
+/* Components */
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { Clock, GraduationCap, BookOpen, HelpCircle, CheckCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+
+/* Markdown */
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+
+/* Syntax Highlighting */
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+
+/* Types */
 import type { CourseLink, Lesson } from '@/db/schemas/course-schema'
 
 interface CoursePreviewProps {
@@ -30,7 +38,6 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
     const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({})
     const [showQuizResults, setShowQuizResults] = useState<Record<number, boolean>>({})
 
-    // Ensure we have lessons data and it's an array
     const lessons = Array.isArray(previewData.generatedContent) ? previewData.generatedContent : []
 
     if (lessons.length === 0) {
@@ -45,6 +52,9 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
 
     const handleQuizAnswer = (lessonIndex: number, optionIndex: number) => {
         setQuizAnswers(prev => ({ ...prev, [lessonIndex]: optionIndex }))
+    }
+
+    const handleCheckAnswer = (lessonIndex: number) => {
         setShowQuizResults(prev => ({ ...prev, [lessonIndex]: true }))
     }
 
@@ -62,7 +72,7 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
     }
 
     return (
-        <Card className="w-full max-w-4xl mx-auto">
+        <Card className="w-full max-w-6xl mx-auto">
             <CardHeader className="space-y-4">
                 <div className="flex items-center gap-2">
                     <GraduationCap className="h-6 w-6 text-primary" />
@@ -92,32 +102,44 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
             </CardHeader>
 
             <CardContent className="space-y-6">
-                {/* Course Navigation */}
-                <div className="border rounded-lg p-4">
-                    <h3 className="font-semibold mb-3">Course Lessons</h3>
-                    <div className="grid gap-2">
+                <div className="border rounded-lg p-4 bg-muted/20">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="font-semibold">Course Lessons</h3>
+                        <Badge variant="secondary">{lessons.length} lessons</Badge>
+                    </div>
+                    <div className="space-y-2">
                         {lessons.map((lesson, index) => (
-                            <Button
+                            <div
                                 key={index}
-                                variant={selectedLesson === index ? "default" : "ghost"}
-                                className="justify-start h-auto p-3"
+                                className={`
+                                    p-3 rounded-lg border cursor-pointer transition-colors
+                                    ${selectedLesson === index 
+                                        ? 'border-primary bg-primary/5' 
+                                        : 'border-border hover:bg-muted/50'
+                                    }
+                                `}
                                 onClick={() => setSelectedLesson(index)}
                             >
-                                <div className="flex items-center gap-2 w-full">
-                                    <span className="text-xs bg-muted rounded px-2 py-1">
+                                <div className="flex items-center gap-3">
+                                    <span className={`
+                                        w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium
+                                        ${selectedLesson === index 
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'bg-muted text-muted-foreground'
+                                        }
+                                    `}>
                                         {index + 1}
                                     </span>
-                                    <span className="text-left">{lesson.title}</span>
+                                    <span className="font-medium">{lesson.title}</span>
                                     {showQuizResults[index] && (
-                                        <CheckCircle className="h-4 w-4 ml-auto text-green-500" />
+                                        <CheckCircle className="h-4 w-4 text-green-500 ml-auto" />
                                     )}
                                 </div>
-                            </Button>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Current Lesson Content */}
                 <div className="space-y-6">
                     <div>
                         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -156,11 +178,8 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
                         </div>
                     </div>
 
-                    <Separator />
-
-                    {/* Quiz Section */}
                     {lessons[selectedLesson].quiz && (
-                        <div className="border rounded-lg p-6 bg-muted/30">
+                        <div className="border rounded-2xl p-6 bg-muted/30">
                             <div className="flex items-center gap-2 mb-4">
                                 <HelpCircle className="h-5 w-5 text-primary" />
                                 <h3 className="font-semibold">Knowledge Check</h3>
@@ -183,6 +202,8 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
                                             } else if (isSelected && !isCorrect) {
                                                 buttonVariant = "destructive"
                                             }
+                                        } else if (isSelected) {
+                                            buttonVariant = "default"
                                         }
                                         
                                         return (
@@ -202,6 +223,15 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
                                     })}
                                 </div>
                                 
+                                {quizAnswers[selectedLesson] !== undefined && !showQuizResults[selectedLesson] && (
+                                    <Button 
+                                        onClick={() => handleCheckAnswer(selectedLesson)}
+                                        className="w-full rounded-xl"
+                                    >
+                                        Check Answer
+                                    </Button>
+                                )}
+                                
                                 {showQuizResults[selectedLesson] && (
                                     <div className={`p-3 rounded-lg ${
                                         getQuizFeedback(selectedLesson).isCorrect 
@@ -218,7 +248,6 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
                     )}
                 </div>
 
-                {/* Navigation Buttons */}
                 <div className="flex justify-between pt-4">
                     <Button
                         variant="outline"
