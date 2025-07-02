@@ -6,16 +6,10 @@ import { useState } from 'react'
 /* Components */
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Clock, GraduationCap, BookOpen, HelpCircle, CheckCircle } from 'lucide-react'
+import { Clock, GraduationCap, BookOpen, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-/* Markdown */
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-
-/* Syntax Highlighting */
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import QuizSection from './quiz-section'
+import { ContentEditor } from './content-editor'
 
 /* Types */
 import type { CourseLink, Lesson } from '@/db/schemas/course-schema'
@@ -37,8 +31,17 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
     const [selectedLesson, setSelectedLesson] = useState(0)
     const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({})
     const [showQuizResults, setShowQuizResults] = useState<Record<number, boolean>>({})
-
+    
     const lessons = Array.isArray(previewData.generatedContent) ? previewData.generatedContent : []
+    
+    // State to track content changes for each lesson
+    const [lessonContents, setLessonContents] = useState<Record<number, string>>(() => {
+        const initialContents: Record<number, string> = {}
+        lessons.forEach((lesson, index) => {
+            initialContents[index] = lesson.content
+        })
+        return initialContents
+    })
 
     if (lessons.length === 0) {
         return (
@@ -56,6 +59,11 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
 
     const handleCheckAnswer = (lessonIndex: number) => {
         setShowQuizResults(prev => ({ ...prev, [lessonIndex]: true }))
+    }
+
+    const handleLessonContentChange = (lessonIndex: number, newContent: string) => {
+        setLessonContents(prev => ({ ...prev, [lessonIndex]: newContent }))
+        console.log(`Lesson ${lessonIndex + 1} content updated:`, newContent)
     }
 
     const getQuizFeedback = (lessonIndex: number) => {
@@ -149,102 +157,23 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
                             {lessons[selectedLesson].title}
                         </h2>
                         
-                        <div className="prose prose-gray max-w-none">
-                            <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                components={{
-                                    code({ className, children, ...props }: any) {
-                                        const match = /language-(\w+)/.exec(className || '')
-                                        const inline = !match
-                                        return !inline && match ? (
-                                            <SyntaxHighlighter
-                                                style={vscDarkPlus as any}
-                                                language={match[1]}
-                                                PreTag="div"
-                                                {...props}
-                                            >
-                                                {String(children).replace(/\n$/, '')}
-                                            </SyntaxHighlighter>
-                                        ) : (
-                                            <code className={className} {...props}>
-                                                {children}
-                                            </code>
-                                        )
-                                    }
-                                }}
-                            >
-                                {lessons[selectedLesson].content}
-                            </ReactMarkdown>
-                        </div>
+                        <ContentEditor 
+                            initialContent={lessonContents[selectedLesson] || lessons[selectedLesson].content}
+                            contentType="course"
+                            onContentChange={(newContent) => handleLessonContentChange(selectedLesson, newContent)}
+                        />
                     </div>
 
                     {lessons[selectedLesson].quiz && (
-                        <div className="border rounded-2xl p-6 bg-muted/30">
-                            <div className="flex items-center gap-2 mb-4">
-                                <HelpCircle className="h-5 w-5 text-primary" />
-                                <h3 className="font-semibold">Knowledge Check</h3>
-                            </div>
-                            
-                            <div className="space-y-4">
-                                <p className="font-medium">{lessons[selectedLesson].quiz.question}</p>
-                                
-                                <div className="grid gap-2">
-                                    {lessons[selectedLesson].quiz.options.map((option, optionIndex) => {
-                                        const isSelected = quizAnswers[selectedLesson] === optionIndex
-                                        const isCorrect = optionIndex === lessons[selectedLesson].quiz.correctAnswer
-                                        const showResults = showQuizResults[selectedLesson]
-                                        
-                                        let buttonVariant: "outline" | "default" | "destructive" = "outline"
-                                        
-                                        if (showResults) {
-                                            if (isCorrect) {
-                                                buttonVariant = "default"
-                                            } else if (isSelected && !isCorrect) {
-                                                buttonVariant = "destructive"
-                                            }
-                                        } else if (isSelected) {
-                                            buttonVariant = "default"
-                                        }
-                                        
-                                        return (
-                                            <Button
-                                                key={optionIndex}
-                                                variant={buttonVariant}
-                                                className="justify-start h-auto p-3 text-left whitespace-normal"
-                                                onClick={() => handleQuizAnswer(selectedLesson, optionIndex)}
-                                                disabled={showQuizResults[selectedLesson]}
-                                            >
-                                                <span className="text-xs bg-background/20 rounded px-2 py-1 mr-3">
-                                                    {String.fromCharCode(65 + optionIndex)}
-                                                </span>
-                                                {option}
-                                            </Button>
-                                        )
-                                    })}
-                                </div>
-                                
-                                {quizAnswers[selectedLesson] !== undefined && !showQuizResults[selectedLesson] && (
-                                    <Button 
-                                        onClick={() => handleCheckAnswer(selectedLesson)}
-                                        className="w-full rounded-xl"
-                                    >
-                                        Check Answer
-                                    </Button>
-                                )}
-                                
-                                {showQuizResults[selectedLesson] && (
-                                    <div className={`p-3 rounded-lg ${
-                                        getQuizFeedback(selectedLesson).isCorrect 
-                                            ? 'bg-green-50 text-green-800 border border-green-200' 
-                                            : 'bg-red-50 text-red-800 border border-red-200'
-                                    }`}>
-                                        <p className="text-sm font-medium">
-                                            {getQuizFeedback(selectedLesson).message}
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                        <QuizSection
+                            lesson={lessons[selectedLesson]}
+                            selectedLesson={selectedLesson}
+                            quizAnswers={quizAnswers}
+                            showQuizResults={showQuizResults}
+                            getQuizFeedback={getQuizFeedback}
+                            handleQuizAnswer={handleQuizAnswer}
+                            handleCheckAnswer={handleCheckAnswer}
+                        />
                     )}
                 </div>
 
