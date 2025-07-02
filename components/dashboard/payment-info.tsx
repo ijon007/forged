@@ -22,6 +22,7 @@ import {
     type PlanType
 } from "@/utils/subscription"
 import { Button } from "../ui/button"
+import { authClient } from "@/lib/auth-client"
 
 interface UserData {
     polarCustomerId: string | null
@@ -75,6 +76,10 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
         return <CreditCard className="h-4 w-4 text-slate-500" />
     }
 
+    const openPortal = async () => {
+        await authClient.customer.portal();
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -117,10 +122,7 @@ export function PaymentInfo({ userData }: PaymentInfoProps) {
                 <div className="pt-4 border-t mt-5">
                     <div className="flex flex-col sm:flex-row gap-3">
                         <Button
-                            onClick={() => {
-                                // Open Polar customer portal
-                                window.open('https://polar.sh/dashboard/personal/billing', '_blank')
-                            }}
+                            onClick={openPortal}
                             className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/20 dark:text-blue-400 dark:hover:bg-blue-950/30 rounded-md transition-colors"
                         >
                             <CreditCard className="h-4 w-4" />
