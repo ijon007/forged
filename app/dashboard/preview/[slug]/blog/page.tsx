@@ -29,7 +29,7 @@ export default async function BlogPreviewPage({
                 title: dbCourse.title,
                 description: dbCourse.description,
                 content: dbCourse.content,
-                originalContent: dbCourse.originalContent,
+                originalContent: typeof dbCourse.originalContent === 'string' ? dbCourse.originalContent : '',
                 contentType: dbCourse.contentType || 'blog',
                 tags: dbCourse.tags,
                 keyPoints: dbCourse.keyPoints,
@@ -37,7 +37,9 @@ export default async function BlogPreviewPage({
                 createdAt: dbCourse.createdAt,
             }
             
-            courseStore.set(slug, generatedCourse)
+            if (generatedCourse) {
+                courseStore.set(slug, generatedCourse)
+            }
         }
     }
     
@@ -249,7 +251,7 @@ export default async function BlogPreviewPage({
                                     ),
                                 }}
                             >
-                                {page.content}
+                                {typeof page.content === 'string' ? page.content : ''}
                             </ReactMarkdown>
                         </div>
                     </div>

@@ -64,9 +64,14 @@ const TopNav = ({ previewData }: TopNavProps) => {
     }
 
     const handlePreview = () => {
-        const previewRoute = previewData.contentType === 'listicle' 
-            ? `/dashboard/preview/${previewData.id}/listicle`
-            : `/dashboard/preview/${previewData.id}/blog`
+        let previewRoute = `/dashboard/preview/${previewData.id}/blog` // default to blog
+        
+        if (previewData.contentType === 'listicle') {
+            previewRoute = `/dashboard/preview/${previewData.id}/listicle`
+        } else if (previewData.contentType === 'course') {
+            previewRoute = `/dashboard/preview/${previewData.id}/course`
+        }
+        
         window.open(previewRoute, '_blank')
     }
 
