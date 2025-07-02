@@ -41,6 +41,8 @@ export interface UpdateCourseParams {
   id: string
   title?: string
   description?: string
+  content?: CourseContent
+  originalContent?: CourseContent
   price?: number
   imageUrl?: string
   links?: CourseLink[]
@@ -143,6 +145,12 @@ export async function updateCourse(courseData: UpdateCourseParams): Promise<{ su
     }
     if (courseData.description !== undefined) {
       updateData.description = courseData.description
+    }
+    if (courseData.content !== undefined) {
+      updateData.content = courseData.content
+    }
+    if (courseData.originalContent !== undefined) {
+      updateData.originalContent = courseData.originalContent
     }
     if (courseData.price !== undefined) {
       updateData.price = Math.round(courseData.price * 100) // Convert to cents

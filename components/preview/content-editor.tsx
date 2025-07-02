@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 
 /* Components */
 import { Button } from '@/components/ui/button'
-import { Edit, Save, X, Bold, Italic, Underline, Strikethrough, Code, Quote, Minus, Command } from 'lucide-react'
+import { Edit, Save, X, Bold, Italic, Underline, Strikethrough, Code, Quote, Command, ArrowBigUp } from 'lucide-react'
 
 /* Markdown */
 import ReactMarkdown from 'react-markdown'
@@ -65,11 +65,15 @@ export function ContentEditor({
                 event.preventDefault()
                 handleCancel()
             }
+            if (!isEditing && !readOnly && (event.shiftKey || event.metaKey) && event.key === 'E') {
+                event.preventDefault()
+                handleEdit()
+            }
         }
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [isEditing])
+    }, [isEditing, readOnly])
 
     const handleEdit = () => {
         setIsEditing(true)
@@ -108,8 +112,11 @@ export function ContentEditor({
                         onClick={handleEdit}
                         className="gap-2 bg-white/90 backdrop-blur-sm hover:bg-white/95 shadow-sm"
                     >
-                        <Edit className="h-4 w-4" />
+                        <Edit className="flex md:hidden h-4 w-4" />
                         Edit
+                        <span className="hidden md:flex flex-row items-center text-xs opacity-75 ml-1">
+                            <ArrowBigUp size={16} /> + E
+                        </span>
                     </Button>
                 </div>
             )}
@@ -290,12 +297,6 @@ export function ContentEditor({
                         tooltip="Quote"
                     >
                         <Quote className="h-4 w-4" />
-                    </ToolbarButton>
-                    <ToolbarButton 
-                        onClick={() => editor.tf.hr.toggle()}
-                        tooltip="Horizontal Rule"
-                    >
-                        <Minus className="h-4 w-4" />
                     </ToolbarButton>
                 </div>
 

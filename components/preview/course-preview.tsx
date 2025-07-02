@@ -10,12 +10,17 @@ import { Clock, GraduationCap, BookOpen, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import QuizSection from './quiz-section'
 import { ContentEditor } from './content-editor'
+import { toast } from 'sonner'
+
+/* Actions */
+import { updateCourse } from '@/actions/course-db-actions'
 
 /* Types */
 import type { CourseLink, Lesson } from '@/db/schemas/course-schema'
 
 interface CoursePreviewProps {
     previewData: {
+        id: string
         title: string
         generatedContent: Lesson[]
         author?: string
@@ -61,9 +66,27 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
         setShowQuizResults(prev => ({ ...prev, [lessonIndex]: true }))
     }
 
-    const handleLessonContentChange = (lessonIndex: number, newContent: string) => {
+    const handleLessonContentChange = async (lessonIndex: number, newContent: string) => {
         setLessonContents(prev => ({ ...prev, [lessonIndex]: newContent }))
-        console.log(`Lesson ${lessonIndex + 1} content updated:`, newContent)
+        
+        const updatedLessons = [...lessons]
+        updatedLessons[lessonIndex] = { ...updatedLessons[lessonIndex], content: newContent }
+        
+        try {
+            const result = await updateCourse({
+                id: previewData.id,
+                content: updatedLessons
+            })
+            
+            if (result.success) {
+                toast.success('Lesson content saved successfully')
+            } else {
+                toast.error(result.error || 'Failed to save lesson content')
+            }
+        } catch (error) {
+            console.error('Error saving lesson content:', error)
+            toast.error('Failed to save lesson content')
+        }
     }
 
     const getQuizFeedback = (lessonIndex: number) => {

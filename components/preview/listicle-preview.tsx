@@ -4,9 +4,12 @@ import { Badge } from '@/components/ui/badge'
 import { Clock, ListOrdered } from 'lucide-react'
 import type { CourseLink } from '@/db/schemas/course-schema'
 import { ContentEditor } from './content-editor'
+import { updateCourse } from '@/actions/course-db-actions'
+import { toast } from 'sonner'
 
 interface ListiclePreviewProps {
     previewData: {
+        id: string
         title: string
         generatedContent: string
         author?: string
@@ -69,9 +72,22 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
                 <ContentEditor 
                     initialContent={generatedContent}
                     contentType="listicle"
-                    onContentChange={(newContent) => {
-                        // Handle content changes here if needed
-                        console.log('Listicle content updated:', newContent)
+                    onContentChange={async (newContent) => {
+                        try {
+                            const result = await updateCourse({
+                                id: previewData.id,
+                                content: newContent
+                            })
+                            
+                            if (result.success) {
+                                toast.success('Content saved successfully')
+                            } else {
+                                toast.error(result.error || 'Failed to save content')
+                            }
+                        } catch (error) {
+                            console.error('Error saving content:', error)
+                            toast.error('Failed to save content')
+                        }
                     }}
                 />
             </div>

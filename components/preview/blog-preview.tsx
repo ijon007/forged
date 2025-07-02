@@ -5,9 +5,12 @@ import { Clock, FileText } from 'lucide-react'
 import Socials from './socials'
 import type { CourseLink } from '@/db/schemas/course-schema'
 import { ContentEditor } from './content-editor'
+import { updateCourse } from '@/actions/course-db-actions'
+import { toast } from 'sonner'
 
 interface BlogPreviewProps {
     previewData: {
+        id: string
         title: string
         generatedContent: string
         author?: string
@@ -74,9 +77,22 @@ const BlogPreview = ({ previewData }: BlogPreviewProps) => {
                 <ContentEditor 
                     initialContent={generatedContent}
                     contentType="blog"
-                    onContentChange={(newContent) => {
-                        // Handle content changes here if needed
-                        console.log('Content updated:', newContent)
+                    onContentChange={async (newContent) => {
+                        try {
+                            const result = await updateCourse({
+                                id: previewData.id,
+                                content: newContent
+                            })
+                            
+                            if (result.success) {
+                                toast.success('Content saved successfully')
+                            } else {
+                                toast.error(result.error || 'Failed to save content')
+                            }
+                        } catch (error) {
+                            console.error('Error saving content:', error)
+                            toast.error('Failed to save content')
+                        }
                     }}
                 />
 
