@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { generateCourseFromPDF, validatePDFFile } from "@/actions/course-actions"
+import { generateCourseFromPDF } from "@/actions/course-actions"
+import { validatePDFFile } from "@/lib/pdf-parsing"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ContentType, CONTENT_TYPES } from "@/db/schemas/course-schema"
@@ -86,7 +87,10 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
             setGenerationProgress(100)
 
             if (result.success && result.data) {
-                toast.success("Course generated successfully!")
+                const successMessage = contentType === CONTENT_TYPES.COURSE 
+                    ? "Course generated successfully!" 
+                    : "Content generated successfully!"
+                toast.success(successMessage)
                 
                 setTimeout(() => {
                     setOpen(false)
@@ -171,7 +175,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
                 <DialogHeader>
                     <DialogTitle>Create New Content</DialogTitle>
                     <DialogDescription>
-                        Upload a PDF and we'll generate beautiful content for you
+                        Upload a PDF and we'll generate professional content for you - blog posts, listicles, or interactive courses
                     </DialogDescription>
                 </DialogHeader>
 

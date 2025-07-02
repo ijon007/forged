@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { FileIcon, ListOrdered } from "lucide-react"
+import { FileIcon, ListOrdered, GraduationCap } from "lucide-react"
 import { ContentType, CONTENT_TYPES } from "@/db/schemas/course-schema"
 import { getContentTypeLabel, getContentTypeDescription } from "@/lib/course-store"
 
@@ -69,6 +69,29 @@ export default function ContentTypeStep({
                 <h4 className="font-medium text-sm">{getContentTypeLabel(CONTENT_TYPES.LISTICLE)}</h4>
                 <p className="text-xs text-muted-foreground mt-1">
                   {getContentTypeDescription(CONTENT_TYPES.LISTICLE)}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card 
+          className={`cursor-pointer transition-all border-2 ${
+            contentType === CONTENT_TYPES.COURSE 
+              ? 'border-primary bg-primary/5' 
+              : 'border-border hover:border-primary/50'
+          }`}
+          onClick={() => onContentTypeChange(CONTENT_TYPES.COURSE)}
+        >
+          <CardContent className="p-4">
+            <div className="flex items-start space-x-3">
+              <div className="mt-1">
+                <GraduationCap className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-sm">{getContentTypeLabel(CONTENT_TYPES.COURSE)}</h4>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {getContentTypeDescription(CONTENT_TYPES.COURSE)}
                 </p>
               </div>
             </div>

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { MoreHorizontal, Eye, Edit, DollarSign, Share, ListOrdered, FileIcon } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, DollarSign, Share, ListOrdered, FileIcon, GraduationCap } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,14 +54,15 @@ export function CourseCard({
   }
 
   const getContentTypeBadge = () => {
-    const isListicle = contentType === CONTENT_TYPES.LISTICLE
+    const icons = {
+      [CONTENT_TYPES.BLOG]: <FileIcon className="h-3 w-3" />,
+      [CONTENT_TYPES.LISTICLE]: <ListOrdered className="h-3 w-3" />,
+      [CONTENT_TYPES.COURSE]: <GraduationCap className="h-3 w-3" />
+    }
+    
     return (
       <Badge variant="outline" className="flex items-center gap-1">
-        {isListicle ? (
-          <ListOrdered className="h-3 w-3" />
-        ) : (
-          <FileIcon className="h-3 w-3" />
-        )}
+        {icons[contentType] || icons[CONTENT_TYPES.BLOG]}
         {getContentTypeLabel(contentType)}
       </Badge>
     )

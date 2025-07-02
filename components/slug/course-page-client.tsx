@@ -15,6 +15,9 @@ import { AccessCodeDialog, AccessCodeInputDialog } from "./access-code-dialog"
 import { validateAccessCode, markPurchaseCompleted } from "@/actions/course-db-actions"
 import PublishedContent from "./content"
 
+/* Types */
+import type { CourseContent } from "@/db/schemas/course-schema"
+
 interface CoursePageClientProps {
     page: {
         id: string
@@ -26,7 +29,7 @@ interface CoursePageClientProps {
         author: string
         readTime: string
         imageUrl: string
-        content: string
+        content: CourseContent
         tags: string[]
         keyPoints: string[]
         links: any[]
@@ -156,6 +159,7 @@ export default function CoursePage({ page, slug, createdAt, updatedAt }: CourseP
                                 links={page.links}
                                 isPurchased={hasAccess}
                                 courseId={page.id}
+                                contentType={page.contentType}
                             />
                         </div>
                     </div>

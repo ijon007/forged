@@ -13,6 +13,7 @@ import Socials from "@/components/preview/socials"
 
 /* Types */
 import type { CourseLink } from "@/db/schemas/course-schema"
+import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 
 interface CourseSidebarProps {
     price: number
@@ -21,10 +22,27 @@ interface CourseSidebarProps {
     links?: CourseLink[]
     isPurchased: boolean
     courseId: string
+    contentType?: string
 }
 
-const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }: CourseSidebarProps) => {
+const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId, contentType }: CourseSidebarProps) => {
     const [isLoading, setIsLoading] = useState(false)
+    
+    const isCourse = contentType === CONTENT_TYPES.COURSE
+    const isListicle = contentType === CONTENT_TYPES.LISTICLE
+    
+    // Get content-appropriate labels
+    const getShareLabel = () => {
+        if (isCourse) return "Share Course"
+        if (isListicle) return "Share List"
+        return "Share Article"
+    }
+    
+    const getKeyPointsLabel = () => {
+        if (isCourse) return "Course Highlights"
+        if (isListicle) return "Key Points"
+        return "Key Takeaways"
+    }
 
     const handlePurchase = async () => {
         try {
@@ -76,14 +94,14 @@ const CourseSidebar = ({ price, keyPoints, tags, links, isPurchased, courseId }:
                 )}
                 <Button variant="outline" className="w-full mb-3" onClick={handleShare}>
                     <Share className="mr-2 h-4 w-4" />
-                    Share Article
+                    {getShareLabel()}
                 </Button>
                 
             </div>
             {keyPoints && keyPoints.length > 0 && (
                 <Card>
                     <CardHeader>
-                        <CardTitle>Key Takeaways</CardTitle>
+                        <CardTitle>{getKeyPointsLabel()}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-2 text-sm">

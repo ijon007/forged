@@ -1,10 +1,10 @@
-import { type CourseLink, type ContentType, CONTENT_TYPES } from "@/db/schemas/course-schema"
+import { type CourseLink, type ContentType, CONTENT_TYPES, type CourseContent } from "@/db/schemas/course-schema"
 
 interface GeneratedCourse {
     id: string
     title: string
     description: string
-    content: string
+    content: CourseContent
     originalContent: string
     contentType: ContentType
     tags: string[]
@@ -47,6 +47,11 @@ export const courseStore = new CourseStore()
 export function formatCourseForPreview(course: GeneratedCourse, priceInCents?: number) {
     const price = priceInCents ? priceInCents / 100 : 19.99
     
+    // For courses, we need to format the lessons differently
+    const formattedContent = course.contentType === CONTENT_TYPES.COURSE 
+        ? course.content // This will be the lessons array
+        : course.content // This will be the content string
+    
     return {
         id: course.id,
         title: course.title,
@@ -56,7 +61,7 @@ export function formatCourseForPreview(course: GeneratedCourse, priceInCents?: n
         slug: `generated-${course.id}`,
         status: 'draft' as const,
         originalContent: course.originalContent,
-        generatedContent: course.content,
+        generatedContent: formattedContent,
         tags: course.tags,
         keyPoints: course.keyPoints,
         links: course.links || [],

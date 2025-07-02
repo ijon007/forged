@@ -26,9 +26,54 @@ const CourseJsonLd = ({
   updatedAt 
 }: CourseJsonLdProps) => {
   const isListicle = contentType === CONTENT_TYPES.LISTICLE
+  const isCourse = contentType === CONTENT_TYPES.COURSE
+  
+  // Enhanced schema for courses using Course type for better SEO
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": title,
+    "description": description,
+    "image": [imageUrl],
+    "provider": {
+      "@type": "Organization",
+      "name": "Forged",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tryforged.vercel.app/logo.png"
+      }
+    },
+    "instructor": {
+      "@type": "Person",
+      "name": author,
+    },
+    "educationalLevel": "Beginner to Advanced",
+    "courseMode": "Online",
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "Online",
+      "instructor": {
+        "@type": "Person",
+        "name": author,
+      }
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": price,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": createdAt?.toISOString()
+    },
+    "datePublished": createdAt?.toISOString(),
+    "dateModified": updatedAt?.toISOString(),
+    "url": `https://tryforged.vercel.app/${slug}`,
+    "keywords": tags?.join(', ') || 'course, education, learning, online course',
+    "inLanguage": "en-US",
+    "isAccessibleForFree": price === 0
+  }
   
   // Enhanced schema for listicles using HowTo type for better SEO
-  const jsonLd = isListicle ? {
+  const listicleSchema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": title,
@@ -77,7 +122,10 @@ const CourseJsonLd = ({
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock"
     }
-  } : {
+  }
+  
+  // Default article schema
+  const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": title,
@@ -110,6 +158,9 @@ const CourseJsonLd = ({
       "availability": "https://schema.org/InStock"
     }
   }
+  
+  // Select appropriate schema based on content type
+  const jsonLd = isCourse ? courseSchema : (isListicle ? listicleSchema : articleSchema)
 
   return (
     <script

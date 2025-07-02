@@ -8,7 +8,7 @@ import { headers } from "next/headers"
 
 /* DB */
 import { db } from "@/db/drizzle"
-import { course, coursePurchase, type NewCourse, type Course, type CourseLink, ContentType } from "@/db/schemas/course-schema"
+import { course, coursePurchase, type NewCourse, type Course, type CourseLink, ContentType, CourseContent } from "@/db/schemas/course-schema"
 import { eq, desc, and, isNull } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { user } from "@/db/schemas/auth-schema"
@@ -26,8 +26,8 @@ export interface SaveCourseParams {
   slug: string
   title: string
   description: string
-  content: string
-  originalContent: string
+  content: CourseContent
+  originalContent: CourseContent
   contentType: ContentType
   tags: string[]
   keyPoints: string[]

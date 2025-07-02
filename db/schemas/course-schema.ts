@@ -8,6 +8,20 @@ export interface CourseLink {
   label?: string
 }
 
+export interface Quiz {
+  question: string
+  options: [string, string, string, string]
+  correctAnswer: number
+}
+
+export interface Lesson {
+  title: string
+  content: string
+  quiz: Quiz
+}
+
+export type CourseContent = string | Lesson[];
+
 export const CONTENT_TYPES = {
   BLOG: 'blog',
   LISTICLE: 'listicle',
@@ -21,8 +35,8 @@ export const course = pgTable("course", {
   slug: text('slug').notNull().unique(),
   title: text('title').notNull(),
   description: text('description').notNull(),
-  content: text('content').notNull(),
-  originalContent: text('original_content').notNull(),
+  content: json('content').$type<CourseContent>().notNull(),
+  originalContent: json('original_content').$type<CourseContent>().notNull(),
   contentType: text('content_type').notNull().default(CONTENT_TYPES.BLOG).$type<ContentType>(),
   tags: json('tags').$type<string[]>().notNull().default([]),
   keyPoints: json('key_points').$type<string[]>().notNull().default([]),

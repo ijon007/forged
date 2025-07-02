@@ -205,3 +205,111 @@ export function getListiclePrompt(extractedText: string): string {
 
     Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`
 }
+
+export function getCourseSystemPrompt(title?: string, description?: string, price?: string): string {
+    return `You are an expert instructional designer and course creator who specializes in transforming content into structured, interactive learning experiences. Your task is to create a comprehensive course with individual lessons and knowledge-check quizzes.
+
+    COURSE STRUCTURE REQUIREMENTS:
+    - Create 5-8 progressive lessons that build upon each other
+    - Each lesson should be focused on a specific learning objective
+    - Design lessons to be 5-10 minutes of reading/study time each
+    - Ensure logical progression from foundational to advanced concepts
+    - Make each lesson self-contained but connected to the overall learning path
+
+    LESSON CONTENT STANDARDS:
+    - Each lesson should be 400-800 words of focused educational content
+    - Include practical examples, case studies, and real-world applications
+    - Use clear, engaging explanations that make complex topics accessible
+    - Provide actionable insights and implementation guidance
+    - Structure content with clear headings and bullet points for readability
+
+    QUIZ DESIGN REQUIREMENTS:
+    - Create ONE multiple choice question per lesson that tests key understanding
+    - Each quiz should have exactly 4 answer options (A, B, C, D)
+    - Design questions that test comprehension, not just memorization
+    - Make incorrect options plausible but clearly wrong to knowledgeable learners
+    - Focus questions on the most important concept from each lesson
+    - Use practical scenarios in questions when possible
+
+    EDUCATIONAL BEST PRACTICES:
+    - Start with foundational concepts and progressively build complexity
+    - Use consistent terminology throughout all lessons
+    - Include transitions that connect lessons to each other
+    - Provide clear learning outcomes for the overall course
+    - Ensure content is engaging and maintains learner interest
+
+    IMPORTANT: You must return a JSON object with EXACTLY these field names:
+    - title: string (clear, descriptive course title)
+    - description: string (compelling description of what learners will achieve)
+    - lessons: array of lesson objects, where each lesson has:
+      * title: string (clear lesson title)
+      * content: string (lesson content in markdown format)
+      * quiz: object with:
+        - question: string (clear, focused question)
+        - options: array of exactly 4 strings (the answer choices)
+        - correctAnswer: number (index 0-3 of the correct option)
+    - tags: array of strings (relevant educational tags)
+    - keyPoints: array of strings (main learning outcomes)
+    - estimatedReadTime: number (total course completion time in minutes)
+    - price: number (price in USD as a number, not string)
+
+    The user provided these preferences:
+    - Title preference: ${title || 'Not specified'}
+    - Description preference: ${description || 'Not specified'}
+    - Price point: $${price || 'Not specified'}
+
+    Focus on creating a comprehensive, structured learning experience that provides clear educational value.`
+}
+
+export function getCoursePrompt(extractedText: string): string {
+    return `Please analyze this PDF content and transform it into a structured course with individual lessons and quizzes:
+
+    ${extractedText}
+
+    COURSE DEVELOPMENT OBJECTIVES:
+    1. Break down the content into 5-8 logical, progressive lessons
+    2. Identify key learning objectives for each lesson
+    3. Create focused, digestible content for each lesson (400-800 words)
+    4. Design meaningful quiz questions that test understanding
+    5. Ensure smooth progression and knowledge building throughout
+    6. Make content practical and immediately applicable
+
+    LESSON STRUCTURE REQUIREMENTS:
+    - Lesson 1: Introduction and foundational concepts
+    - Lessons 2-6: Core content broken into logical modules
+    - Final Lesson: Advanced applications and conclusion
+    - Each lesson should focus on 1-2 key concepts maximum
+    - Include practical examples and real-world applications in each lesson
+    - Use clear headings, bullet points, and formatting for readability
+
+    QUIZ DEVELOPMENT GUIDELINES:
+    - Create questions that test the most important concept from each lesson
+    - Use practical scenarios rather than abstract theory when possible
+    - Make questions clear and unambiguous
+    - Ensure one obviously correct answer with three plausible distractors
+    - Test application and understanding, not just memorization
+    - Keep questions concise but comprehensive
+
+    EDUCATIONAL PROGRESSION:
+    - Start with basic concepts and terminology
+    - Build complexity gradually throughout the course
+    - Create clear connections between lessons
+    - Ensure each lesson prepares learners for the next
+    - End with advanced applications and synthesis
+
+    CONTENT QUALITY STANDARDS:
+    - Make complex topics accessible without oversimplifying
+    - Include specific examples, tools, and resources
+    - Provide actionable steps learners can implement
+    - Use engaging, conversational tone throughout
+    - Maintain focus on practical value and real-world application
+
+    QUIZ QUALITY CHECKLIST:
+    - Does each question test a key concept from its lesson?
+    - Are the answer options clear and distinct?
+    - Is there one obviously correct answer for knowledgeable learners?
+    - Do incorrect options seem plausible to someone who didn't study?
+    - Are questions practical rather than purely theoretical?
+
+    Remember to output the exact field names specified in the schema: title, description, lessons (array), tags, keyPoints, estimatedReadTime, and price.`
+}
