@@ -1,8 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { Clock, FileText } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -39,7 +37,7 @@ const BlogPreview = ({ previewData }: BlogPreviewProps) => {
     const displayDescription = description || "AI-generated blog post content"
 
     return (
-        <article className="w-full max-w-4xl mx-auto bg-white">
+        <article className="w-full max-w-6xl mx-auto bg-white rounded-xl border">
             <header className="px-6 py-8 border-b border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2 mb-4">
                     <FileText className="h-5 w-5 text-green-600" />

@@ -25,7 +25,7 @@ export default function ListiclePreview({ previewData }: ListiclePreviewProps) {
     const { title, generatedContent, author, readTime, description, imageUrl } = previewData
 
     return (
-        <article className="w-full max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+        <article className="w-full max-w-6xl mx-auto bg-white rounded-xl border">
             <header className="px-6 py-8 border-b border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2 mb-4">
                     <ListOrdered className="h-5 w-5 text-blue-600" />

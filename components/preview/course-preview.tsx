@@ -75,8 +75,8 @@ export default function CoursePreview({ previewData }: CoursePreviewProps) {
         <Card className="w-full max-w-6xl mx-auto">
             <CardHeader className="space-y-4">
                 <div className="flex items-center gap-2">
-                    <GraduationCap className="h-6 w-6 text-primary" />
-                    <Badge variant="outline" className="font-medium">Course</Badge>
+                    <GraduationCap className="h-6 w-6 text-purple-500" />
+                    <Badge variant="outline" className="font-medium text-purple-700 border-purple-500 bg-purple-50">Course</Badge>
                 </div>
                 <div>
                     <CardTitle className="text-2xl mb-2">{previewData.title}</CardTitle>

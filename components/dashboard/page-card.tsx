@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Eye, Edit, Trash2, ListOrdered, FileIcon } from "lucide-react"
+import { MoreHorizontal, Eye, Edit, Trash2, ListOrdered, FileIcon, BookOpen } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,10 +52,12 @@ export function PageCard({
         const isListicle = contentType === CONTENT_TYPES.LISTICLE
         return (
             <Badge variant="outline" className="flex items-center gap-1 text-xs">
-                {isListicle ? (
-                    <ListOrdered className="h-3 w-3" />
+                {contentType === CONTENT_TYPES.COURSE ? (
+                    <BookOpen className="h-5 w-5 text-purple-500" />
+                ) : isListicle ? (
+                    <ListOrdered className="h-5 w-5 text-blue-500" />
                 ) : (
-                    <FileIcon className="h-3 w-3" />
+                    <FileIcon className="h-5 w-5 text-green-500" />
                 )}
                 {getContentTypeLabel(contentType)}
             </Badge>
