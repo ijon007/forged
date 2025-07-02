@@ -46,7 +46,7 @@ export default function GeneratingStep({ generationProgress, contentType }: Gene
       </div>
       <div className="space-y-2">
         <Progress value={generationProgress} className="w-full" />
-        <p className="text-xs text-muted-foreground">{generationProgress.toFixed(2)}% complete</p>
+        <p className="text-xs text-muted-foreground">{generationProgress.toFixed(0)}% complete</p>
       </div>
     </div>
   )

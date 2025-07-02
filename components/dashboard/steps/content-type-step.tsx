@@ -30,70 +30,97 @@ export default function ContentTypeStep({
       
       <div className="grid gap-4">
         <Card 
-          className={`cursor-pointer transition-all border-2 ${
+          className={`cursor-pointer transition-all duration-200 border group shadow-none ${
             contentType === CONTENT_TYPES.BLOG 
-              ? 'border-primary bg-primary/5' 
-              : 'border-border hover:border-primary/50'
+              ? 'border-green-200 bg-green-50/50' 
+              : 'border-border hover:border-green-300 hover:bg-green-50/30'
           }`}
           onClick={() => onContentTypeChange(CONTENT_TYPES.BLOG)}
         >
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <div className="mt-1">
-                <FileIcon className="h-5 w-5 text-primary" />
+          <CardContent className="px-6">
+            <div className="flex items-start space-x-4">
+              <div className={`p-3 rounded-xl transition-all duration-200 ${
+                contentType === CONTENT_TYPES.BLOG 
+                  ? 'bg-green-100 text-green-600' 
+                  : 'bg-green-50 text-green-500 group-hover:bg-green-100 group-hover:text-green-600'
+              }`}>
+                <FileIcon className="h-6 w-6" />
               </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">{getContentTypeLabel(CONTENT_TYPES.BLOG)}</h4>
-                <p className="text-xs text-muted-foreground mt-1">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-base mb-1">{getContentTypeLabel(CONTENT_TYPES.BLOG)}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {getContentTypeDescription(CONTENT_TYPES.BLOG)}
                 </p>
               </div>
+              {contentType === CONTENT_TYPES.BLOG && (
+                <div className="flex-shrink-0">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
         <Card 
-          className={`cursor-pointer transition-all border-2 ${
+          className={`cursor-pointer transition-all duration-200 border group shadow-none ${
             contentType === CONTENT_TYPES.LISTICLE 
-              ? 'border-primary bg-primary/5' 
-              : 'border-border hover:border-primary/50'
+              ? 'border-blue-200 bg-blue-50/50' 
+              : 'border-border hover:border-blue-300 hover:bg-blue-50/30'
           }`}
           onClick={() => onContentTypeChange(CONTENT_TYPES.LISTICLE)}
         >
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <div className="mt-1">
-                <ListOrdered className="h-5 w-5 text-primary" />
+          <CardContent className="px-6">
+            <div className="flex items-start space-x-4">
+              <div className={`p-3 rounded-xl transition-all duration-200 ${
+                contentType === CONTENT_TYPES.LISTICLE 
+                  ? 'bg-blue-100 text-blue-600' 
+                  : 'bg-blue-50 text-blue-500 group-hover:bg-blue-100 group-hover:text-blue-600'
+              }`}>
+                <ListOrdered className="h-6 w-6" />
               </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">{getContentTypeLabel(CONTENT_TYPES.LISTICLE)}</h4>
-                <p className="text-xs text-muted-foreground mt-1">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-base mb-1">{getContentTypeLabel(CONTENT_TYPES.LISTICLE)}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {getContentTypeDescription(CONTENT_TYPES.LISTICLE)}
                 </p>
               </div>
+              {contentType === CONTENT_TYPES.LISTICLE && (
+                <div className="flex-shrink-0">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
         <Card 
-          className={`cursor-pointer transition-all border-2 ${
+          className={`cursor-pointer transition-all duration-200 border group shadow-none ${
             contentType === CONTENT_TYPES.COURSE 
-              ? 'border-primary bg-primary/5' 
-              : 'border-border hover:border-primary/50'
+              ? 'border-purple-200 bg-purple-50/50' 
+              : 'border-border hover:border-purple-300 hover:bg-purple-50/30'
           }`}
           onClick={() => onContentTypeChange(CONTENT_TYPES.COURSE)}
         >
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <div className="mt-1">
-                <GraduationCap className="h-5 w-5 text-primary" />
+          <CardContent className="px-6">
+            <div className="flex items-start space-x-4">
+              <div className={`p-3 rounded-xl transition-all duration-200 ${
+                contentType === CONTENT_TYPES.COURSE 
+                  ? 'bg-purple-100 text-purple-600' 
+                  : 'bg-purple-50 text-purple-500 group-hover:bg-purple-100 group-hover:text-purple-600'
+              }`}>
+                <GraduationCap className="h-6 w-6" />
               </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">{getContentTypeLabel(CONTENT_TYPES.COURSE)}</h4>
-                <p className="text-xs text-muted-foreground mt-1">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-base mb-1">{getContentTypeLabel(CONTENT_TYPES.COURSE)}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {getContentTypeDescription(CONTENT_TYPES.COURSE)}
                 </p>
               </div>
+              {contentType === CONTENT_TYPES.COURSE && (
+                <div className="flex-shrink-0">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

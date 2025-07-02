@@ -40,22 +40,18 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
         const selectedFile = event.target.files?.[0]
         if (!selectedFile) return
 
+        // Show upload progress for actual file reading
+        setUploadProgress(50)
+        
         const validation = await validatePDFFile(selectedFile)
         if (!validation.valid) {
             toast.error(validation.error || "Invalid file")
+            setUploadProgress(0)
             return
         }
 
         setFile(selectedFile)
-        let progress = 0
-        const interval = setInterval(() => {
-            progress += 10
-            setUploadProgress(progress)
-            if (progress >= 100) {
-                clearInterval(interval)
-                setTimeout(() => setStep("contentType"), 500)
-            }
-        }, 200)
+        setUploadProgress(100)
     }
 
     const handleSubmit = async () => {
@@ -65,6 +61,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
         }
 
         setStep("generating")
+        setGenerationProgress(10) // Initial progress
         
         try {
             const formData = new FormData()
@@ -74,9 +71,10 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
             formData.append('price', pageData.price)
             formData.append('contentType', contentType)
 
+            // Only show progress during actual AI generation
             const progressInterval = setInterval(() => {
                 setGenerationProgress(prev => {
-                if (prev >= 90) return prev
+                    if (prev >= 90) return prev
                     return prev + Math.random() * 10
                 })
             }, 500)
@@ -92,20 +90,20 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
                     : "Content generated successfully!"
                 toast.success(successMessage)
                 
-                setTimeout(() => {
-                    setOpen(false)
-                    
-                    setStep("upload")
-                    setFile(null)
-                    setUploadProgress(0)
-                    setGenerationProgress(0)
-                    setContentType(CONTENT_TYPES.BLOG)
-                    setPageData({ title: "", description: "", price: "" })
-                    
-                    router.push(`/dashboard/preview/${result.data!.id}`)
-                }, 1000)
+                // Navigate immediately after success
+                setOpen(false)
+                
+                // Reset state
+                setStep("upload")
+                setFile(null)
+                setUploadProgress(0)
+                setGenerationProgress(0)
+                setContentType(CONTENT_TYPES.BLOG)
+                setPageData({ title: "", description: "", price: "" })
+                
+                router.push(`/dashboard/preview/${result.data!.id}`)
             } else {
-                toast.error(result.error || "Failed to generate course")
+                toast.error(result.error || "Failed to generate content")
                 setStep("details")
                 setGenerationProgress(0)
             }
@@ -134,6 +132,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
                         uploadProgress={uploadProgress}
                         onFileUpload={handleFileUpload}
                         onReset={handleReset}
+                        onContinue={() => setStep("contentType")}
                     />
                 )
             case "contentType":
@@ -171,7 +170,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] rounded-xl">
+            <DialogContent className="sm:max-w-[600px] rounded-2xl">
                 <DialogHeader>
                     <DialogTitle>Create New Content</DialogTitle>
                     <DialogDescription>
