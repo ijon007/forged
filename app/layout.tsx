@@ -58,18 +58,6 @@ export const metadata: Metadata = {
         canonical: 'https://tryforged.vercel.app',
     },
     icons: {
-        icon: [
-            {
-                media: '(prefers-color-scheme: light)',
-                url: '/icon-dark.svg',
-                href: '/icon-dark.svg',
-            },
-            {
-                media: '(prefers-color-scheme: dark)',
-                url: '/icon-white.svg',
-                href: '/icon-white.svg',
-            },
-        ],
         apple: '/forged-icon.png',
     },
 }
