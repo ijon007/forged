@@ -19,9 +19,9 @@ export function FloatingNav() {
   }, [])
 
   const navItems = [
-    { name: "Pricing", href: "#pricing" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "FAQ", href: "#faq" },
+    { name: "Pricing", href: "/#pricing" },
+    { name: "Testimonials", href: "/#testimonials" },
+    { name: "FAQ", href: "/#faq" },
     { name: "Blog", href: "/blog" },
   ]
 
