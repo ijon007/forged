@@ -22,6 +22,7 @@ export function FloatingNav() {
     { name: "Pricing", href: "#pricing" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "FAQ", href: "#faq" },
+    { name: "Blog", href: "/blog" },
   ]
 
   return (
