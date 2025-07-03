@@ -115,7 +115,7 @@ export async function generateMetadata({
     }
 }
 
-export default async function BlogPage({
+export default async function GeneratedPage({
     params,
     searchParams,
 }: {

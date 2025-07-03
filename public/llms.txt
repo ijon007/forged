@@ -1,0 +1,453 @@
+## AI-Powered Playbook Creation
+Turn your knowledge into income
+
+# Create & Sell Your Custom  AI‑Powered Playbook
+
+Upload your notes, generate beautifully formatted content, and start earning, no writing required.
+
+[Generate Playbook](https://tryforged.vercel.app/login)
+
+## How It Works
+
+Transform your knowledge into income in just three simple steps
+
+01
+
+### Upload Your PDF
+
+Drag and drop your notes, guides, or any PDF with valuable knowledge. We turn your raw content into a monetizable asset.
+
+02
+
+### AI Converts It Into a Structured Playbook
+
+Our AI extracts key points, adds a title and summary, and formats your content into a polished digital playbook.
+
+03
+
+### Sell Your Playbook & Keep 100%
+
+Set your own price, customize your page, and share your AI-generated playbook with a unique link. Every sale goes directly to you.
+
+## Pricing
+
+Upload your notes or PDFs, generate beautiful AI-crafted playbooks, set your price, and keep 100% of every sale.
+
+MonthlyYearly
+
+Monthly Plan
+
+$5
+
+[Start Creating](https://tryforged.vercel.app/login)
+
+Unlimited generations
+
+Hosted & Shareable
+
+No platform fees - Earnings are all yours
+
+## Success Stories
+
+See how creators are transforming their knowledge into profitable courses
+
+![Rea](https://avatar.vercel.sh/sarah)
+
+#### Rea
+
+Marketing Consultant
+
+Forged transformed my scattered notes into a professional marketing course! Can't wait to see how it goes!
+
+### Digital Marketing Fundamentals: From Zero to Hero
+
+Master digital marketing with proven strategies and real-world examples
+
+By Rea
+
+12 min read
+
+![Riad](https://avatar.vercel.sh/marcus)
+
+#### Riad
+
+Software Engineer
+
+Incredible platform! My coding notes became a structured programming course. The AI understood my technical concepts perfectly.
+
+### Advanced React Patterns: Building Scalable Applications
+
+Advanced React patterns for experienced developers
+
+By Riad
+
+18 min read
+
+![Emily](https://avatar.vercel.sh/emily)
+
+#### Emily
+
+UX Designer
+
+From my design process notes to a complete UX course in minutes. The generated content maintained all my methodologies perfectly.
+
+### User Experience Design: A Complete Process Guide
+
+Complete UX design process from research to implementation
+
+By Emily
+
+15 min read
+
+## FAQ
+
+Everything you need to know about turning your knowledge into income
+
+### How do I sell a playbook?
+
+### What is a playbook?
+
+### How do I get paid?
+
+### Can I edit my playbook after it's created?
+
+### What files can I upload to create a playbook?
+
+### How many playbooks can I create?
+
+## Ready to sell your expertise online?
+
+Turn your knowledge into profitable digital playbooks and courses. Create, sell, and monetize your expertise with AI-powered course creation for just $5/month.
+
+[Start Selling](https://tryforged.vercel.app/login)
+
+## JavaScript Fundamentals Guide
+Blog Post
+
+# JavaScript Fundamentals: A Practical Playbook
+
+A concise guide to JavaScript fundamentals, covering variables, data types, control flow, arrays, objects, DOM manipulation, and local storage.
+
+By Ijoni4
+
+15 min read
+
+![JavaScript Fundamentals: A Practical Playbook](https://images.unsplash.com/photo-1719384940113-870445731732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjM1OTN8MHwxfHNlYXJjaHwxfHxqYXZhc2NyaXB0JTIwZnVuZGFtZW50YWxzJTIwcHJhY3RpY2FsfGVufDB8MHx8fDE3NTA0OTc3ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&w=800&h=400&fit=crop&q=80)
+
+# JavaScript Fundamentals: A Practical Guide
+
+Continue Reading
+
+Unlock the full article to continue reading and get access to all the examples and insights.
+
+$5one-time
+
+Instant access • No subscription
+
+Buy Now - $5Share Article
+
+Key Takeaways
+
+- Understand the differences between let, const, and var.
+- Work with strings, numbers, and booleans.
+- Use arrow functions for concise code.
+- Implement conditional logic with if, else, and switch.
+- Iterate with for, while, and for...of loops.
+
+Tags
+
+JavaScriptFundamentalsVariablesData TypesControl FlowArraysObjectsDOM ManipulationLocal StorageWeb Development
+
+Links
+
+Author's links and social media
+
+[x.com/Ijon\_k4](https://x.com/Ijon_k4)
+
+[www.reddit.com/](https://www.reddit.com/)
+
+[Powered by Forged](https://tryforged.vercel.app/)
+
+## Enter Access Code
+
+Please enter your access code to continue
+
+Access Course
+
+Don't have access?
+
+I don't have an access code
+
+Close
+
+## Mira Murati's AI Startup
+Blog Post
+
+# Thinking Machines: Mira Murati's AI Revolution
+
+Explore Mira Murati's groundbreaking AI startup, Thinking Machines, and its potential to revolutionize the tech industry. Learn about its mission, objectives, and impact.
+
+By Helio Gato
+
+8 min read
+
+![Thinking Machines: Mira Murati's AI Revolution](https://images.unsplash.com/photo-1591453089816-0fbb971b454c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjM1OTN8MHwxfHNlYXJjaHwxfHx0aGlua2luZyUyMG1hY2hpbmVzJTIwbWlyYXxlbnwwfDB8fHwxNzUwODUyMTYyfDA&ixlib=rb-4.1.0&q=80&w=1080&w=800&h=400&fit=crop&q=80)
+
+# Mira Murati's Thinking Machines: A Deep Dive into AI Innovation
+
+## Introduction
+
+Mira Murati, a visionary in the field of artificial intelligence, is once again making waves with her new AI startup, building upon her legacy with Thinking Machines. This playbook provides an in-depth look at her latest venture, exploring its potential impact and the innovative strategies driving its development.
+
+## The Visionary: Mira Murati
+
+Mira Murati has consistently been at the forefront of AI innovation. Her ability to anticipate and shape the future of technology has made her a respected figure in the industry. This section highlights her background and previous accomplishments, setting the stage for understanding her current venture.
+
+### Key Takeaways:
+
+- Mira Murati's track record of successful AI initiatives.
+- Her visionary approach to technology development.
+
+Continue Reading
+
+Unlock the full article to continue reading and get access to all the examples and insights.
+
+$5one-time
+
+Instant access • No subscription
+
+Buy Now - $5Share Article
+
+Key Takeaways
+
+- Mira Murati's visionary leadership in AI.
+- Thinking Machines' $2 billion funding and $10 billion valuation.
+- The startup's focus on pushing the boundaries of AI technology.
+- Potential applications and impact across various industries.
+- Building the future of AI through innovative solutions.
+
+Tags
+
+Mira MuratiThinking MachinesArtificial IntelligenceAI StartupTechnology InnovationVenture CapitalAI Development
+
+[Powered by Forged](https://tryforged.vercel.app/)
+
+Thinking Machines: Mira Murati's AI Revolution \| Forged
+
+## Enter Access Code
+
+Please enter your access code to continue
+
+Access Course
+
+Don't have access?
+
+I don't have an access code
+
+Close
+
+## JavaScript Learning Resources
+https://tryforged.vercel.app2025-07-03T18:40:38.426Zweekly1https://tryforged.vercel.app/my-js-course2025-07-02T17:03:24.015Zmonthly0.8https://tryforged.vercel.app/7-essential-benefits-of-learning-javascript2025-07-01T15:27:39.755Zmonthly0.8https://tryforged.vercel.app/javascript-fundamentals-a-practical-playbook-7853012025-06-30T22:48:45.550Zmonthly0.8https://tryforged.vercel.app/thinking-machines-mira-muratis-ai-revolution2025-06-25T11:51:00.421Zmonthly0.8
+
+<urlsetxmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url>
+
+<loc>https://tryforged.vercel.app</loc>
+
+<lastmod>2025-07-03T18:40:38.426Z</lastmod>
+
+<changefreq>weekly</changefreq>
+
+<priority>1</priority>
+
+...
+
+</url>
+
+<url>
+
+<loc>https://tryforged.vercel.app/my-js-course</loc>
+
+<lastmod>2025-07-02T17:03:24.015Z</lastmod>
+
+<changefreq>monthly</changefreq>
+
+<priority>0.8</priority>
+
+...
+
+</url>
+
+<url>
+
+<loc>https://tryforged.vercel.app/7-essential-benefits-of-learning-javascript</loc>
+
+<lastmod>2025-07-01T15:27:39.755Z</lastmod>
+
+<changefreq>monthly</changefreq>
+
+<priority>0.8</priority>
+
+...
+
+</url>
+
+<url>
+
+<loc>https://tryforged.vercel.app/javascript-fundamentals-a-practical-playbook-785301</loc>
+
+<lastmod>2025-06-30T22:48:45.550Z</lastmod>
+
+<changefreq>monthly</changefreq>
+
+<priority>0.8</priority>
+
+...
+
+</url>
+
+<url>
+
+<loc>https://tryforged.vercel.app/thinking-machines-mira-muratis-ai-revolution</loc>
+
+<lastmod>2025-06-25T11:51:00.421Z</lastmod>
+
+<changefreq>monthly</changefreq>
+
+<priority>0.8</priority>
+
+...
+
+</url>
+
+...
+
+</urlset>
+
+## JavaScript Fundamentals Course
+Course
+
+# My js course
+
+Master JavaScript fundamentals in this concise course. Learn core concepts from variables to DOM manipulation through practical examples and actionable insights.
+
+By Ijoni4
+
+8 lessons
+
+![My js course](https://images.unsplash.com/photo-1501504905252-473c47e087f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjM1OTN8MHwxfHNlYXJjaHwxfHxjb3Vyc2V8ZW58MHwwfHx8MTc1MTQ1MTI0NXww&ixlib=rb-4.1.0&q=80&w=1080&w=800&h=400&fit=crop&q=80)
+
+Course content preview...
+
+Continue Learning
+
+Unlock the full course to access all lessons, quizzes, and interactive content.
+
+$10one-time
+
+Instant access • No subscription
+
+Buy Now - $10Share Course
+
+Course Highlights
+
+- Understand the difference between let, const, and var.
+- Work with JavaScript data types: strings, numbers, and booleans.
+- Utilize arrow functions for concise code.
+- Implement conditional logic with if, else, and switch statements.
+- Use loops (for, while, for...of) to iterate through data.
+
+Tags
+
+JavaScriptFundamentalsVariablesData TypesFunctionsConditional StatementsLoopsArraysObjectsDOM ManipulationLocal Storage
+
+[Powered by Forged](https://tryforged.vercel.app/)
+
+My js course \| Forged
+
+## Enter Access Code
+
+Please enter your access code to continue
+
+Access Course
+
+Don't have access?
+
+I don't have an access code
+
+Close
+
+## Benefits of Learning JavaScript
+Listicle
+
+# 7 Essential Benefits of Learning JavaScript
+
+Discover the top reasons why JavaScript is an excellent language to learn, covering its versatility in web development, mobile apps, and back-end systems.
+
+By Ijoni4
+
+5 min read
+
+![7 Essential Benefits of Learning JavaScript](https://images.unsplash.com/photo-1695370992939-be4eb6fddf35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjM1OTN8MHwxfHNlYXJjaHwxfHxlc3NlbnRpYWwlMjBiZW5lZml0cyUyMGxlYXJuaW5nfGVufDB8MHx8fDE3NTEzODI0Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080&w=800&h=400&fit=crop&q=80)
+
+## 7 Key Benefits of Learning JavaScript
+
+JavaScript is a versatile and powerful language that underpins much of the modern web. This list highlights essential benefits of mastering JavaScript, from front-end interactivity to back-end development.
+
+1
+
+## Dynamic Web Pages with DOM Manipulation
+
+JavaScript allows you to manipulate the Document Object Model (DOM), enabling dynamic updates to web pages without requiring a reload. Use `document.querySelector()` to select elements and `addEventListener()` to respond to user interactions. For example, you can change text with `innerText`, modify input values with `value`, or toggle CSS classes with `classList`.
+
+2
+
+## Interactive User Interfaces
+
+Create engaging user interfaces with JavaScript. Implement features like form validation, image sliders, and interactive maps. Use `preventDefault()` to control default browser behaviors and enhance the user experience.
+
+3
+
+## Front-End Frameworks and Libraries
+
+JavaScript is the foundation for popular front-end frameworks and libraries like React, Angular, and Vue.js. These tools provide structure and efficiency for building complex web applications. Learning JavaScript unlocks the ability to leverage these powerful resources.
+
+Continue Reading
+
+Unlock the full article to continue reading and get access to all the examples and insights.
+
+$1one-time
+
+Instant access • No subscription
+
+Buy Now - $1Share List
+
+Key Points
+
+- DOM manipulation for dynamic web pages
+- Interactive user interface creation
+- Foundation for front-end frameworks
+- Back-end development with Node.js
+- Cross-platform mobile app development
+
+Tags
+
+JavaScriptweb developmentfront-endback-endNode.jsmobile appsDOM
+
+[Powered by Forged](https://tryforged.vercel.app/)
+
+7 Essential Benefits of Learning JavaScript \| Forged
+
+## Enter Access Code
+
+Please enter your access code to continue
+
+Access Course
+
+Don't have access?
+
+I don't have an access code
+
+Close
+
