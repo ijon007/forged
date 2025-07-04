@@ -10,6 +10,7 @@ import { publishCourse, unpublishCourse } from '@/actions/course-db-actions'
 import { toast } from 'sonner'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import PreferencesSheet from './preferences-sheet'
+import PublishDialog from './publish-dialog'
 import { Course } from '@/db/schemas/course-schema'
 
 interface TopNavProps {
@@ -53,7 +54,7 @@ const TopNav = ({ previewData, dbCourse }: TopNavProps) => {
                 const result = await publishCourse(previewData.id)
                 if (result.success) {
                     toast.success('Course published successfully!')
-                    router.push(`/${previewData.id}`)
+                    window.open(`/${previewData.id}`, '_blank')
                 } else {
                     toast.error('Failed to publish: ' + (result.error || 'Unknown error'))
                 }
@@ -121,30 +122,36 @@ const TopNav = ({ previewData, dbCourse }: TopNavProps) => {
                             </Link>
                         )}
                         
-                        <Button
-                            onClick={handlePublish}
-                            disabled={isPublishing}
-                            size="lg"
-                            className={`group relative ${
-                                isPublished 
-                                    ? 'bg-red-600 hover:bg-red-700 text-white' 
-                                    : 'bg-black text-white hover:bg-gray-800'
-                            } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                        <PublishDialog
+                            isPublished={isPublished}
+                            isLoading={isPublishing}
+                            onConfirm={handlePublish}
+                            courseTitle={previewData.title}
                         >
-                            <div className={`absolute inset-0 ${
-                                isPublished 
-                                    ? 'bg-gradient-to-r from-red-700 to-red-600'
-                                    : 'bg-gradient-to-r from-gray-800 to-black'
-                            } opacity-0 group-hover:opacity-100 transition-opacity`} />
-                            {isPublished ? (
-                                <X className="h-4 w-4 relative sm:mr-2" />
-                            ) : (
-                                <Check className="h-4 w-4 relative sm:mr-2" />
-                            )}
-                            <span className='relative text-white hidden md:inline text-sm'>
-                                {isPublished ? 'Unpublish' : 'Publish'}
-                            </span>
-                        </Button>
+                            <Button
+                                disabled={isPublishing}
+                                size="lg"
+                                className={`group relative ${
+                                    isPublished 
+                                        ? 'bg-red-600 hover:bg-red-700 text-white' 
+                                        : 'bg-black text-white hover:bg-gray-800'
+                                } rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+                            >
+                                <div className={`absolute inset-0 ${
+                                    isPublished 
+                                        ? 'bg-gradient-to-r from-red-700 to-red-600'
+                                        : 'bg-gradient-to-r from-gray-800 to-black'
+                                } opacity-0 group-hover:opacity-100 transition-opacity`} />
+                                {isPublished ? (
+                                    <X className="h-4 w-4 relative sm:mr-2" />
+                                ) : (
+                                    <Check className="h-4 w-4 relative sm:mr-2" />
+                                )}
+                                <span className='relative text-white hidden md:inline text-sm'>
+                                    {isPublished ? 'Unpublish' : 'Publish'}
+                                </span>
+                            </Button>
+                        </PublishDialog>
                     </div>
                 </div>
             </div>

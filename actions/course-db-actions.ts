@@ -14,7 +14,7 @@ import { auth } from "@/lib/auth"
 import { user } from "@/db/schemas/auth-schema"
 
 /* Polar */
-import { createPolarProduct, createCheckoutLink } from "./polar-actions"
+import { createPolarProduct, createCheckoutLink, archivePolarProduct } from "./polar-actions"
 
 /* Utils */
 import { getURL } from "@/utils/helpers"
@@ -350,7 +350,6 @@ export async function deleteCourse(courseId: string): Promise<{ success: boolean
       return { success: false, error: 'User not authenticated' }
     }
 
-    // First check if the course exists and belongs to the user
     const existingCourse = await db
       .select()
       .from(course)
@@ -363,6 +362,14 @@ export async function deleteCourse(courseId: string): Promise<{ success: boolean
 
     if (existingCourse[0].userId !== session.user.id) {
       return { success: false, error: 'Not authorized to delete this course' }
+    }
+
+    if (existingCourse[0].polarProductId) {
+      try {
+        await archivePolarProduct(existingCourse[0].polarProductId)
+      } catch (error) {
+        console.error('Error archiving Polar product:', error)
+      }
     }
 
     await db.delete(course).where(eq(course.id, courseId))

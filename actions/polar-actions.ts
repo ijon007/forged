@@ -341,4 +341,44 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
       error: error instanceof Error ? error.message : "Failed to create checkout link"
     };
   }
+}
+
+export async function archivePolarProduct(productId: string) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const userData = await db.select({
+      polarAccessToken: user.polarAccessToken,
+    })
+    .from(user)
+    .where(eq(user.id, session.user.id))
+    .limit(1);
+
+    if (!userData.length || !userData[0].polarAccessToken) {
+      return { success: false, error: "Polar account not connected" };
+    }
+
+    const response = await fetch(`https://sandbox-api.polar.sh/v1/products/${productId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${userData[0].polarAccessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        is_archived: true
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to archive product: ${response.status}`);
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error archiving Polar product:", error);
+    return { success: false, error: "Failed to archive product" };
+  }
 } 
