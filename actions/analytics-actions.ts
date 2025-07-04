@@ -93,7 +93,7 @@ async function fetchPolarOrders(accessToken: string, organizationId: string, lim
   const baseUrl = 'https://sandbox-api.polar.sh/v1/orders'
   const params = new URLSearchParams({
     organization_id: organizationId,
-    ...(limit && { limit: limit.toString() })
+    limit: limit?.toString() || '100'
   })
   
   const response = await fetch(`${baseUrl}?${params}`, {
@@ -259,7 +259,7 @@ export async function getRecentCustomers(): Promise<RecentCustomer[]> {
   try {
     const userData = await getUserPolarData()
 
-    const orders = await fetchPolarOrders(userData.polarAccessToken, userData.polarOrganizationId, 20)
+    const orders = await fetchPolarOrders(userData.polarAccessToken, userData.polarOrganizationId, 10)
 
     // Filter completed orders
     const completedOrders = orders.filter((order: any) => order.status === 'paid')
