@@ -82,6 +82,7 @@ export function FloatingNav() {
               ) : (
                 <Menu className="h-5 w-5" />
               )}
+              <span className="sr-only">{isOpen ? "Close" : "Open"}</span>
             </Button>
           </div>
         </div>

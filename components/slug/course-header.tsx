@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator"
 import { Clock, ListOrdered, FileIcon, GraduationCap } from "lucide-react"
 import { CONTENT_TYPES } from "@/db/schemas/course-schema"
 import { getContentTypeLabel } from "@/lib/course-store"
+import Image from "next/image"
 
 interface CourseHeaderProps {
   title: string
@@ -50,10 +51,12 @@ const CourseHeader = ({ title, description, author, readTime, imageUrl, contentT
 
       {imageUrl && (
         <div className="mb-6 sm:mb-8">
-          <img 
+          <Image 
             src={imageUrl} 
             alt={title}
             className="w-full h-48 sm:h-64 object-cover rounded-lg"
+            width={1000}
+            height={1000}
           />
         </div>
       )}
