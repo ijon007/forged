@@ -37,7 +37,7 @@ MonthlyYearly
 
 Monthly Plan
 
-$5
+$20
 
 [Start Creating](https://tryforged.vercel.app/login)
 

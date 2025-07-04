@@ -10,12 +10,12 @@ export function FAQ() {
     {
       question: "What is a playbook?",
       answer:
-        "A playbook is a digital guide that teaches a process step-by-step, like 'How to Plan a Product Launch' or 'How to Crack Marketing for Clients' It's your knowledge packaged into an actionable format that others can follow.",
+        "A playbook can be either a blog, a listicle/how-to-guide or a course with multiple chapters and lessons you will be able to generate and sell. Upload your PDF file, select the type of generation and let AI do the rest.",
     },
     {
       question: "How do I get paid?",
       answer:
-        "You receive 100% of every sale. Payments are processed through Stripe (via Polar). Set your own pricing and everything that you earn.",
+        "You receive 100% of every sale. Payments are processed via Polar. Set your own pricing and everything that you earn.",
     },
     {
       question: "Can I edit my playbook after it's created?",
@@ -30,7 +30,7 @@ export function FAQ() {
     {
       question: "How many playbooks can I create?",
       answer:
-        "No limits! With your $5/month subscription, you can upload unlimited PDFs and create as many playbooks as you want. Scale your knowledge business without restrictions.",
+        "No limits! With your $20/month subscription, you can upload unlimited PDFs and create as many playbooks as you want. Scale your knowledge business without restrictions.",
     },
   ]
 

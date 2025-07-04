@@ -314,7 +314,7 @@ PDFs often contain ideas that have already been:
 3. Generate a professional playbook with title, summary, and key points
 4. Set your price and start selling immediately
 
-**Pricing:** $5/month or $40/year
+**Pricing:** $20/month or $160/year
 
 **Real example:** I uploaded a 25-page market research PDF about remote work trends. Forged created a "Remote Work Survival Guide" that I'm selling for $29. It's generated $400+ in the first month.
 
@@ -407,7 +407,7 @@ PDFs often contain ideas that have already been:
 
 | Tool | Best For | Price | Learning Curve | Output Quality | Monetization |
 |------|----------|-------|----------------|----------------|--------------|
-| Forged | Sellable content | $5/mo | Low | High | Built-in |
+| Forged | Sellable content | $20/mo | Low | High | Built-in |
 | Claude | Research analysis | $20/mo | Medium | Very High | Manual |
 | ChatGPT Plus | General content | $20/mo | Low | High | Manual |
 | Jasper | Marketing content | $49/mo | High | High | Manual |
@@ -4257,9 +4257,9 @@ Here's why specialized monetization tools outperform general workspace apps for 
 - **Total: $103/month**
 
 **Forged All-in-One:**
-- Forged platform: $5/month or $40/year
+- Forged platform: $20/month or $160/year
 - Everything included: payments, hosting, SEO, analytics
-- **Total: $5/month**
+- **Total: $20/month**
 
 **Monthly Savings: $98** (95% cost reduction)
 

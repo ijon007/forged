@@ -15,7 +15,7 @@ export function CTA() {
             Ready to sell your expertise online?
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-300 leading-relaxed">
-            Turn your knowledge into profitable digital playbooks and courses. Create, sell, and monetize your expertise with AI-powered course creation for just $5/month.
+            Turn your knowledge into profitable digital playbooks and courses. Create, sell, and monetize your expertise with AI-powered course creation for just $20/month.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">

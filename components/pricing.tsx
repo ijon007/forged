@@ -64,23 +64,23 @@ export function Pricing() {
                   {isYearly ? (
                     <div className="flex items-baseline justify-center mb-2 gap-3">
                       <span className="text-3xl font-semibold text-gray-400 line-through select-none">
-                        $60
+                        $240
                       </span>
                       <span className="text-6xl font-bold text-gray-900">
-                        $40
+                        $160
                       </span>
                     </div>
                   ) : (
                     <div className="flex items-baseline justify-center mb-2">
                       <span className="text-6xl font-bold text-gray-900">
-                        $5
+                        $20
                       </span>
                     </div>
                   )}
                   
                   {isYearly && (
                     <div className="flex justify-center items-center text-green-700 font-semibold">
-                      <span>Save $20 — 4 months free</span>
+                      <span>Save $80 — 4 months free</span>
                     </div>
                   )}
                 </div>
