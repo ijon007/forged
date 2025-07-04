@@ -17,6 +17,7 @@ import { updateCourse } from '@/actions/course-db-actions'
 
 /* Types */
 import type { CourseLink, Lesson } from '@/db/schemas/course-schema'
+import PreferencesSheet from './preferences-sheet'
 
 interface CoursePreviewProps {
     previewData: {

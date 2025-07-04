@@ -75,14 +75,9 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard" className="cursor-pointer flex flex-row justify-between">
+                <Link href="/blog" className="cursor-pointer flex flex-row justify-between">
                     Blog
                     <SquareArrowOutUpRight size={16} className="ml-2 text-black" />
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard" className="cursor-pointer">
-                  Billing
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

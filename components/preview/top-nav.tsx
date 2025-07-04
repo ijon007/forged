@@ -9,6 +9,8 @@ import { useState } from 'react'
 import { publishCourse, unpublishCourse } from '@/actions/course-db-actions'
 import { toast } from 'sonner'
 import { SidebarTrigger } from '@/components/ui/sidebar'
+import PreferencesSheet from './preferences-sheet'
+import { Course } from '@/db/schemas/course-schema'
 
 interface TopNavProps {
     previewData: {
@@ -20,9 +22,10 @@ interface TopNavProps {
         published?: boolean
         [key: string]: any
     }
+    dbCourse: Course
 }
 
-const TopNav = ({ previewData }: TopNavProps) => {
+const TopNav = ({ previewData, dbCourse }: TopNavProps) => {
     const [isSaving, setIsSaving] = useState(false)
     const [isPublishing, setIsPublishing] = useState(false)
     const router = useRouter()
@@ -97,6 +100,8 @@ const TopNav = ({ previewData }: TopNavProps) => {
                     </div>
                     
                     <div className="flex items-center gap-1 sm:gap-2">
+                        <PreferencesSheet basePreviewData={previewData} dbCourse={dbCourse} />
+
                         <Button
                             variant="outline"
                             onClick={handlePreview}

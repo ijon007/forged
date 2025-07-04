@@ -8,6 +8,7 @@ import TopNav from "@/components/preview/top-nav"
 import Socials from "@/components/preview/socials"
 import BlogPreview from "@/components/preview/blog-preview"
 import CoursePreview from "@/components/preview/course-preview"
+import PreferencesSheet from "@/components/preview/preferences-sheet"
 
 export default async function PreviewPage({
     params,
@@ -73,16 +74,11 @@ export default async function PreviewPage({
 
     return (
         <div className="min-h-screen bg-background">
-            <TopNav previewData={basePreviewData}/>
+            <TopNav previewData={basePreviewData} dbCourse={dbCourse}/>
 
-            <div className="container mx-auto px-4 py-6 max-w-8xl">
+            <div className="container mx-auto px-4 py-6 w-full">
                 <div className="flex flex-col xl:flex-row gap-6">
-                    <div className="flex flex-col gap-6 xl:w-1/3 xl:min-w-[400px]">
-                        <Preferences previewData={basePreviewData} />
-                        <Socials courseId={dbCourse.id} initialLinks={dbCourse.links || []} />
-                    </div>
-
-                    <div className="flex-1 xl:w-2/3">
+                    <div className="flex-1">
                         {basePreviewData.contentType === CONTENT_TYPES.COURSE ? (
                             <CoursePreview previewData={{
                                 ...basePreviewData,
