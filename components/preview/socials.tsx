@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Linkedin, Twitter, Globe, Github, Youtube, Instagram, ExternalLink, Plus, X } from 'lucide-react'
+import { Linkedin, Twitter, Globe, Github, Youtube, Instagram, ExternalLink, Plus, X, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { updateCourseLinks } from '@/actions/course-db-actions'
@@ -189,9 +189,9 @@ const Socials = ({ courseId, initialLinks = [], readOnly = false }: SocialsProps
                                                 variant="ghost"
                                                 onClick={() => removeLink(link.id)}
                                                 disabled={isLoading}
-                                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6"
+                                                className="lg:opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6"
                                             >
-                                                <X className="h-3 w-3" />
+                                                <Trash2 className="h-3 w-3" />
                                             </Button>
                                         )}
                                     </div>

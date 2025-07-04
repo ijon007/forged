@@ -18,10 +18,10 @@ const PreferencesSheet = ({ basePreviewData, dbCourse }: { basePreviewData: any,
             <SheetTrigger asChild>
                 <Button variant="outline" className="hover:bg-muted py-2 rounded-xl" size="lg">
                     <Settings2 className="w-4 h-4" />
-                    Preferences
+                    <span className="hidden md:inline">Preferences</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent className="overflow-scroll scrollbar-hide w-[600px] sm:max-w-[600px]">
+            <SheetContent className="overflow-scroll scrollbar-hide w-10/12 sm:max-w-[600px]">
                 <SheetHeader className="sr-only">
                     <SheetTitle>Preferences</SheetTitle>
                     <SheetDescription>

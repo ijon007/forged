@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { Clock, FileText } from 'lucide-react'
 import Socials from './socials'
@@ -26,7 +27,6 @@ const BlogPreview = ({ previewData }: BlogPreviewProps) => {
     const { title, generatedContent, author, readTime, description, imageUrl, links } = previewData
     const displayAuthor = author || "John Doe"
     const displayReadTime = readTime || "5 min read"
-    const price = previewData.price || 29.99
     const displayDescription = description || "AI-generated blog post content"
 
     return (
@@ -59,10 +59,12 @@ const BlogPreview = ({ previewData }: BlogPreviewProps) => {
 
             {imageUrl ? (
                 <div className="px-6 py-6">
-                    <img 
+                    <Image 
                         src={imageUrl} 
                         alt={title}
                         className="w-full h-64 md:h-80 object-cover rounded-lg"
+                        width={1000}
+                        height={1000}
                     />
                 </div>
             ) : (
