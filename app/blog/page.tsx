@@ -1,6 +1,5 @@
 import { blogPosts } from '@/constants/blogs'
 import Link from 'next/link'
-import { FloatingNav } from '@/components/floating-nav'
 
 export default function BlogMainPage() {
     const posts = Object.values(blogPosts).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())

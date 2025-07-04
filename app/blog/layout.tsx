@@ -10,10 +10,7 @@ export const metadata: Metadata = {
     description: "Read articles, tutorials, and insights about AI-powered course creation, knowledge monetization, and more on the Forged blog.",
     alternates: {
         canonical: "https://tryforged.vercel.app/blog",
-    },
-    icons: {
-        apple: "/forged-icon.png",
-    },
+    }
 }
 
 export default async function BlogLayout({
