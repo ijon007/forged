@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, FileText, Zap, DollarSign, Code, BookOpen, TrendingUp } from "lucide-react"
+import { ArrowRight, Sparkles, FileText, Zap, DollarSign, Code, BookOpen, TrendingUp, PhoneCall } from "lucide-react"
 import Link from "next/link"
 
 export function Hero() {
@@ -110,15 +110,11 @@ export function Hero() {
       {/* Main content */}
       <div className="container relative mx-auto px-4 py-20 lg:py-32 z-10">
         <div className="text-center">
-          <div className="mb-8 inline-flex items-center rounded-full border border-gray-200 bg-white/90 backdrop-blur-sm px-6 py-3 text-sm text-gray-600 transition-all hover:bg-white hover:shadow-xl hover:scale-105 cursor-default shadow-lg">
+          <Link href="https://cal.com/ijon4/15min" target="_blank" className="cursor-pointer mb-8 inline-flex items-center rounded-full border border-gray-200 bg-white/90 backdrop-blur-sm px-6 py-3 text-sm text-gray-600 transition-all hover:bg-white hover:shadow-xl hover:scale-105 shadow-lg">
             <Sparkles className="mr-2 h-4 w-4 text-yellow-500 animate-pulse" />
-            Turn your knowledge into income
-            <div className="ml-3 flex space-x-1">
-              <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse" />
-              <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse animation-delay-200" />
-              <div className="h-1 w-1 rounded-full bg-green-500 animate-pulse animation-delay-400" />
-            </div>
-          </div>
+            Book a 15 min call
+            <ArrowRight size={16} className="ml-2" />
+          </Link>
 
           <h1 className="mb-6 font-bold tracking-tight text-black text-start sm:text-center text-5xl lg:text-6xl xl:text-7xl relative">
             <span className="inline-block animate-fade-in-up">Create & Sell Your Custom</span>
