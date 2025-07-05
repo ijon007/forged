@@ -197,7 +197,7 @@ export function Features() {
   }
 
   return (
-    <section className="relative bg-white py-24">
+    <section id="features" className="relative bg-white py-24">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-20">

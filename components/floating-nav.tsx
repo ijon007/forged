@@ -19,9 +19,8 @@ export function FloatingNav() {
   }, [])
 
   const navItems = [
+    { name: "Features", href: "/#features" },
     { name: "Pricing", href: "/#pricing" },
-    { name: "Testimonials", href: "/#testimonials" },
-    { name: "FAQ", href: "/#faq" },
     { name: "Blog", href: "/blog" },
   ]
 
@@ -36,7 +35,7 @@ export function FloatingNav() {
           <div className="flex items-center gap-24">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 group">
-                <Image src="/forged-black.svg" alt="Forged" width={80} height={80} />
+                <Image src="/forged-black.svg" alt="Forged" width={100} height={100} />
             </Link>
 
             <div className="flex items-center space-x-6">
@@ -100,16 +99,14 @@ export function FloatingNav() {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-2 border-t border-gray-100">
                 <Link href="/login" onClick={() => setIsOpen(false)}>
-                  <Button
-                    size="sm"
-                    className="w-full bg-black text-white hover:bg-gray-800 rounded-2xl transition-all duration-300"
-                  >
-                    Get Started
-                  </Button>
+                    <Button
+                        size="lg"
+                        className="w-full bg-black text-white hover:bg-gray-800 rounded-2xl transition-all duration-300"
+                    >
+                        Get Started
+                    </Button>
                 </Link>
-              </div>
             </div>
           </div>
         )}

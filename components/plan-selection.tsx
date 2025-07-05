@@ -62,11 +62,11 @@ export function PlanSelection() {
                 </div>
                 <div className="flex items-center text-gray-700">
                   <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>No platform fees - Earnings are all yours</span>
+                  <span>Advanced analytics dashboard</span>
                 </div>
                 <div className="flex items-center text-gray-700">
                   <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Cancel anytime</span>
+                  <span>No platform fees</span>
                 </div>
               </div>
             </div>
