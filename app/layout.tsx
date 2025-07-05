@@ -64,7 +64,7 @@ export const metadata: Metadata = {
         canonical: 'https://tryforged.vercel.app',
     },
     icons: {
-        icon: '/forged.png',
+        icon: '/forged-icon.png',
         apple: '/forged-icon.png',
     },
 }

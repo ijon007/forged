@@ -197,7 +197,7 @@ export function Features() {
   }
 
   return (
-    <section id="features" className="relative bg-white py-24">
+    <section  className="relative bg-white py-24">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-20">
@@ -213,10 +213,10 @@ export function Features() {
           {features.map((feature, index) => (
             <div
               key={feature.id}
-              className={`flex items-center gap-16 ${feature.reverse ? "flex-row-reverse" : ""} transition-transform duration-300`}
+              className={`flex flex-col lg:flex-row items-center gap-16 ${feature.reverse ? "lg:flex-row-reverse" : ""} transition-transform duration-300`}
             >
               {/* Visual */}
-              <div className="flex-1">
+              <div className="flex-1 w-full ">
                 <VisualDemo type={feature.visual} />
               </div>
               {/* Content */}
