@@ -15,6 +15,8 @@ import { toast } from "sonner"
 import { disconnectPolarAccount } from "@/actions/polar-actions"
 import { PolarDisconnectDialog } from "./polar-disconnect-dialog"
 import { PolarReconnectDialog } from "./polar-reconnect-dialog"
+import PolarConnectDialog from "./polar-connect-dialog"
+import PolarPayoutInfoDialog from "./polar-payout-info-dialog"
 
 interface PolarStatus {
     isConnected: boolean
@@ -48,6 +50,8 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
     const [isDisconnecting, setIsDisconnecting] = useState(false)
     const [showDisconnectDialog, setShowDisconnectDialog] = useState(false)
     const [showReconnectDialog, setShowReconnectDialog] = useState(false)
+    const [showConnectDialog, setShowConnectDialog] = useState(false)
+    const [showPayoutInfoDialog, setShowPayoutInfoDialog] = useState(false)
 
     const handleDisconnect = async () => {
         try {
@@ -147,7 +151,7 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                     )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col xl:flex-row gap-2">
                     {polarStatus.isConnected ? (
                         <>
                             <Button
@@ -167,6 +171,15 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                                 className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-600"
                             >
                                 Disconnect
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowPayoutInfoDialog(true)}
+                                className="flex items-center gap-2"
+                            >
+                                <ExternalLink className="h-4 w-4" />
+                                Payout Info
                             </Button>
                         </>
                     ) : (
@@ -281,11 +294,20 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                             >
                                 Disconnect
                             </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowPayoutInfoDialog(true)}
+                                className="w-full flex items-center justify-center gap-2"
+                            >
+                                <ExternalLink className="h-4 w-4" />
+                                Payout Info
+                            </Button>
                         </>
                     ) : (
                         <Button
                             size="sm"
-                            onClick={handleConnect}
+                            onClick={() => setShowConnectDialog(true)}
                             className="w-full flex items-center justify-center gap-2"
                         >
                             <ExternalLink className="h-4 w-4" />
@@ -314,6 +336,11 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                 </div>
             )}
 
+            <PolarConnectDialog
+                isOpen={showConnectDialog}
+                onClose={() => setShowConnectDialog(false)}
+            />
+
             {/* Confirmation Dialogs */}
             <PolarDisconnectDialog
                 open={showDisconnectDialog}
@@ -328,6 +355,12 @@ export default function PolarConnection({ polarStatus, userData }: PolarConnecti
                 onOpenChange={setShowReconnectDialog}
                 onConfirm={handleReconnect}
                 organizationName={polarStatus.organizationInfo?.name}
+            />
+
+            <PolarPayoutInfoDialog
+                isOpen={showPayoutInfoDialog}
+                onClose={() => setShowPayoutInfoDialog(false)}
+                orgSlug={polarStatus.organizationInfo?.slug ?? ""}
             />
         </div>
     )

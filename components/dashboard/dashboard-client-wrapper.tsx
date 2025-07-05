@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { PolarConnectionDialog } from "./polar-connection-dialog";
+import { PolarConnectionDialog } from "./polar-ui/polar-connection-dialog";
 import { toast } from "sonner";
 
 interface DashboardClientWrapperProps {

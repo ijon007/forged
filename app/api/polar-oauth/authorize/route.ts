@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('client_id', clientId);
     authUrl.searchParams.set('redirect_uri', redirectUri);
-    authUrl.searchParams.set('scope', 'openid email user:read products:read products:write checkouts:write organizations:read organizations:write orders:read');
+    authUrl.searchParams.set('scope', 'openid email user:read products:read products:write checkouts:write organizations:read organizations:write orders:read payouts:read payouts:write');
     authUrl.searchParams.set('state', session.user.id);
 
     console.log('Redirecting to Polar OAuth:', authUrl.toString());

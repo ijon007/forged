@@ -4,7 +4,7 @@ import { getPolarConnectionStatus } from "@/actions/polar-actions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Zap } from "lucide-react"
 import UserProfile from "@/components/dashboard/user-profile"
-import PolarConnection from "@/components/dashboard/polar-connection"
+import PolarConnection from "@/components/dashboard/polar-ui/polar-connection"
 import { PaymentInfo } from "@/components/dashboard/payment-info"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
