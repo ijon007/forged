@@ -45,6 +45,12 @@ export const metadata: Metadata = {
                 height: 122,
                 alt: 'Forged - Turn Notes Into Sellable Courses',
             },
+            {
+                url: 'https://tryforged.vercel.app/forged-icon.png',
+                width: 180,
+                height: 180,
+                alt: 'Forged - Turn Notes Into Sellable Courses',
+            }
         ],
     },
     twitter: {
