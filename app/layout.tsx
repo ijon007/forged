@@ -89,6 +89,7 @@ export default function RootLayout({
                 <meta name="msapplication-config" content="/browserconfig.xml" />
                 <meta name="msapplication-TileColor" content="#000000" />
                 <meta name="msapplication-tap-highlight" content="no" />
+                <meta name="google-site-verification" content="kcVxhIL9e7Vv8CxqkY4qn5kr9-hk788i14qq4akr9cg" />
             </head>
             <body className={` ${geist.variable}`}>
                 {children}
