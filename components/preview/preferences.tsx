@@ -99,7 +99,7 @@ const Preferences = ({ previewData }: PreferencesProps) => {
     }
 
     const copyUrl = () => {
-        navigator.clipboard.writeText(`tryforged.me/${formData.slug}`)
+        navigator.clipboard.writeText(`www.tryforged.me/${formData.slug}`)
         toast.success('URL copied to clipboard!')
     }
 

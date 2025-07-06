@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/private/', '/admin/', '/api/'],
     },
-    sitemap: 'https://tryforged.me/sitemap.xml',
+    sitemap: 'https://www.tryforged.me/sitemap.xml',
   }
 } 

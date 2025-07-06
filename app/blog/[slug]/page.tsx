@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         openGraph: {
             title: post.title,
             description: post.metaDescription,
-            url: `https://tryforged.me/blog/${post.slug}`,
+            url: `https://www.tryforged.me/blog/${post.slug}`,
             type: 'article',
         },
         alternates: {
-            canonical: `https://tryforged.me/blog/${post.slug}`,
+            canonical: `https://www.tryforged.me/blog/${post.slug}`,
         },
     }
 }

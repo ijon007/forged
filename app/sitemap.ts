@@ -3,7 +3,7 @@ import { getAllPublishedCourses } from '@/actions/course-db-actions'
 import { blogPosts } from '@/constants/blogs'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://tryforged.me'
+  const baseUrl = 'https://www.tryforged.me'
   
   const routes = [
     {

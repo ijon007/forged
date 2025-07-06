@@ -38,7 +38,7 @@ export async function generateMetadata({
         const description = dbCourse.description || 'Discover premium educational content on Forged'
         const imageUrl = dbCourse.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
         const price = dbCourse.price / 100
-        const url = `https://tryforged.me/${slug}`
+        const url = `https://www.tryforged.me/${slug}`
         const contentType = dbCourse.contentType || CONTENT_TYPES.BLOG
         const isListicle = contentType === CONTENT_TYPES.LISTICLE
         const isCourse = contentType === CONTENT_TYPES.COURSE
