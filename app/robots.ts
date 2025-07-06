@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/private/', '/admin/', '/api/'],
     },
-    sitemap: 'https://tryforged.vercel.app/sitemap.xml',
+    sitemap: 'https://tryforged.me/sitemap.xml',
   }
 } 

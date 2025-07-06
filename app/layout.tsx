@@ -37,16 +37,16 @@ export const metadata: Metadata = {
         siteName: 'Forged',
         title: 'Forged - Turn Notes Into Sellable Courses',
         description: 'Upload PDFs, get AI-generated courses, and start earning money from your knowledge.',
-        url: 'https://tryforged.vercel.app',
+        url: 'https://tryforged.me',
         images: [
             {
-                url: 'https://tryforged.vercel.app/og-image.png',
+                url: 'https://tryforged.me/og-image.png',
                 width: 437,
                 height: 122,
                 alt: 'Forged - Turn Notes Into Sellable Courses',
             },
             {
-                url: 'https://tryforged.vercel.app/forged-icon.png',
+                url: 'https://tryforged.me/forged-icon.png',
                 width: 180,
                 height: 180,
                 alt: 'Forged - Turn Notes Into Sellable Courses',
@@ -57,11 +57,11 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Forged - Turn Notes Into Sellable Courses',
         description: 'Upload PDFs, get AI-generated courses, and start earning money from your knowledge.',
-        images: ['https://tryforged.vercel.app/og-image.png'],
+        images: ['https://tryforged.me/og-image.png'],
         site: '@forged',
     },
     alternates: {
-        canonical: 'https://tryforged.vercel.app',
+        canonical: 'https://tryforged.me',
     },
     icons: {
         icon: '/forged-icon.png',

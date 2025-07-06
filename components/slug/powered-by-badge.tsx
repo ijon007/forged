@@ -5,7 +5,7 @@ import { Sparkles } from "lucide-react"
 const PoweredByBadge = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Link href="https://tryforged.vercel.app" target="_blank">
+      <Link href="https://tryforged.me" target="_blank">
         <Button
           variant="outline"
           size="sm"

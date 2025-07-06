@@ -40,7 +40,7 @@ const CourseJsonLd = ({
       "name": "Forged",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://tryforged.vercel.app/logo.png"
+        "url": "https://tryforged.me/logo.png"
       }
     },
     "instructor": {
@@ -66,7 +66,7 @@ const CourseJsonLd = ({
     },
     "datePublished": createdAt?.toISOString(),
     "dateModified": updatedAt?.toISOString(),
-    "url": `https://tryforged.vercel.app/${slug}`,
+    "url": `https://tryforged.me/${slug}`,
     "keywords": tags?.join(', ') || 'course, education, learning, online course',
     "inLanguage": "en-US",
     "isAccessibleForFree": price === 0
@@ -88,14 +88,14 @@ const CourseJsonLd = ({
       "name": "Forged",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://tryforged.vercel.app/logo.png"
+        "url": "https://tryforged.me/logo.png"
       }
     },
     "datePublished": createdAt?.toISOString(),
     "dateModified": updatedAt?.toISOString(),
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://tryforged.vercel.app/${slug}`
+      "@id": `https://tryforged.me/${slug}`
     },
     "keywords": tags?.join(', ') || 'listicle, tips, guide, list, how-to',
     "supply": [
@@ -140,14 +140,14 @@ const CourseJsonLd = ({
       "name": "Forged",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://tryforged.vercel.app/logo.png"
+        "url": "https://tryforged.me/logo.png"
       }
     },
     "datePublished": createdAt?.toISOString(),
     "dateModified": updatedAt?.toISOString(),
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://tryforged.vercel.app/${slug}`
+      "@id": `https://tryforged.me/${slug}`
     },
     "keywords": tags?.join(', ') || 'article, blog, educational',
     "articleSection": "Blog",
