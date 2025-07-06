@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
 
     console.log('🔑 Exchanging code for token...');
     
-    // Exchange code for access token (using sandbox endpoint)
-    const tokenResponse = await fetch('https://sandbox-api.polar.sh/v1/oauth2/token', {
+    // Exchange code for access token
+    const tokenResponse = await fetch('https://api.polar.sh/v1/oauth2/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -73,8 +73,8 @@ export async function GET(request: NextRequest) {
 
     console.log('👤 Getting user info from Polar...');
     
-    // Get user info from Polar (using sandbox endpoint)
-    const userInfoResponse = await fetch('https://sandbox-api.polar.sh/v1/oauth2/userinfo', {
+    // Get user info from Polar
+    const userInfoResponse = await fetch('https://api.polar.sh/v1/oauth2/userinfo', {
       headers: {
         'Authorization': `Bearer ${access_token}`,
       },
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
     console.log('🏢 Checking for existing organizations...');
 
     // First, check if user has any existing organizations
-    const orgsResponse = await fetch('https://sandbox-api.polar.sh/v1/organizations', {
+    const orgsResponse = await fetch('https://api.polar.sh/v1/organizations', {
       headers: {
         'Authorization': `Bearer ${access_token}`,
       },
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
       console.log('🏗️ Creating new organization for user...');
       
       // Create organization using their user info
-      const createOrgResponse = await fetch('https://sandbox-api.polar.sh/v1/organizations', {
+      const createOrgResponse = await fetch('https://api.polar.sh/v1/organizations', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${access_token}`,

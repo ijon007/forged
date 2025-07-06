@@ -11,7 +11,7 @@ export function PlanSelection() {
   const buyMonthlyPlan = async () => {
     setIsLoading('monthly')
     await authClient.checkout({
-      products: ["4106f4b6-7fe4-4878-a585-e841be593ea1"],
+      products: ["847b402b-f743-49d7-a0d1-02a2f7ab5393"],
       slug: "forged",
     });
   }
@@ -19,7 +19,7 @@ export function PlanSelection() {
   const buyYearlyPlan = async () => {
     setIsLoading('yearly')
     await authClient.checkout({
-      products: ["3196f5a1-28d3-4c44-9758-bb82bd1e38e9"],
+      products: ["d607a6a7-db1b-45c8-bd93-6d8d9179e0c4"],
       slug: "forged-yearly",
     });
   }

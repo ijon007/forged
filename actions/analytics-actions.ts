@@ -90,7 +90,7 @@ async function getUserPolarData() {
 }
 
 async function fetchPolarOrders(accessToken: string, organizationId: string, limit?: number) {
-  const baseUrl = 'https://sandbox-api.polar.sh/v1/orders'
+  const baseUrl = 'https://api.polar.sh/v1/orders'
   const params = new URLSearchParams({
     organization_id: organizationId,
     limit: limit?.toString() || '100'
