@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build authorization URL
-    const authUrl = new URL('https://sandbox.polar.sh/oauth2/authorize');
+    const authUrl = new URL('https://polar.sh/oauth2/authorize');
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('client_id', clientId);
     authUrl.searchParams.set('redirect_uri', redirectUri);

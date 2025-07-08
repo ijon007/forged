@@ -41,7 +41,6 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
                     <p className="text-lg text-gray-600 mb-4">{post.metaDescription}</p>
                     <div className="flex flex-wrap gap-6 text-sm text-gray-500 mb-4">
                         <span>By <span className="font-medium text-gray-700">{post.author}</span></span>
-                        <span>{new Date(post.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         <span>{post.readingTime} min read</span>
                     </div>
                     {post.tags && post.tags.length > 0 && (

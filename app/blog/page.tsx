@@ -22,7 +22,6 @@ export default function BlogMainPage() {
                             <p className="text-gray-700 mb-2">{post.metaDescription}</p>
                             <div className="text-sm text-gray-500 flex flex-wrap gap-4">
                                 <span>By {post.author}</span>
-                                <span>{new Date(post.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                                 <span>{post.readingTime} min read</span>
                             </div>
                         </article>

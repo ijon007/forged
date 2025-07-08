@@ -52,9 +52,9 @@ const PolarPayoutInfoDialog = ({ isOpen, onClose, orgSlug }: PolarPayoutInfoDial
                     </ol>
 
                     <p>
-                        For more detailed information, please refer to the official Polar payout documentation:
+                        For more detailed information, please refer to the official Polar payout documentation or contact us at <a href="mailto:support@polar.sh" className="underline text-blue-600 hover:text-blue-800">forged.help1@gmail.com</a>:
                     </p>
-                    <div className="flex itstrongs-center gap-2">
+                    <div className="flex items-center gap-2">
                         <ExternalLink className="h-4 w-4" />
                         <a href="https://docs.polar.sh/features/finance/accounts" target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
                             Polar Payouts Documentation

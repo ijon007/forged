@@ -44,7 +44,7 @@ export async function getPolarConnectionStatus() {
     // If connected and token is valid, fetch organization details
     if (isConnected && !isTokenExpired && userPolarData.polarAccessToken && userPolarData.polarOrganizationId) {
       try {
-        const orgResponse = await fetch(`https://sandbox-api.polar.sh/v1/organizations/${userPolarData.polarOrganizationId}`, {
+        const orgResponse = await fetch(`https://api.polar.sh/v1/organizations/${userPolarData.polarOrganizationId}`, {
           headers: {
             'Authorization': `Bearer ${userPolarData.polarAccessToken}`,
           },
@@ -119,7 +119,7 @@ export async function refreshPolarToken() {
     const refreshToken = userData[0].polarRefreshToken;
 
     // Exchange refresh token for new access token
-    const tokenResponse = await fetch('https://sandbox-api.polar.sh/v1/oauth2/token', {
+    const tokenResponse = await fetch('https://api.polar.sh/v1/oauth2/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -219,7 +219,7 @@ export async function createPolarProduct(courseData: {
     // Create Polar client with user's access token
     const userPolarClient = new Polar({
       accessToken: userPolarData.polarAccessToken!,
-      server: "sandbox",
+      server: "production",
     });
 
     // Create the product on Polar using creator's organization
@@ -306,7 +306,7 @@ export async function createCheckoutLink(productId: string, successUrl?: string)
 
     const userPolarClient = new Polar({
       accessToken: userPolarData.polarAccessToken!,
-      server: "sandbox",
+      server: "production",
     });
 
     const checkoutResponse = await userPolarClient.checkouts.create({
@@ -361,7 +361,7 @@ export async function archivePolarProduct(productId: string) {
       return { success: false, error: "Polar account not connected" };
     }
 
-    const response = await fetch(`https://sandbox-api.polar.sh/v1/products/${productId}`, {
+    const response = await fetch(`https://api.polar.sh/v1/products/${productId}`, {
       method: 'PATCH',
       headers: {
         'Authorization': `Bearer ${userData[0].polarAccessToken}`,

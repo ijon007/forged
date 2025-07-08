@@ -14,12 +14,12 @@ import { Polar } from "@polar-sh/sdk";
 
 export const polarClient = new Polar({
     accessToken: process.env.POLAR_ACCESS_TOKEN,
-    server: "sandbox",
+    server: "production",
 });
 
 // Helper function to determine plan type from product ID
 const getPlanTypeFromProductId = (productId: string): string => {
-    if (productId === "3196f5a1-28d3-4c44-9758-bb82bd1e38e9") {
+    if (productId === "d607a6a7-db1b-45c8-bd93-6d8d9179e0c4") {
         return "yearly";
     }
     return "monthly";
@@ -64,11 +64,11 @@ export const auth = betterAuth({
                 checkout({
                     products: [
                         {
-                            productId: "4106f4b6-7fe4-4878-a585-e841be593ea1",
+                            productId: "847b402b-f743-49d7-a0d1-02a2f7ab5393",
                             slug: "forged",
                         },
                         {
-                            productId: "3196f5a1-28d3-4c44-9758-bb82bd1e38e9",
+                            productId: "d607a6a7-db1b-45c8-bd93-6d8d9179e0c4",
                             slug: "forged-yearly",
                         },
                     ],
