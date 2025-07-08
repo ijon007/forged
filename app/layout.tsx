@@ -77,19 +77,8 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${geist.variable}`}>
             <head>
-                {/* Additional SEO meta tags */}
-                <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)" />
-                <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)" />
-                <meta name="application-name" content="Forged" />
-                <meta name="apple-mobile-web-app-capable" content="yes" />
-                <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-                <meta name="apple-mobile-web-app-title" content="Forged" />
-                <meta name="format-detection" content="telephone=no" />
-                <meta name="mobile-web-app-capable" content="yes" />
-                <meta name="msapplication-config" content="/browserconfig.xml" />
-                <meta name="msapplication-TileColor" content="#000000" />
-                <meta name="msapplication-tap-highlight" content="no" />
                 <meta name="google-site-verification" content="kcVxhIL9e7Vv8CxqkY4qn5kr9-hk788i14qq4akr9cg" />
+                <meta name="msvalidate.01" content="115EBE3BCD9B79F2E4EF4B6792FD798F" />
             </head>
             <body className={` ${geist.variable}`}>
                 {children}
