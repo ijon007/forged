@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, PhoneCall } from "lucide-react"
 import Link from "next/link"
 
-export function CTA() {
+export function CTA({ className }: { className?: string }) {
   return (
-    <section id="cta" className="flex self-center bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-11/12 rounded-4xl ml-5 md:ml-10 lg:ml-12 xl:ml-20">
+    <section id="cta" className={className}>
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
 

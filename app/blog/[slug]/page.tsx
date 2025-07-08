@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
+import { CustomerTaxId$outboundSchema } from '@polar-sh/sdk/models/components/customer.js'
+import { CTA } from '@/components/cta'
 
 export async function generateStaticParams() {
     return Object.values(blogPosts).map(post => ({ slug: post.slug }))
@@ -126,10 +128,8 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
                         {post.content}
                     </ReactMarkdown>
                 </section>
-                <footer className="mt-12 border-t pt-6 text-center">
-                    <Link href="/blog" className="text-blue-600 hover:underline">← Back to Articles</Link>
-                </footer>
             </article>
+            <CTA className="flex self-center bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-full rounded-4xl my-20" />
         </main>
     )
 }

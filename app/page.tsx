@@ -16,7 +16,7 @@ export default function Home() {
             <Pricing />
             <Testimonials />
             <FAQ />
-            <CTA />
+            <CTA className="flex self-center bg-gradient-to-br from-black via-gray-900 to-black py-40 overflow-hidden w-11/12 rounded-4xl ml-5 md:ml-10 lg:ml-12 xl:ml-20"/>
             <Footer />
         </main>
     )
