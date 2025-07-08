@@ -16,7 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.9,
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/features`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 1,
     },
   ]
 
@@ -27,14 +33,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/${course.slug}`,
       lastModified: course.updatedAt || course.createdAt,
       changeFrequency: 'monthly' as const,
-      priority: 0.8,
+      priority: 1,
     }))
 
     const blogRoutes = Object.values(blogPosts).map((post) => ({
       url: `${baseUrl}/blog/${post.slug}`,
       lastModified: new Date(post.publishedAt),
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: 1,
     }))
 
     return [...routes, ...courseRoutes, ...blogRoutes]
