@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Sparkles, Edit3, Globe, BarChart3, DollarSign, ArrowRight, FileText, Eye } from "lucide-react"
+import { Sparkles, Edit3, Globe, BarChart3, DollarSign, ArrowRight, FileText, Eye } from 'lucide-react'
 import { features } from "@/constants/features"
 import { Button } from "./ui/button"
 import Link from "next/link"
 
-export function Features() {
+export function Features({ page = false }: { page?: boolean }) {
   const VisualDemo = ({ type }: { type: string }) => {
     // Monetize number animation state
     const [monetizeAmount, setMonetizeAmount] = useState(0);
@@ -213,16 +213,16 @@ export function Features() {
           {features.map((feature, index) => (
             <div
               key={feature.id}
-              className={`flex flex-col lg:flex-row items-center gap-16 ${feature.reverse ? "lg:flex-row-reverse" : ""} transition-transform duration-300`}
+              className={`flex ${page ? 'flex-col' : `flex-col lg:flex-row ${feature.reverse ? "lg:flex-row-reverse" : ""}`} items-center gap-16 transition-transform duration-300`}
             >
               {/* Visual */}
-              <div className="flex-1 w-full ">
+              <div className="flex-1 w-full">
                 <VisualDemo type={feature.visual} />
               </div>
               {/* Content */}
               <div className="flex-1 space-y-6">
                 <h3 className="text-3xl md:text-4xl font-bold text-black leading-tight">{feature.title}</h3>
-                <p className="text-lg text-gray-600 leading-relaxed">{feature.description}</p>
+                <p className="text-lg text-gray-600 leading-relaxed">{page ? feature.longDescription : feature.description}</p>
                 <Link href="/login">
                   <Button className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-6 py-5 rounded-full font-medium transition-all duration-200 hover:scale-105">
                     {feature.cta}
