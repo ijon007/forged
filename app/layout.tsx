@@ -78,7 +78,7 @@ export default function RootLayout({
         <html lang="en" className={`${geist.variable}`}>
             <head>
                 <meta name="google-site-verification" content="kcVxhIL9e7Vv8CxqkY4qn5kr9-hk788i14qq4akr9cg" />
-                <meta name="msvalidate.01" content="115EBE3BCD9B79F2E4EF4B6792FD798F" />
+                <meta name="msvalidate.01" content="115EBE3BCD9B79F2E4EF4B6792FD798F" /> 
             </head>
             <body className={` ${geist.variable}`}>
                 {children}
