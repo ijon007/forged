@@ -1,8 +1,24 @@
-import { blogPosts } from '@/constants/blogs'
 import Link from 'next/link'
+import { blogPosts } from '@/constants/blogs'
+import { BEST_IN_2025 } from '@/constants/best-in-2025'
+import { HOW_TO_START } from '@/constants/how-to-start'
+import { TOP_10_BLOG } from '@/constants/top-10-blog'
+import { MAKE_COURSE } from '@/constants/make-course'
+import { MONETIZE_BLOG } from '@/constants/monetize-blog'
+import { BEST_PLATFORM } from '@/constants/best-platform'
+
+export const allBlogPosts = {
+  ...blogPosts,
+  ...BEST_IN_2025,
+  ...HOW_TO_START,
+  ...TOP_10_BLOG,
+  ...MAKE_COURSE,
+  ...MONETIZE_BLOG,
+  ...BEST_PLATFORM,
+}
 
 export default function BlogMainPage() {
-    const posts = Object.values(blogPosts).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    const posts = Object.values(allBlogPosts).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
     return (
         <>
