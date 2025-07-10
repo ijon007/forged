@@ -44,12 +44,6 @@ export const metadata: Metadata = {
                 width: 437,
                 height: 122,
                 alt: 'Forged - Turn Notes Into Sellable Courses',
-            },
-            {
-                url: 'https://www.tryforged.me/forged-icon.png',
-                width: 180,
-                height: 180,
-                alt: 'Forged - Turn Notes Into Sellable Courses',
             }
         ],
     },
