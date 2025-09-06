@@ -1,12 +1,13 @@
 export const mockPreviewData = {
-    "1": {
-      id: "1",
-      title: "JavaScript Design Patterns",
-      description: "A comprehensive guide to modern JavaScript design patterns and best practices.",
-      price: 29.99,
-      slug: "javascript-design-patterns",
-      status: "draft" as const,
-      originalContent: `# JavaScript Design Patterns - Original PDF Content
+  "1": {
+    id: "1",
+    title: "JavaScript Design Patterns",
+    description:
+      "A comprehensive guide to modern JavaScript design patterns and best practices.",
+    price: 29.99,
+    slug: "javascript-design-patterns",
+    status: "draft" as const,
+    originalContent: `# JavaScript Design Patterns - Original PDF Content
   
 ## Table of Contents
 1. Introduction to Design Patterns
@@ -27,7 +28,7 @@ The Factory Method pattern creates objects without specifying the exact class to
 The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
 
 [Additional PDF content would be extracted here...]`,
-      generatedContent: `# JavaScript Design Patterns
+    generatedContent: `# JavaScript Design Patterns
   
   *Master the essential patterns that every JavaScript developer should know*
   
@@ -167,6 +168,6 @@ The Observer pattern defines a one-to-many dependency between objects so that wh
   
   Understanding and implementing design patterns in JavaScript will make your code more maintainable, scalable, and easier to understand. These patterns provide proven solutions to common problems and help establish a common vocabulary among developers.
   
-  Remember, patterns are tools - use them when they solve a real problem, not just because they exist.`
-    }
-  }
+  Remember, patterns are tools - use them when they solve a real problem, not just because they exist.`,
+  },
+};

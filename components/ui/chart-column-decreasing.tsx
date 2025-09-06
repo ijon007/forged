@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { type Variants, motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
+import { motion, useAnimation, type Variants } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 export interface ChartColumnDecreasingIconHandle {
   startAnimation: () => void;
@@ -43,13 +43,15 @@ const ChartColumnDecreasingIcon = forwardRef<
           transition: { delay: i * 0.1, duration: 0.3 },
         }));
       },
-      stopAnimation: () => controls.start('visible'),
+      stopAnimation: () => controls.start("visible"),
     };
   });
 
   const handleMouseEnter = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) {
+      if (isControlledRef.current) {
+        onMouseEnter?.(e);
+      } else {
         await controls.start((i) => ({
           pathLength: 0,
           opacity: 0,
@@ -60,8 +62,6 @@ const ChartColumnDecreasingIcon = forwardRef<
           opacity: 1,
           transition: { delay: i * 0.1, duration: 0.3 },
         }));
-      } else {
-        onMouseEnter?.(e);
       }
     },
     [controls, onMouseEnter]
@@ -69,10 +69,10 @@ const ChartColumnDecreasingIcon = forwardRef<
 
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isControlledRef.current) {
-        controls.start('visible');
-      } else {
+      if (isControlledRef.current) {
         onMouseLeave?.(e);
+      } else {
+        controls.start("visible");
       }
     },
     [controls, onMouseLeave]
@@ -86,43 +86,43 @@ const ChartColumnDecreasingIcon = forwardRef<
       {...props}
     >
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
         fill="none"
+        height={size}
         stroke="currentColor"
-        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        width={size}
+        xmlns="http://www.w3.org/2000/svg"
       >
         <motion.path
-          variants={lineVariants}
-          initial="visible"
           animate={controls}
           custom={1}
           d="M13 17V9"
+          initial="visible"
+          variants={lineVariants}
         />
         <motion.path
-          variants={lineVariants}
-          initial="visible"
           animate={controls}
           custom={2}
           d="M18 17v-3"
+          initial="visible"
+          variants={lineVariants}
         />
         <path d="M3 3v16a2 2 0 0 0 2 2h16" />
         <motion.path
-          variants={lineVariants}
-          initial="visible"
           animate={controls}
           custom={0}
           d="M8 17V5"
+          initial="visible"
+          variants={lineVariants}
         />
       </svg>
     </div>
   );
 });
 
-ChartColumnDecreasingIcon.displayName = 'ChartColumnDecreasingIcon';
+ChartColumnDecreasingIcon.displayName = "ChartColumnDecreasingIcon";
 
 export { ChartColumnDecreasingIcon };

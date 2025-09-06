@@ -7,7 +7,7 @@
 
 Upload your notes, generate beautifully formatted content, and start earning, no writing required.
 
-[Generate Playbook](https://www.tryforged.me/login)
+[Generate Playbook](https://www.tryforged.me/dashboard)
 
 ## Features
 
@@ -27,7 +27,7 @@ Processing...
 
 Upload any PDF and watch our AI extract and structure your content into blogs, listicles, or courses instantly.
 
-[Try PDF upload](https://www.tryforged.me/login)
+[Try PDF upload](https://www.tryforged.me/dashboard)
 
 AI Generation
 
@@ -37,7 +37,7 @@ AI Generation
 
 Transform your PDF into engaging, monetizable content in minutes. Choose from blogs, listicles, or comprehensive courses.
 
-[See AI in action](https://www.tryforged.me/login)
+[See AI in action](https://www.tryforged.me/dashboard)
 
 Live Editor
 
@@ -45,7 +45,7 @@ Live Editor
 
 Real-time editing with instant preview. Customize content, pricing, images, and social links before publishing.
 
-[Explore editor](https://www.tryforged.me/login)
+[Explore editor](https://www.tryforged.me/dashboard)
 
 Publishing
 
@@ -61,7 +61,7 @@ yoursite.com/course
 
 Publish instantly with a beautiful, shareable URL. Your content goes live in seconds, optimized for conversions.
 
-[Publish now](https://www.tryforged.me/login)
+[Publish now](https://www.tryforged.me/dashboard)
 
 Analytics
 
@@ -71,7 +71,7 @@ Sales1,247
 
 Track sales, revenue, and more with detailed insights. Know exactly how your content is performing.
 
-[View analytics](https://www.tryforged.me/login)
+[View analytics](https://www.tryforged.me/dashboard)
 
 Earnings
 
@@ -85,7 +85,7 @@ Platform fee$0
 
 Connect your Polar account and start earning. Zero platform fees, 100% of revenue goes to you.
 
-[Start earning](https://www.tryforged.me/login)
+[Start earning](https://www.tryforged.me/dashboard)
 
 ## Start earning from your knowledge
 
@@ -98,7 +98,7 @@ Monthly Plan
 
 $20/month
 
-[Start Creating](https://www.tryforged.me/login)
+[Start Creating](https://www.tryforged.me/dashboard)
 
 Unlimited generations
 
@@ -180,7 +180,7 @@ Everything you need to know about turning your knowledge into income
 
 Turn your knowledge into profitable digital playbooks and courses. Create, sell, and monetize your expertise with AI-powered course creation for just $20/month.
 
-[Start Selling](https://www.tryforged.me/login) [Book a call](https://www.tryforged.me/login)
+[Start Selling](https://www.tryforged.me/dashboard) [Book a call](https://www.tryforged.me/dashboard)
 
 ## AI Blogging Strategies
 ## [Blogging for Creators: 2025 AI Stack](https://www.tryforged.me/blog/creators-ai-blogging-stack-2025)
@@ -7271,7 +7271,7 @@ Understanding why people search for keywords is crucial for content success.
 **Navigational (10% of searches):**
 
 - "\[Brand name\]"
-- "\[Product\] login"
+- "\[Product\] dashboard"
 - "\[Company\] support"
 - "\[Tool\] download"
 

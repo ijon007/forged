@@ -1,50 +1,56 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { PencilLine, Check } from "lucide-react"
-import { useState } from "react"
-import Link from "next/link"
+import { Check, PencilLine } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function Pricing() {
-  const [isYearly, setIsYearly] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
+  const [isYearly, setIsYearly] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section id="pricing" className="relative bg-white py-24 overflow-hidden">
+    <section className="relative overflow-hidden bg-white py-24" id="pricing">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.02)_1px,transparent_0)] [background-size:32px_32px]" />
 
       <div className="container relative mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">Start earning from your knowledge</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Upload your notes or PDFs, generate beautiful AI-crafted content, set your price, and keep 100% of every
-            sale.
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 font-bold text-4xl text-black md:text-5xl">
+            Start earning from your knowledge
+          </h2>
+          <p className="mx-auto max-w-2xl text-gray-600 text-xl">
+            Upload your notes or PDFs, generate beautiful AI-crafted content,
+            set your price, and keep 100% of every sale.
           </p>
         </div>
 
         {/* Toggle */}
         <div className="mb-12 flex justify-center">
-          <div className="relative bg-gray-100 rounded-full p-1 flex items-center shadow-inner">
+          <div className="relative flex items-center rounded-full bg-gray-100 p-1 shadow-inner">
             <button
-              onClick={() => setIsYearly(false)}
-              className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 relative cursor-pointer ${
-                !isYearly ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"
+              className={`relative cursor-pointer rounded-full px-8 py-3 font-semibold transition-all duration-300 ${
+                isYearly
+                  ? "text-gray-600 hover:text-gray-900"
+                  : "bg-white text-gray-900 shadow-sm"
               }`}
+              onClick={() => setIsYearly(false)}
             >
               Monthly
             </button>
             <button
-              onClick={() => setIsYearly(true)}
-              className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 relative cursor-pointer ${
-                isYearly ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"
+              className={`relative cursor-pointer rounded-full px-8 py-3 font-semibold transition-all duration-300 ${
+                isYearly
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
+              onClick={() => setIsYearly(true)}
             >
               Yearly
-                <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                  Save 33%
-                </div>
+              <div className="-top-2 -right-2 absolute rounded-full bg-green-500 px-2 py-1 font-medium text-white text-xs">
+                Save 33%
+              </div>
             </button>
           </div>
         </div>
@@ -52,23 +58,25 @@ export function Pricing() {
         {/* Pricing Card */}
         <div className="flex justify-center">
           <div
-            className="group relative max-w-md w-full"
+            className="group relative w-full max-w-md"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* Glow Effect */}
             <div
-              className={`absolute -inset-1 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm ${isHovered ? "animate-pulse" : ""}`}
+              className={`-inset-1 absolute rounded-3xl bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 opacity-0 blur-sm transition-all duration-500 group-hover:opacity-100 ${isHovered ? "animate-pulse" : ""}`}
             />
 
             {/* Main Card */}
-            <div className="relative rounded-3xl border border-gray-200 bg-white p-8 shadow-lg transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-2">
+            <div className="group-hover:-translate-y-2 relative rounded-3xl border border-gray-200 bg-white p-8 shadow-lg transition-all duration-500 group-hover:shadow-2xl">
               <div className="text-center">
                 {/* Plan Name */}
                 <div className="mb-8">
                   <div
-                    className={`inline-block px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide mb-6 transition-all duration-300 ${
-                      isYearly ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"
+                    className={`mb-6 inline-block rounded-full px-4 py-2 font-semibold text-sm uppercase tracking-wide transition-all duration-300 ${
+                      isYearly
+                        ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-700"
                     }`}
                   >
                     {isYearly ? "Yearly Plan" : "Monthly Plan"}
@@ -79,37 +87,43 @@ export function Pricing() {
                     {isYearly ? (
                       <div className="space-y-2">
                         <div className="flex items-baseline justify-center gap-3">
-                          <span className="text-2xl font-semibold text-gray-400 line-through">$240</span>
+                          <span className="font-semibold text-2xl text-gray-400 line-through">
+                            $240
+                          </span>
                           <span
-                            className={`text-6xl font-bold text-black transition-all duration-500 ${isHovered ? "scale-110" : ""}`}
+                            className={`font-bold text-6xl text-black transition-all duration-500 ${isHovered ? "scale-110" : ""}`}
                           >
                             $160
                           </span>
                         </div>
-                        <div className="text-green-600 font-semibold text-lg">Save $80 — 4 months free!</div>
+                        <div className="font-semibold text-green-600 text-lg">
+                          Save $80 — 4 months free!
+                        </div>
                       </div>
                     ) : (
                       <div className="flex items-baseline justify-center">
                         <span
-                          className={`text-6xl font-bold text-black transition-all duration-500 ${isHovered ? "scale-110" : ""}`}
+                          className={`font-bold text-6xl text-black transition-all duration-500 ${isHovered ? "scale-110" : ""}`}
                         >
                           $20
                         </span>
-                        <span className="text-xl text-gray-500 ml-2">/month</span>
+                        <span className="ml-2 text-gray-500 text-xl">
+                          /month
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* CTA Button */}
-                <Link href="/login" className="block mb-8">
+                <Link className="mb-8 block" href="/dashboard">
                   <Button
+                    className="group/btn relative w-full overflow-hidden rounded-2xl bg-black px-10 py-6 text-white transition-all duration-300 hover:scale-105 hover:bg-gray-800 hover:shadow-xl"
                     size="lg"
-                    className="group/btn relative bg-black text-white hover:bg-gray-800 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl w-full py-6 px-10"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100" />
                     <span className="relative flex items-center justify-center gap-2">
-                      <PencilLine className="w-5 h-5 transition-transform group-hover/btn:rotate-12" />
+                      <PencilLine className="h-5 w-5 transition-transform group-hover/btn:rotate-12" />
                       Start Creating
                     </span>
                   </Button>
@@ -124,16 +138,18 @@ export function Pricing() {
                     "No platform fees",
                   ].map((feature, index) => (
                     <div
-                      key={feature}
                       className={`flex items-center text-gray-700 transition-all duration-300 ${
                         isHovered ? "translate-x-2" : ""
                       }`}
-                      style={{ transitionDelay: isHovered ? `${index * 50}ms` : "0ms" }}
+                      key={feature}
+                      style={{
+                        transitionDelay: isHovered ? `${index * 50}ms` : "0ms",
+                      }}
                     >
                       <div className="relative mr-3 flex-shrink-0">
-                        <Check className="w-5 h-5 text-green-600" />
+                        <Check className="h-5 w-5 text-green-600" />
                         {isHovered && (
-                          <div className="absolute inset-0 bg-green-600 rounded-full opacity-20 animate-ping" />
+                          <div className="absolute inset-0 animate-ping rounded-full bg-green-600 opacity-20" />
                         )}
                       </div>
                       <span className="font-medium">{feature}</span>
@@ -146,5 +162,5 @@ export function Pricing() {
         </div>
       </div>
     </section>
-  )
+  );
 }

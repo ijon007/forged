@@ -1,11 +1,11 @@
 // Subscription status types
-export type SubscriptionStatus = 
-  | "active" 
-  | "canceled" 
-  | "revoked" 
-  | "incomplete" 
+export type SubscriptionStatus =
+  | "active"
+  | "canceled"
+  | "revoked"
+  | "incomplete"
   | "incomplete_expired"
-  | "past_due" 
+  | "past_due"
   | "unpaid"
   | null;
 
@@ -26,13 +26,13 @@ export function isSubscriptionActive(
   status: SubscriptionStatus,
   endsAt: Date | null
 ): boolean {
-  if (!status || !endsAt) {
+  if (!(status && endsAt)) {
     return false;
   }
 
   // These statuses mean the user still has access
   const activeStatuses: SubscriptionStatus[] = ["active", "canceled"];
-  
+
   if (!activeStatuses.includes(status)) {
     return false;
   }
@@ -47,7 +47,7 @@ export function isSubscriptionExpired(endsAt: Date | null): boolean {
   if (!endsAt) {
     return false;
   }
-  
+
   return new Date() > new Date(endsAt);
 }
 
@@ -98,35 +98,35 @@ export function getSubscriptionStatusVariant(status: SubscriptionStatus): {
     case "active":
       return {
         variant: "secondary",
-        className: "bg-green-100 text-green-700 hover:bg-green-200"
+        className: "bg-green-100 text-green-700 hover:bg-green-200",
       };
     case "canceled":
       return {
-        variant: "secondary", 
-        className: "bg-orange-100 text-orange-700 hover:bg-orange-200"
+        variant: "secondary",
+        className: "bg-orange-100 text-orange-700 hover:bg-orange-200",
       };
     case "revoked":
     case "unpaid":
       return {
         variant: "destructive",
-        className: "bg-red-100 text-red-700 hover:bg-red-200"
+        className: "bg-red-100 text-red-700 hover:bg-red-200",
       };
     case "past_due":
     case "incomplete":
     case "incomplete_expired":
       return {
         variant: "secondary",
-        className: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+        className: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
       };
     case null:
       return {
         variant: "outline",
-        className: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        className: "bg-gray-100 text-gray-700 hover:bg-gray-200",
       };
     default:
       return {
         variant: "secondary",
-        className: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        className: "bg-gray-100 text-gray-700 hover:bg-gray-200",
       };
   }
 }
@@ -141,7 +141,7 @@ export function getDaysUntilExpiry(endsAt: Date | null): number | null {
   const endDate = new Date(endsAt);
   const diffTime = endDate.getTime() - now.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
   return diffDays;
 }
 
@@ -153,7 +153,7 @@ export function formatSubscriptionEndDate(endsAt: Date | null): string {
 
   return new Date(endsAt).toLocaleDateString("en-US", {
     year: "numeric",
-    month: "long", 
-    day: "numeric"
+    month: "long",
+    day: "numeric",
   });
-} 
+}

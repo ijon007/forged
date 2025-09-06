@@ -1,22 +1,22 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Sparkles } from "lucide-react"
+import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const PoweredByBadge = () => {
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed right-4 bottom-4 z-50">
       <Link href="https://www.tryforged.me" target="_blank">
         <Button
-          variant="outline"
+          className="border-purple-200 bg-white/80 text-purple-700 shadow-lg backdrop-blur-sm hover:bg-purple-50 hover:text-purple-800"
           size="sm"
-          className="bg-white/80 backdrop-blur-sm border-purple-200 text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-lg"
+          variant="outline"
         >
-          <Sparkles className="h-3 w-3 mr-1" />
-          <span className="text-xs font-medium">Powered by Forged</span>
+          <Sparkles className="mr-1 h-3 w-3" />
+          <span className="font-medium text-xs">Powered by Forged</span>
         </Button>
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default PoweredByBadge 
+export default PoweredByBadge;

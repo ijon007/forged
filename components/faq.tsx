@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function FAQ() {
   const faqs = [
@@ -32,31 +37,35 @@ export function FAQ() {
       answer:
         "No limits! With your $20/month subscription, you can upload unlimited PDFs and create as many playbooks as you want. Scale your knowledge business without restrictions.",
     },
-  ]
+  ];
 
   return (
-    <section id="faq" className="bg-white py-20">
+    <section className="bg-white py-20" id="faq">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <h2 className="mb-4 text-3xl font-bold text-black sm:text-4xl">FAQ</h2>
-          <p className="mx-auto mb-16 max-w-2xl text-lg text-gray-600">
+          <h2 className="mb-4 font-bold text-3xl text-black sm:text-4xl">
+            FAQ
+          </h2>
+          <p className="mx-auto mb-16 max-w-2xl text-gray-600 text-lg">
             Everything you need to know about turning your knowledge into income
           </p>
         </div>
 
         <div className="mx-auto max-w-3xl">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full" collapsible type="single">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-semibold text-black hover:text-gray-700 cursor-pointer">
+                <AccordionTrigger className="cursor-pointer text-left font-semibold text-black text-lg hover:text-gray-700">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
+                <AccordionContent className="text-gray-600">
+                  {faq.answer}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       </div>
     </section>
-  )
+  );
 }

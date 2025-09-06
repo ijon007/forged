@@ -65,4 +65,4 @@ export const features = [
     visual: "monetize",
     reverse: true,
   },
-]
+];

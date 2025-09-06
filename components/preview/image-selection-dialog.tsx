@@ -1,23 +1,28 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { Search, Loader2, Image as ImageIcon, Check } from "lucide-react"
-import { updateCourse } from "@/actions/course-db-actions"
-import { toast } from "sonner"
-import { searchUnsplashImages, type UnsplashImage } from "@/lib/unsplash-api"
+import { Check, Image as ImageIcon, Loader2, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { updateCourse } from "@/actions/course-db-actions";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { searchUnsplashImages, type UnsplashImage } from "@/lib/unsplash-api";
 
 interface ImageSelectionDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  title: string
-  courseId: string
-  currentImageUrl?: string
-  onImageChange?: (imageUrl: string) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  courseId: string;
+  currentImageUrl?: string;
+  onImageChange?: (imageUrl: string) => void;
 }
 
 // Now using the real Unsplash API from lib/unsplash-api.ts
@@ -28,90 +33,92 @@ export function ImageSelectionDialog({
   title,
   courseId,
   currentImageUrl,
-  onImageChange
+  onImageChange,
 }: ImageSelectionDialogProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [images, setImages] = useState<UnsplashImage[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<string>(currentImageUrl || "")
-  const [isUpdating, setIsUpdating] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [images, setImages] = useState<UnsplashImage[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    currentImageUrl || ""
+  );
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // Initial search based on title
   useEffect(() => {
     if (open && title) {
-      const initialQuery = title.toLowerCase().split(' ').slice(0, 3).join(' ')
-      setSearchQuery(initialQuery)
-      handleSearch(initialQuery)
+      const initialQuery = title.toLowerCase().split(" ").slice(0, 3).join(" ");
+      setSearchQuery(initialQuery);
+      handleSearch(initialQuery);
     }
-  }, [open, title])
+  }, [open, title]);
 
   const handleSearch = async (query: string = searchQuery) => {
-    if (!query.trim()) return
+    if (!query.trim()) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const results = await searchUnsplashImages(query)
-      setImages(results)
+      const results = await searchUnsplashImages(query);
+      setImages(results);
     } catch (error) {
-      toast.error("Failed to search images")
-      console.error("Search error:", error)
+      toast.error("Failed to search images");
+      console.error("Search error:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleImageSelect = async (imageUrl: string) => {
-    setSelectedImage(imageUrl)
-    setIsUpdating(true)
+    setSelectedImage(imageUrl);
+    setIsUpdating(true);
 
     try {
       const result = await updateCourse({
         id: courseId,
-        imageUrl: imageUrl
-      })
+        imageUrl,
+      });
 
       if (result.success) {
-        onImageChange?.(imageUrl)
-        toast.success("Image updated successfully")
-        onOpenChange(false)
+        onImageChange?.(imageUrl);
+        toast.success("Image updated successfully");
+        onOpenChange(false);
       } else {
-        toast.error(result.error || "Failed to update image")
+        toast.error(result.error || "Failed to update image");
       }
     } catch (error) {
-      toast.error("Failed to update image")
-      console.error("Error updating image:", error)
+      toast.error("Failed to update image");
+      console.error("Error updating image:", error);
     } finally {
-      setIsUpdating(false)
+      setIsUpdating(false);
     }
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch()
+    if (e.key === "Enter") {
+      handleSearch();
     }
-  }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden">
+    <Dialog onOpenChange={onOpenChange} open={open}>
+      <DialogContent className="max-h-[80vh] max-w-4xl overflow-hidden">
         <DialogHeader>
           <DialogTitle>Choose Hero Image</DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
           {/* Search Input */}
           <div className="flex gap-2">
             <div className="flex-1">
               <Input
-                placeholder="Search for images (e.g., 'technology', 'business', 'education')"
-                value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
+                placeholder="Search for images (e.g., 'technology', 'business', 'education')"
+                value={searchQuery}
               />
             </div>
-            <Button 
-              onClick={() => handleSearch()}
+            <Button
               disabled={isLoading || !searchQuery.trim()}
+              onClick={() => handleSearch()}
               size="default"
             >
               {isLoading ? (
@@ -125,56 +132,64 @@ export function ImageSelectionDialog({
 
           {/* Current Selection */}
           {selectedImage && (
-            <div className="p-3 bg-muted rounded-lg">
-              <Label className="text-sm font-medium">Current Selection:</Label>
+            <div className="rounded-lg bg-muted p-3">
+              <Label className="font-medium text-sm">Current Selection:</Label>
               <div className="mt-2">
                 <img
-                  src={selectedImage}
                   alt="Selected image"
-                  className="w-full max-w-md h-32 object-cover rounded border"
+                  className="h-32 w-full max-w-md rounded border object-cover"
+                  src={selectedImage}
                 />
               </div>
             </div>
           )}
 
           {/* Images Grid */}
-          <div className="overflow-y-auto max-h-96">
+          <div className="max-h-96 overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-12">
                 <Loader2 className="h-8 w-8 animate-spin" />
                 <span className="ml-2">Searching images...</span>
               </div>
             ) : images.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                 {images.map((image) => (
-                  <Card 
-                    key={image.id}
+                  <Card
                     className={`cursor-pointer transition-colors hover:bg-muted/50 ${
-                      selectedImage === image.url ? 'border-primary bg-muted/30' : ''
+                      selectedImage === image.url
+                        ? "border-primary bg-muted/30"
+                        : ""
                     }`}
+                    key={image.id}
                     onClick={() => handleImageSelect(image.url)}
                   >
-                    <CardContent className="p-0 relative">
+                    <CardContent className="relative p-0">
                       <img
+                        alt={
+                          image.alt_description ||
+                          image.description ||
+                          "Image option"
+                        }
+                        className="h-32 w-full rounded object-cover"
                         src={image.thumbnailUrl}
-                        alt={image.alt_description || image.description || "Image option"}
-                        className="w-full h-32 object-cover rounded"
                       />
                       {selectedImage === image.url && (
                         <div className="absolute top-2 right-2">
-                          <div className="bg-primary text-primary-foreground rounded-full p-1">
+                          <div className="rounded-full bg-primary p-1 text-primary-foreground">
                             <Check className="h-3 w-3" />
                           </div>
                         </div>
                       )}
                       {isUpdating && selectedImage === image.url && (
-                        <div className="absolute inset-0 bg-black/50 rounded flex items-center justify-center">
-                          <Loader2 className="h-4 w-4 text-white animate-spin" />
+                        <div className="absolute inset-0 flex items-center justify-center rounded bg-black/50">
+                          <Loader2 className="h-4 w-4 animate-spin text-white" />
                         </div>
                       )}
                       <div className="p-2">
-                        <p className="text-xs text-muted-foreground truncate">
-                          {image.description || image.alt_description || "Professional image"}
+                        <p className="truncate text-muted-foreground text-xs">
+                          {image.description ||
+                            image.alt_description ||
+                            "Professional image"}
                         </p>
                       </div>
                     </CardContent>
@@ -182,15 +197,17 @@ export function ImageSelectionDialog({
                 ))}
               </div>
             ) : searchQuery && !isLoading ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <ImageIcon className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <div className="py-12 text-center text-muted-foreground">
+                <ImageIcon className="mx-auto mb-3 h-12 w-12 opacity-50" />
                 <p>No images found for "{searchQuery}"</p>
-                <p className="text-sm mt-1">Try searching for different keywords</p>
+                <p className="mt-1 text-sm">
+                  Try searching for different keywords
+                </p>
               </div>
             ) : null}
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+}

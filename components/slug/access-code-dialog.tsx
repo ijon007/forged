@@ -1,138 +1,167 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Copy, Check } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 interface AccessCodeDialogProps {
-  isOpen: boolean
-  onClose: () => void
-  accessCode: string
-  courseTitle: string
-  onContinue?: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  accessCode: string;
+  courseTitle: string;
+  onContinue?: () => void;
 }
 
-export function AccessCodeDialog({ isOpen, onClose, accessCode, courseTitle, onContinue }: AccessCodeDialogProps) {
-  const [copied, setCopied] = useState(false)
+export function AccessCodeDialog({
+  isOpen,
+  onClose,
+  accessCode,
+  courseTitle,
+  onContinue,
+}: AccessCodeDialogProps) {
+  const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(accessCode)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(accessCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleContinue = () => {
     if (onContinue) {
-      onContinue()
+      onContinue();
     }
-    onClose()
-  }
+    onClose();
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>🎉 Purchase Complete!</DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             You now have access to <strong>{courseTitle}</strong>
           </p>
-          
-          <div className="bg-muted p-4 rounded-lg">
-            <p className="text-sm font-medium mb-2">Your Access Code:</p>
+
+          <div className="rounded-lg bg-muted p-4">
+            <p className="mb-2 font-medium text-sm">Your Access Code:</p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-background p-2 rounded-xl border font-mono text-lg font-bold">
+              <code className="flex-1 rounded-xl border bg-background p-2 font-bold font-mono text-lg">
                 {accessCode}
               </code>
-              <Button size="sm" onClick={handleCopy}>
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              <Button onClick={handleCopy} size="sm">
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
-          
-          <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-xl">
+
+          <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-3">
             <p className="text-sm text-yellow-800">
-              <strong>Important:</strong> Save this code! You'll need it to access this course from anywhere.
+              <strong>Important:</strong> Save this code! You'll need it to
+              access this course from anywhere.
             </p>
           </div>
-          
-          <Button onClick={handleContinue} className="w-full rounded-lg">
+
+          <Button className="w-full rounded-lg" onClick={handleContinue}>
             Continue to Course
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+}
 
 interface AccessCodeInputDialogProps {
-    isOpen: boolean
-    onSubmit: (code: string) => void
-    isLoading: boolean
-    error?: string
-    onClose: () => void
+  isOpen: boolean;
+  onSubmit: (code: string) => void;
+  isLoading: boolean;
+  error?: string;
+  onClose: () => void;
 }
-  
-export function AccessCodeInputDialog({ isOpen, onSubmit, isLoading, error, onClose }: AccessCodeInputDialogProps) {
-    const [code, setCode] = useState("")
-  
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      if (code.trim()) {
-        onSubmit(code.trim())
-      }
+
+export function AccessCodeInputDialog({
+  isOpen,
+  onSubmit,
+  isLoading,
+  error,
+  onClose,
+}: AccessCodeInputDialogProps) {
+  const [code, setCode] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (code.trim()) {
+      onSubmit(code.trim());
     }
-  
-    return (
-      <Dialog open={isOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Enter Access Code</DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Please enter your access code to continue
-            </p>
-            
-            <div className="space-y-2">
-              <Input
-                placeholder="KS-ABC123"
-                value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="font-mono"
-              />
-              {error && (
-                <p className="text-sm text-red-600">{error}</p>
-              )}
-            </div>
-            
-            <Button type="submit" disabled={!code.trim() || isLoading} className="w-full">
-              {isLoading ? "Checking..." : "Access Course"}
-            </Button>
-            
-            <div className="space-y-2">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Don't have access?
-                  </span>
-                </div>
+  };
+
+  return (
+    <Dialog open={isOpen}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Enter Access Code</DialogTitle>
+        </DialogHeader>
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <p className="text-muted-foreground text-sm">
+            Please enter your access code to continue
+          </p>
+
+          <div className="space-y-2">
+            <Input
+              className="font-mono"
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
+              placeholder="KS-ABC123"
+              value={code}
+            />
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+          </div>
+
+          <Button
+            className="w-full"
+            disabled={!code.trim() || isLoading}
+            type="submit"
+          >
+            {isLoading ? "Checking..." : "Access Course"}
+          </Button>
+
+          <div className="space-y-2">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
               </div>
-              
-              <Button variant="outline" className="w-full" type="button" onClick={onClose}>
-                I don&apos;t have an access code
-              </Button>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Don't have access?
+                </span>
+              </div>
             </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    )
-} 
+
+            <Button
+              className="w-full"
+              onClick={onClose}
+              type="button"
+              variant="outline"
+            >
+              I don&apos;t have an access code
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

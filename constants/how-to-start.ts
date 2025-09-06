@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const HOW_TO_START: Record<string, BlogPost> = {
-    "how-to-start-a-course": {
-        id: "how-to-start-a-course",
-        title: "How to Start a Course with AI",
-        keyword: "How to Start a Course with AI",
-        slug: "how-to-start-a-course",
-        metaDescription: "Learn how to start a course with AI. Forged's AI-powered platform helps you create courses faster and easier than ever.",
-        content: `# How to Start a Blog with AI: Complete 2025 Guide
+  "how-to-start-a-course": {
+    id: "how-to-start-a-course",
+    title: "How to Start a Course with AI",
+    keyword: "How to Start a Course with AI",
+    slug: "how-to-start-a-course",
+    metaDescription:
+      "Learn how to start a course with AI. Forged's AI-powered platform helps you create courses faster and easier than ever.",
+    content: `# How to Start a Blog with AI: Complete 2025 Guide
 
 Starting a blog in 2025 doesn't require months of planning, expensive copywriters, or hours spent tweaking SEO settings. Thanks to AI-powered tools, anyone — from solopreneurs to educators — can launch and grow a professional blog in record time.
 
@@ -115,9 +116,9 @@ Forged also makes it easy to share your blog across platforms including X, Linke
 Connect blog posts to course landing pages or lead magnets to create powerful conversion funnels. This integration allows you to guide readers from valuable blog content to more comprehensive learning experiences or products.
 
 The platform's publishing workflow is designed to be efficient and user-friendly, allowing you to focus on creating great content while the technical aspects are handled automatically.`,
-        tags: ["ai blogging", "autoblogging platform", "blog monetization"],
-        readingTime: 13,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
+    tags: ["ai blogging", "autoblogging platform", "blog monetization"],
+    readingTime: 13,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

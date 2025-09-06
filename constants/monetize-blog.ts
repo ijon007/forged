@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const MONETIZE_BLOG: Record<string, BlogPost> = {
-    "monetize-blog-with-ai": {
-        id: "monetize-blog-with-ai",
-        title: "How to Monetize Your Blog in 2025",
-        keyword: "How to Monetize Your Blog with AI",
-        slug: "how-to-monetize-your-blog",
-        metaDescription: "Learn how to monetize your blog in 2025. Forged's AI-powered platform helps you create courses faster and easier than ever.",
-        content: `# How to Monetize Your Blog with AI Tools (2025 Guide)
+  "monetize-blog-with-ai": {
+    id: "monetize-blog-with-ai",
+    title: "How to Monetize Your Blog in 2025",
+    keyword: "How to Monetize Your Blog with AI",
+    slug: "how-to-monetize-your-blog",
+    metaDescription:
+      "Learn how to monetize your blog in 2025. Forged's AI-powered platform helps you create courses faster and easier than ever.",
+    content: `# How to Monetize Your Blog with AI Tools (2025 Guide)
 
 In today's creator economy, blogging isn't just about sharing ideas — it's about building income streams, engaging communities, and scaling your brand.  
 But here's the catch: traditional monetization methods take time, trial-and-error, and technical knowledge.
@@ -134,9 +135,9 @@ Start earning from your blog the smart way — powered by AI that learns from yo
 Sign up for [**Forged**](https://tryforged.me/) and unlock the full potential of AI-powered monetization. The platform provides AI content and SEO writing tools that help you create content that converts, a full blog and course monetization suite that handles all aspects of selling, and real-time analytics and campaign suggestions that help you optimize for maximum results.
 
 **Start free today** and turn your blog into a business that generates consistent income while you focus on creating value for your audience.`,
-        tags: ["monetize blog", "blog monetization", "ai monetization"],
-        readingTime: 13,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
+    tags: ["monetize blog", "blog monetization", "ai monetization"],
+    readingTime: 13,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

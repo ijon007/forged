@@ -1,50 +1,59 @@
-import { requireAuth, requireActiveSubscription } from "@/actions/auth-actions"
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { PageCard } from "@/components/dashboard/page-card"
-import { EmptyState } from "@/components/dashboard/empty-state"
-import { getUserCourses } from "@/actions/course-db-actions"
-import { getPolarConnectionStatus } from "@/actions/polar-actions"
-import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper"
+import { getSession, hasActiveSubscription } from "@/actions/auth-actions";
+import { getUserCourses } from "@/actions/course-db-actions";
+import { getPolarConnectionStatus } from "@/actions/polar-actions";
+import { DashboardClientWrapper } from "@/components/dashboard/dashboard-client-wrapper";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
+import { PageCard } from "@/components/dashboard/page-card";
+import { DashboardPage } from "@/components/dashboard-page";
 
-async function DashboardPage() {
-    // Require authentication and active subscription
-    await requireAuth()
-    await requireActiveSubscription()
+async function DashboardPageComponent() {
+  const session = await getSession();
+  const user = session?.user;
 
-    const [polarStatus, userCourses] = await Promise.all([
-        getPolarConnectionStatus(),
-        getUserCourses()
-    ])
+  if (!user) {
+    return <DashboardPage showPlanSelection={false} />;
+  }
 
-    const pageCards = userCourses.map(course => ({
-        id: course.id,
-        imageUrl: course.imageUrl || "",
-        title: course.title,
-        description: course.description,
-        status: course.published ? "published" as const : "draft" as const,
-        price: (course.price || 0) / 100, // Convert from cents to dollars
-        slug: course.id,
-        contentType: course.contentType,
-    }))
+  const isActive = await hasActiveSubscription();
+  if (!isActive && user) {
+    return <DashboardPage showPlanSelection={true} />;
+  }
 
-    return (
-        <DashboardClientWrapper polarStatus={polarStatus}>
-            <div className="space-y-8 w-11/12 lg:max-w-7xl mx-auto my-5 lg:my-10 z-10">
-                <DashboardHeader />
-                <div className="space-y-6">
-                    {pageCards.length > 0 ? (
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {pageCards.map((page) => (
-                                <PageCard key={page.id} {...page} />
-                            ))}
-                        </div>
-                    ) : (
-                        <EmptyState />
-                    )}
-                </div>
+  const [polarStatus, userCourses] = await Promise.all([
+    getPolarConnectionStatus(),
+    getUserCourses(),
+  ]);
+
+  const pageCards = userCourses.map((course) => ({
+    id: course.id,
+    imageUrl: course.imageUrl || "",
+    title: course.title,
+    description: course.description,
+    status: course.published ? ("published" as const) : ("draft" as const),
+    price: (course.price || 0) / 100,
+    slug: course.id,
+    contentType: course.contentType,
+  }));
+
+  return (
+    <DashboardClientWrapper polarStatus={polarStatus}>
+      <div className="z-10 mx-auto my-5 w-11/12 space-y-8 lg:my-10 lg:max-w-7xl">
+        <DashboardHeader />
+        <div className="space-y-6">
+          {pageCards.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {pageCards.map((page) => (
+                <PageCard key={page.id} {...page} />
+              ))}
             </div>
-        </DashboardClientWrapper>
-    )
+          ) : (
+            <EmptyState />
+          )}
+        </div>
+      </div>
+    </DashboardClientWrapper>
+  );
 }
 
-export default DashboardPage
+export default DashboardPageComponent;

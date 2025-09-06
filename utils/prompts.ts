@@ -1,5 +1,9 @@
-export function getBlogSystemPrompt(title?: string, description?: string, price?: string): string {
-    return `You are an expert content strategist and educator who specializes in creating professional, high-value educational content. Your task is to transform PDF content into a comprehensive playbook/course that provides genuine value to learners.
+export function getBlogSystemPrompt(
+  title?: string,
+  description?: string,
+  price?: string
+): string {
+  return `You are an expert content strategist and educator who specializes in creating professional, high-value educational content. Your task is to transform PDF content into a comprehensive playbook/course that provides genuine value to learners.
 
     PROFESSIONAL CONTENT STANDARDS:
     - Maintain a professional, authoritative tone throughout
@@ -42,15 +46,19 @@ export function getBlogSystemPrompt(title?: string, description?: string, price?
     - price: number (price in USD as a number, not string)
 
     The user provided these preferences:
-    - Title preference: ${title || 'Not specified'}
-    - Description preference: ${description || 'Not specified'}
-    - Price point: $${price || 'Not specified'}
+    - Title preference: ${title || "Not specified"}
+    - Description preference: ${description || "Not specified"}
+    - Price point: $${price || "Not specified"}
 
-    Focus on creating professional educational content that provides clear value and actionable insights.`
+    Focus on creating professional educational content that provides clear value and actionable insights.`;
 }
 
-export function getListicleSystemPrompt(title?: string, description?: string, price?: string): string {
-    return `You are an expert content strategist who specializes in creating engaging, comprehensive listicles that rival the best content from sites like BuzzFeed, Vox, and Medium. Your task is to transform PDF content into a compelling numbered list article that provides significant value and keeps readers engaged.
+export function getListicleSystemPrompt(
+  title?: string,
+  description?: string,
+  price?: string
+): string {
+  return `You are an expert content strategist who specializes in creating engaging, comprehensive listicles that rival the best content from sites like BuzzFeed, Vox, and Medium. Your task is to transform PDF content into a compelling numbered list article that provides significant value and keeps readers engaged.
 
     LISTICLE CONTENT STANDARDS:
     - Create a catchy, numbered title (e.g., "7 Essential Tips for...", "10 Proven Strategies to...")
@@ -103,15 +111,15 @@ export function getListicleSystemPrompt(title?: string, description?: string, pr
     - price: number (price in USD as a number, not string)
 
     The user provided these preferences:
-    - Title preference: ${title || 'Not specified'}
-    - Description preference: ${description || 'Not specified'}
-    - Price point: $${price || 'Not specified'}
+    - Title preference: ${title || "Not specified"}
+    - Description preference: ${description || "Not specified"}
+    - Price point: $${price || "Not specified"}
 
-    Focus on creating comprehensive, detailed content that provides exceptional value and keeps readers engaged throughout.`
+    Focus on creating comprehensive, detailed content that provides exceptional value and keeps readers engaged throughout.`;
 }
 
 export function getBlogPrompt(extractedText: string): string {
-    return `Please analyze this PDF content and transform it into a professional educational playbook/course:
+  return `Please analyze this PDF content and transform it into a professional educational playbook/course:
 
     ${extractedText}
 
@@ -149,11 +157,11 @@ export function getBlogPrompt(extractedText: string): string {
     - Does it include practical guidance for implementation?
     - Would someone pay for this level of educational content?
 
-    Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`
+    Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`;
 }
 
 export function getListiclePrompt(extractedText: string): string {
-    return `Please analyze this PDF content and transform it into a comprehensive, engaging numbered listicle:
+  return `Please analyze this PDF content and transform it into a comprehensive, engaging numbered listicle:
 
     ${extractedText}
 
@@ -203,11 +211,15 @@ export function getListiclePrompt(extractedText: string): string {
     - Provide clear, actionable next steps in each section
     - Create natural stopping points that encourage continued reading
 
-    Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`
+    Remember to output the exact field names specified in the schema: title, description, content, tags, keyPoints, estimatedReadTime, and price.`;
 }
 
-export function getCourseSystemPrompt(title?: string, description?: string, price?: string): string {
-    return `You are an expert instructional designer and course creator who specializes in transforming content into structured, interactive learning experiences. Your task is to create a comprehensive course with individual lessons and knowledge-check quizzes.
+export function getCourseSystemPrompt(
+  title?: string,
+  description?: string,
+  price?: string
+): string {
+  return `You are an expert instructional designer and course creator who specializes in transforming content into structured, interactive learning experiences. Your task is to create a comprehensive course with individual lessons and knowledge-check quizzes.
 
     COURSE STRUCTURE REQUIREMENTS:
     - Create 5-8 progressive lessons that build upon each other
@@ -254,15 +266,15 @@ export function getCourseSystemPrompt(title?: string, description?: string, pric
     - price: number (price in USD as a number, not string)
 
     The user provided these preferences:
-    - Title preference: ${title || 'Not specified'}
-    - Description preference: ${description || 'Not specified'}
-    - Price point: $${price || 'Not specified'}
+    - Title preference: ${title || "Not specified"}
+    - Description preference: ${description || "Not specified"}
+    - Price point: $${price || "Not specified"}
 
-    Focus on creating a comprehensive, structured learning experience that provides clear educational value.`
+    Focus on creating a comprehensive, structured learning experience that provides clear educational value.`;
 }
 
 export function getCoursePrompt(extractedText: string): string {
-    return `Please analyze this PDF content and transform it into a structured course with individual lessons and quizzes:
+  return `Please analyze this PDF content and transform it into a structured course with individual lessons and quizzes:
 
     ${extractedText}
 
@@ -311,5 +323,5 @@ export function getCoursePrompt(extractedText: string): string {
     - Do incorrect options seem plausible to someone who didn't study?
     - Are questions practical rather than purely theoretical?
 
-    Remember to output the exact field names specified in the schema: title, description, lessons (array), tags, keyPoints, estimatedReadTime, and price.`
+    Remember to output the exact field names specified in the schema: title, description, lessons (array), tags, keyPoints, estimatedReadTime, and price.`;
 }

@@ -17,7 +17,8 @@ export const blogPosts: Record<string, BlogPost> = {
     title: "How to Turn Your Notes Into a Blog in 5 Minutes",
     keyword: "turn notes into blog",
     slug: "turn-notes-into-blog-5-minutes",
-    metaDescription: "Transform your handwritten notes into professional blog posts using AI in just 5 minutes. Step-by-step guide for creators.",
+    metaDescription:
+      "Transform your handwritten notes into professional blog posts using AI in just 5 minutes. Step-by-step guide for creators.",
     content: `# How to Turn Your Notes Into a Blog in 5 Minutes
 
 *Stop letting your brilliant ideas collect digital dust*
@@ -248,7 +249,7 @@ The question is: what are you waiting for?`,
     tags: ["content creation", "blogging", "AI tools", "productivity", "notes"],
     readingTime: 8,
     publishedAt: "2024-01-15",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "ai-tools-pdf-blog": {
@@ -256,7 +257,8 @@ The question is: what are you waiting for?`,
     title: "The Best AI Tools to Turn PDFs into Content",
     keyword: "ai tools pdf to blog",
     slug: "best-ai-tools-pdf-to-content",
-    metaDescription: "Discover the top AI tools that transform PDFs into engaging blog posts, courses, and monetizable content. Complete comparison guide.",
+    metaDescription:
+      "Discover the top AI tools that transform PDFs into engaging blog posts, courses, and monetizable content. Complete comparison guide.",
     content: `# The Best AI Tools to Turn PDFs into Content
 
 *Your PDF collection is a content goldmine waiting to be discovered*
@@ -587,10 +589,16 @@ The hardest part isn't learning the tools or finding the content—it's taking t
 Your PDFs aren't just documents. They're your competitive advantage, waiting to be transformed into content that builds your audience, establishes your authority, and generates revenue.
 
 The question isn't whether you have valuable content to share. The question is: which tool will you use to unlock it?`,
-    tags: ["AI tools", "PDF conversion", "content creation", "digital marketing", "automation"],
+    tags: [
+      "AI tools",
+      "PDF conversion",
+      "content creation",
+      "digital marketing",
+      "automation",
+    ],
     readingTime: 12,
     publishedAt: "2024-01-20",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "monetize-notes-ai": {
@@ -598,7 +606,8 @@ The question isn't whether you have valuable content to share. The question is: 
     title: "How Creators Monetize Their Notes with AI",
     keyword: "monetize notes ai",
     slug: "creators-monetize-notes-ai",
-    metaDescription: "Learn how successful creators turn their notes into profitable content using AI. Real strategies, tools, and case studies from top performers.",
+    metaDescription:
+      "Learn how successful creators turn their notes into profitable content using AI. Real strategies, tools, and case studies from top performers.",
     content: `# How Creators Monetize Their Notes with AI
 
 *From scattered thoughts to sustainable income streams*
@@ -1036,10 +1045,16 @@ Your financial freedom might be hidden in plain sight, scattered across notebook
 Your notes are waiting. Your audience is searching. Your future income stream is one AI tool away.
 
 What are you waiting for?`,
-    tags: ["creator economy", "monetization", "AI tools", "knowledge products", "online courses"],
+    tags: [
+      "creator economy",
+      "monetization",
+      "AI tools",
+      "knowledge products",
+      "online courses",
+    ],
     readingTime: 15,
     publishedAt: "2024-01-25",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "founder-blog-workflow": {
@@ -1047,7 +1062,8 @@ What are you waiting for?`,
     title: "From Idea to Blog Post: A Founder's AI Workflow",
     keyword: "founder blog workflow",
     slug: "founder-ai-blog-workflow",
-    metaDescription: "Discover how successful founders use AI to create compelling blog content that builds authority and drives growth. Step-by-step workflow included.",
+    metaDescription:
+      "Discover how successful founders use AI to create compelling blog content that builds authority and drives growth. Step-by-step workflow included.",
     content: `# From Idea to Blog Post: A Founder's AI Workflow
 
 *How to build authority and drive growth through systematic content creation*
@@ -1429,10 +1445,16 @@ That's what this workflow provides: a repeatable process that turns your daily f
 Your next blog post is 30 minutes away. Your thought leadership journey starts with capturing your next insight.
 
 What are you waiting for?`,
-    tags: ["content marketing", "founder strategy", "AI tools", "thought leadership", "blogging"],
+    tags: [
+      "content marketing",
+      "founder strategy",
+      "AI tools",
+      "thought leadership",
+      "blogging",
+    ],
     readingTime: 14,
     publishedAt: "2024-01-30",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "sell-notes-mini-course": {
@@ -1440,7 +1462,8 @@ What are you waiting for?`,
     title: "Sell Your Notes as a Mini Course",
     keyword: "sell notes mini course",
     slug: "sell-notes-as-mini-course",
-    metaDescription: "Learn how to transform your study notes, work notes, and expertise into profitable mini courses. Complete guide with pricing and platform strategies.",
+    metaDescription:
+      "Learn how to transform your study notes, work notes, and expertise into profitable mini courses. Complete guide with pricing and platform strategies.",
     content: `# Sell Your Notes as a Mini Course
 
 *Turn your accumulated knowledge into recurring income*
@@ -1977,10 +2000,16 @@ Mini-courses are the perfect vehicle for monetizing your notes because they matc
 Your notes are waiting. Your students are searching. Your mini-course empire is one upload away.
 
 What problem will you solve first?`,
-    tags: ["mini courses", "education", "monetization", "online learning", "note taking"],
+    tags: [
+      "mini courses",
+      "education",
+      "monetization",
+      "online learning",
+      "note taking",
+    ],
     readingTime: 16,
     publishedAt: "2024-02-05",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "lecture-notes-to-blog": {
@@ -1988,7 +2017,8 @@ What problem will you solve first?`,
     title: "Turn Lecture Notes into a Blog or Playbook",
     keyword: "lecture notes to blog",
     slug: "lecture-notes-blog-playbook",
-    metaDescription: "Transform your lecture notes from courses, conferences, and workshops into valuable blog content and sellable playbooks. Complete guide included.",
+    metaDescription:
+      "Transform your lecture notes from courses, conferences, and workshops into valuable blog content and sellable playbooks. Complete guide included.",
     content: `# Turn Lecture Notes into a Blog or Playbook
 
 *Your educational investments can become income streams*
@@ -2439,10 +2469,16 @@ The difference between successful content creators and everyone else isn't the q
 Your notes are waiting. Your audience is learning. Your educational content empire is one transformation away.
 
 What will you teach first?`,
-    tags: ["education", "content creation", "note taking", "knowledge management", "monetization"],
+    tags: [
+      "education",
+      "content creation",
+      "note taking",
+      "knowledge management",
+      "monetization",
+    ],
     readingTime: 14,
     publishedAt: "2024-02-10",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "pdf-to-blog-automation": {
@@ -2450,7 +2486,8 @@ What will you teach first?`,
     title: "PDF to Blog: The Ultimate Automation Stack",
     keyword: "pdf to blog automation",
     slug: "pdf-blog-automation-stack",
-    metaDescription: "Build an automated system to convert PDFs into blog posts using AI tools, APIs, and automation platforms. Complete technical guide included.",
+    metaDescription:
+      "Build an automated system to convert PDFs into blog posts using AI tools, APIs, and automation platforms. Complete technical guide included.",
     content: `# PDF to Blog: The Ultimate Automation Stack
 
 *Build a system that turns PDFs into published content while you sleep*
@@ -2960,10 +2997,16 @@ The PDFs sitting in your downloads folder right now could become a content empir
 Your automation stack is waiting. Your content empire is one setup away.
 
 What will you automate first?`,
-    tags: ["automation", "AI tools", "content creation", "productivity", "technical setup"],
+    tags: [
+      "automation",
+      "AI tools",
+      "content creation",
+      "productivity",
+      "technical setup",
+    ],
     readingTime: 16,
     publishedAt: "2024-02-15",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "chatgpt-vs-content-tools": {
@@ -2971,7 +3014,8 @@ What will you automate first?`,
     title: "Why ChatGPT Isn't Enough for Selling Blogs",
     keyword: "chatgpt vs content tools",
     slug: "chatgpt-vs-specialized-content-tools",
-    metaDescription: "Discover why specialized content tools outperform ChatGPT for monetizable blog creation. Compare features, pricing, and results.",
+    metaDescription:
+      "Discover why specialized content tools outperform ChatGPT for monetizable blog creation. Compare features, pricing, and results.",
     content: `# Why ChatGPT Isn't Enough for Selling Blogs
 
 *The limitations of general AI and why specialized tools win for monetizable content*
@@ -3428,10 +3472,16 @@ Your content is only as good as the system that creates, presents, and monetizes
 The question isn't whether AI will transform content creation—it's which AI tools will best serve your business objectives.
 
 Your monetization success depends on making the right choice.`,
-    tags: ["AI tools", "content creation", "monetization", "ChatGPT", "tool comparison"],
+    tags: [
+      "AI tools",
+      "content creation",
+      "monetization",
+      "ChatGPT",
+      "tool comparison",
+    ],
     readingTime: 15,
     publishedAt: "2024-02-20",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "indie-hacker-blog": {
@@ -3439,7 +3489,8 @@ Your monetization success depends on making the right choice.`,
     title: "5 Ways Indie Hackers Use Forged to Launch Products",
     keyword: "indie hacker blog",
     slug: "indie-hackers-forged-product-launch",
-    metaDescription: "Learn how successful indie hackers use Forged to create content, validate ideas, and launch profitable products. Real case studies included.",
+    metaDescription:
+      "Learn how successful indie hackers use Forged to create content, validate ideas, and launch profitable products. Real case studies included.",
     content: `# 5 Ways Indie Hackers Use Forged to Launch Products
 
 *How smart builders turn knowledge into products before writing a single line of code*
@@ -3829,10 +3880,16 @@ The question isn't whether this approach works—it's whether you'll start today
 Content-first product development dramatically increases your chances of success while reducing your risk. You'll build better products, find customers faster, and create sustainable competitive advantages.
 
 What will you share first?`,
-    tags: ["indie hacking", "product development", "content marketing", "startup strategy", "validation"],
+    tags: [
+      "indie hacking",
+      "product development",
+      "content marketing",
+      "startup strategy",
+      "validation",
+    ],
     readingTime: 18,
     publishedAt: "2024-02-25",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "blogging-with-ai-2024": {
@@ -3840,7 +3897,8 @@ What will you share first?`,
     title: "Blogging for Creators: 2025 AI Stack",
     keyword: "blogging with ai 2025",
     slug: "creators-ai-blogging-stack-2025",
-    metaDescription: "The complete AI-powered blogging stack for creators in 2025. Tools, workflows, and strategies that successful bloggers use to scale content.",
+    metaDescription:
+      "The complete AI-powered blogging stack for creators in 2025. Tools, workflows, and strategies that successful bloggers use to scale content.",
     content: `# Blogging for Creators: 2025 AI Stack
 
 *The complete toolkit that's transforming how successful creators produce content*
@@ -4368,10 +4426,16 @@ The question isn't whether AI will transform content creation—it already has. 
 Your expertise is irreplaceable. Your perspective is unique. AI simply helps you share both more effectively with the world.
 
 What will you create first?`,
-    tags: ["AI tools", "content creation", "creator economy", "blogging", "productivity"],
+    tags: [
+      "AI tools",
+      "content creation",
+      "creator economy",
+      "blogging",
+      "productivity",
+    ],
     readingTime: 19,
     publishedAt: "2025-03-01",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "notion-vs-forged": {
@@ -4379,7 +4443,8 @@ What will you create first?`,
     title: "The Problem with Notion: Why Forged Works Better",
     keyword: "notion vs forged",
     slug: "notion-vs-forged-comparison",
-    metaDescription: "Compare Notion and Forged for content creation and monetization. Discover why creators are switching to specialized tools for better results.",
+    metaDescription:
+      "Compare Notion and Forged for content creation and monetization. Discover why creators are switching to specialized tools for better results.",
     content: `# The Problem with Notion: Why Forged Works Better
 
 *When general-purpose tools fall short of creator needs*
@@ -4759,10 +4824,16 @@ Your tool stack should serve your business goals, not create additional complexi
 The question isn't which tool is "better"—it's which tool better serves your creator business objectives.
 
 Choose optimization over organization when revenue is the goal.`,
-    tags: ["tool comparison", "notion", "forged", "productivity", "monetization"],
+    tags: [
+      "tool comparison",
+      "notion",
+      "forged",
+      "productivity",
+      "monetization",
+    ],
     readingTime: 16,
     publishedAt: "2024-03-05",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "ai-blog-writer-comparison": {
@@ -4770,7 +4841,8 @@ Choose optimization over organization when revenue is the goal.`,
     title: "AI Blog Writers Compared: Jasper vs Copy.ai vs Forged",
     keyword: "ai blog writer comparison",
     slug: "ai-blog-writer-comparison-jasper-copyai-forged",
-    metaDescription: "Complete comparison of top AI blog writing tools: Jasper, Copy.ai, and Forged. Features, pricing, and results analysis for content creators.",
+    metaDescription:
+      "Complete comparison of top AI blog writing tools: Jasper, Copy.ai, and Forged. Features, pricing, and results analysis for content creators.",
     content: `# AI Blog Writers Compared: Jasper vs Copy.ai vs Forged
 
 *The definitive guide to choosing your AI writing partner*
@@ -5243,10 +5315,16 @@ The AI writing revolution is here. The question isn't whether these tools will t
 Your audience is waiting for valuable content. Your expertise deserves professional presentation. Your time is too valuable for inefficient workflows.
 
 Choose the tool that turns your knowledge into your competitive advantage.`,
-    tags: ["AI tools", "blog writing", "content creation", "tool comparison", "productivity"],
+    tags: [
+      "AI tools",
+      "blog writing",
+      "content creation",
+      "tool comparison",
+      "productivity",
+    ],
     readingTime: 17,
     publishedAt: "2024-03-10",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "make-money-from-notes": {
@@ -5254,7 +5332,8 @@ Choose the tool that turns your knowledge into your competitive advantage.`,
     title: "How to Make Money from Class Notes",
     keyword: "make money from notes",
     slug: "make-money-class-notes",
-    metaDescription: "Turn your class notes, study guides, and academic work into profitable content. Complete guide to monetizing educational materials legally and ethically.",
+    metaDescription:
+      "Turn your class notes, study guides, and academic work into profitable content. Complete guide to monetizing educational materials legally and ethically.",
     content: `# How to Make Money from Class Notes
 
 *Transform your academic work into income streams*
@@ -5916,10 +5995,16 @@ Your class notes aren't just study materials—they're the foundation of your fi
 Your notes are waiting. Your future customers are studying. Your educational business is one upload away.
 
 What will you teach first?`,
-    tags: ["education", "student income", "note taking", "academic monetization", "side hustle"],
+    tags: [
+      "education",
+      "student income",
+      "note taking",
+      "academic monetization",
+      "side hustle",
+    ],
     readingTime: 15,
     publishedAt: "2024-03-15",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "seo-blog-from-notes": {
@@ -5927,7 +6012,8 @@ What will you teach first?`,
     title: "Create SEO Blog Posts from Raw Notes",
     keyword: "seo blog from notes",
     slug: "seo-blog-posts-from-notes",
-    metaDescription: "Learn how to transform your raw notes into SEO-optimized blog posts that rank on Google. Complete guide with tools and strategies.",
+    metaDescription:
+      "Learn how to transform your raw notes into SEO-optimized blog posts that rank on Google. Complete guide with tools and strategies.",
     content: `# Create SEO Blog Posts from Raw Notes
 
 *Turn scattered thoughts into search engine magnets*
@@ -6582,10 +6668,16 @@ SEO isn't about gaming search engines. It's about helping search engines underst
 Your notes already contain the insights people are searching for. The question is whether you'll optimize them for discovery.
 
 What will you help people find first?`,
-    tags: ["SEO", "blog writing", "content optimization", "organic traffic", "search marketing"],
+    tags: [
+      "SEO",
+      "blog writing",
+      "content optimization",
+      "organic traffic",
+      "search marketing",
+    ],
     readingTime: 14,
     publishedAt: "2024-03-20",
-    author: "Forged Team"
+    author: "Forged Team",
   },
 
   "swipe-file-to-blog": {
@@ -6593,7 +6685,8 @@ What will you help people find first?`,
     title: "Turn Your Swipe File into a Public Blog",
     keyword: "swipe file to blog",
     slug: "swipe-file-public-blog",
-    metaDescription: "Transform your private swipe file collection into a profitable public blog. Strategies for sharing curated content while building authority.",
+    metaDescription:
+      "Transform your private swipe file collection into a profitable public blog. Strategies for sharing curated content while building authority.",
     content: `# Turn Your Swipe File into a Public Blog
 
 *How to monetize your curated knowledge collection*
@@ -6669,10 +6762,15 @@ Consistent, thoughtful curation establishes you as an industry tastemaker.
 Your swipe file represents your taste, expertise, and industry knowledge. Other professionals desperately need the insights you've already collected.
 
 What will you share first?`,
-    tags: ["content curation", "swipe files", "blogging", "marketing", "authority building"],
+    tags: [
+      "content curation",
+      "swipe files",
+      "blogging",
+      "marketing",
+      "authority building",
+    ],
     readingTime: 5,
     publishedAt: "2024-03-25",
-    author: "Forged Team"
-  }
-
+    author: "Forged Team",
+  },
 };

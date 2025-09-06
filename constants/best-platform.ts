@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const BEST_PLATFORM: Record<string, BlogPost> = {
-    "best-platform-for-making-blogs": {
-        id: "best-platform-for-making-blog-with-ai",
-        title: "Best Platform for Making Blogs with AI",
-        keyword: "Best Platform for Making Blogs with AI",
-        slug: "best-platform-for-making-blogs-with-ai",
-        metaDescription: "Discover the best platform for making blogs with AI. Forged's AI-powered platform helps you create blogs faster and easier than ever.",
-        content: `# Best Blogging Platforms for SEO in 2025
+  "best-platform-for-making-blogs": {
+    id: "best-platform-for-making-blog-with-ai",
+    title: "Best Platform for Making Blogs with AI",
+    keyword: "Best Platform for Making Blogs with AI",
+    slug: "best-platform-for-making-blogs-with-ai",
+    metaDescription:
+      "Discover the best platform for making blogs with AI. Forged's AI-powered platform helps you create blogs faster and easier than ever.",
+    content: `# Best Blogging Platforms for SEO in 2025
 
 In the world of blogging, content is still king — but **SEO is the throne it sits on**.  
 If your posts don't show up on Google, they might as well not exist.
@@ -133,9 +134,9 @@ The future of successful blogging belongs to creators who can combine human crea
 - Monetize your content through multiple channels including courses, affiliate links, and digital products
 
 The platform is designed for creators who want to focus on what they do best — creating valuable content — while letting AI handle the complex technical aspects of SEO and optimization.`,
-        tags: ["AI", "Blogging", "Education"],
-        readingTime: 15,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
+    tags: ["AI", "Blogging", "Education"],
+    readingTime: 15,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

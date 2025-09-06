@@ -1,42 +1,47 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Image, Edit } from "lucide-react"
-import { ImageSelectionDialog } from "./image-selection-dialog"
+import { Edit, Image } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ImageSelectionDialog } from "./image-selection-dialog";
 
 interface ImageSelectorProps {
-  title: string
-  courseId: string
-  currentImageUrl?: string
-  onImageChange?: (imageUrl: string) => void
+  title: string;
+  courseId: string;
+  currentImageUrl?: string;
+  onImageChange?: (imageUrl: string) => void;
 }
 
-export function ImageSelector({ title, courseId, currentImageUrl, onImageChange }: ImageSelectorProps) {
-  const [dialogOpen, setDialogOpen] = useState(false)
+export function ImageSelector({
+  title,
+  courseId,
+  currentImageUrl,
+  onImageChange,
+}: ImageSelectorProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div className="space-y-4">
-      <Label className="text-sm font-medium">Hero Image</Label>
-      
+      <Label className="font-medium text-sm">Hero Image</Label>
+
       {/* Current Image Preview */}
       {currentImageUrl ? (
         <div className="space-y-3">
-          <div className="relative group">
+          <div className="group relative">
             <img
-              src={currentImageUrl}
               alt="Current hero image"
-              className="w-full h-32 object-cover rounded-lg border"
+              className="h-32 w-full rounded-lg border object-cover"
+              src={currentImageUrl}
             />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/0 opacity-0 transition-all group-hover:bg-black/20 group-hover:opacity-100">
               <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setDialogOpen(true)}
                 className="backdrop-blur-sm"
+                onClick={() => setDialogOpen(true)}
+                size="sm"
+                variant="secondary"
               >
-                <Edit className="h-3 w-3 mr-1" />
+                <Edit className="mr-1 h-3 w-3" />
                 Change Image
               </Button>
             </div>
@@ -44,30 +49,27 @@ export function ImageSelector({ title, courseId, currentImageUrl, onImageChange 
         </div>
       ) : (
         <div className="space-y-3">
-          <div className="w-full h-32 bg-muted rounded-lg border-2 border-dashed border-muted-foreground/25 flex items-center justify-center">
+          <div className="flex h-32 w-full items-center justify-center rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted">
             <div className="text-center">
-              <Image className="h-8 w-8 mx-auto mb-2 text-muted-foreground/50" />
-              <p className="text-sm text-muted-foreground">No image selected</p>
+              <Image className="mx-auto mb-2 h-8 w-8 text-muted-foreground/50" />
+              <p className="text-muted-foreground text-sm">No image selected</p>
             </div>
           </div>
-          <Button
-            onClick={() => setDialogOpen(true)}
-            className="w-full"
-          >
-            <Image className="h-3 w-3 mr-2" />
+          <Button className="w-full" onClick={() => setDialogOpen(true)}>
+            <Image className="mr-2 h-3 w-3" />
             Choose Hero Image
           </Button>
         </div>
       )}
 
       <ImageSelectionDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        title={title}
         courseId={courseId}
         currentImageUrl={currentImageUrl}
         onImageChange={onImageChange}
+        onOpenChange={setDialogOpen}
+        open={dialogOpen}
+        title={title}
       />
     </div>
-  )
-} 
+  );
+}

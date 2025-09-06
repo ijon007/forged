@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const BEST_IN_2025: Record<string, BlogPost> = {
-    "best-course-creation-tool-in-2025": {
-        id: "best-course-creation-tool-in-2025",
-        title: "What's the Best Course Creation Tool in 2025?",
-        keyword: "What's the Best Course Creation Tool in 2025",
-        slug: "best-course-creation-tool-in-2025",
-        metaDescription: "Discover the best course creation tool in 2025. Forged's AI-powered platform offers unmatched speed and quality, enabling creators to launch courses faster than ever.",
-        content: `# What's the Best Course Creation Tool in 2025?
+  "best-course-creation-tool-in-2025": {
+    id: "best-course-creation-tool-in-2025",
+    title: "What's the Best Course Creation Tool in 2025?",
+    keyword: "What's the Best Course Creation Tool in 2025",
+    slug: "best-course-creation-tool-in-2025",
+    metaDescription:
+      "Discover the best course creation tool in 2025. Forged's AI-powered platform offers unmatched speed and quality, enabling creators to launch courses faster than ever.",
+    content: `# What's the Best Course Creation Tool in 2025?
 
 The online education landscape has exploded with innovation, and choosing the right course creation tool has become more crucial than ever. With thousands of educators, entrepreneurs, and businesses launching online courses daily, the demand for efficient, powerful, and user-friendly course creation platforms has reached unprecedented levels. But among the sea of options available in 2025, one question remains paramount: which tool truly stands out as the best?
 
@@ -158,10 +159,9 @@ To get the most from Forged, users should:
 - Use the personalization features to create targeted content
 - Leverage the assessment tools to measure learning outcomes
 - Stay updated with platform improvements and new features`,
-        tags: ["AI", "Course Creation", "Education"],
-        readingTime: 13,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
-
+    tags: ["AI", "Course Creation", "Education"],
+    readingTime: 13,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

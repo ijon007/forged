@@ -1,30 +1,46 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { MoreHorizontal, Eye, Edit, DollarSign, Share, ListOrdered, FileIcon, GraduationCap } from "lucide-react"
+import {
+  DollarSign,
+  Edit,
+  Eye,
+  FileIcon,
+  GraduationCap,
+  ListOrdered,
+  MoreHorizontal,
+  Share,
+} from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Link from "next/link"
-import { CONTENT_TYPES, type ContentType } from "@/db/schemas/course-schema"
-import { getContentTypeLabel } from "@/lib/course-store"
+} from "@/components/ui/dropdown-menu";
+import { Progress } from "@/components/ui/progress";
+import { CONTENT_TYPES, type ContentType } from "@/db/schemas/course-schema";
+import { getContentTypeLabel } from "@/lib/course-store";
 
 interface CourseCardProps {
-  id: string
-  title: string
-  description: string
-  status: "draft" | "published" | "generating"
-  price: number
-  views: number
-  sales: number
-  progress?: number
-  imageUrl?: string
-  slug?: string
-  contentType?: ContentType
+  id: string;
+  title: string;
+  description: string;
+  status: "draft" | "published" | "generating";
+  price: number;
+  views: number;
+  sales: number;
+  progress?: number;
+  imageUrl?: string;
+  slug?: string;
+  contentType?: ContentType;
 }
 
 export function CourseCard({
@@ -38,67 +54,80 @@ export function CourseCard({
   progress,
   imageUrl,
   slug,
-  contentType = CONTENT_TYPES.BLOG
+  contentType = CONTENT_TYPES.BLOG,
 }: CourseCardProps) {
   const getStatusBadge = () => {
     switch (status) {
       case "published":
-        return <Badge variant="default" className="bg-green-500">Live</Badge>
+        return (
+          <Badge className="bg-green-500" variant="default">
+            Live
+          </Badge>
+        );
       case "draft":
-        return <Badge variant="secondary">Draft</Badge>
+        return <Badge variant="secondary">Draft</Badge>;
       case "generating":
-        return <Badge variant="outline" className="border-orange-500 text-orange-500">Generating</Badge>
+        return (
+          <Badge
+            className="border-orange-500 text-orange-500"
+            variant="outline"
+          >
+            Generating
+          </Badge>
+        );
       default:
-        return <Badge variant="outline">Unknown</Badge>
+        return <Badge variant="outline">Unknown</Badge>;
     }
-  }
+  };
 
   const getContentTypeBadge = () => {
     const icons = {
       [CONTENT_TYPES.BLOG]: <FileIcon className="h-3 w-3" />,
       [CONTENT_TYPES.LISTICLE]: <ListOrdered className="h-3 w-3" />,
-      [CONTENT_TYPES.COURSE]: <GraduationCap className="h-3 w-3" />
-    }
-    
+      [CONTENT_TYPES.COURSE]: <GraduationCap className="h-3 w-3" />,
+    };
+
     return (
-      <Badge variant="outline" className="flex items-center gap-1">
+      <Badge className="flex items-center gap-1" variant="outline">
         {icons[contentType] || icons[CONTENT_TYPES.BLOG]}
         {getContentTypeLabel(contentType)}
       </Badge>
-    )
-  }
+    );
+  };
 
   const getEditLink = () => {
     if (status === "published" && slug) {
-      return `/${slug}`
+      return `/${slug}`;
     }
-    return `/dashboard/preview/${id}`
-  }
+    return `/dashboard/preview/${id}`;
+  };
 
   const getActionText = () => {
     switch (status) {
       case "published":
-        return "View Live"
+        return "View Live";
       case "draft":
-        return "Continue Editing"
+        return "Continue Editing";
       case "generating":
-        return "View Progress"
+        return "View Progress";
       default:
-        return "View"
+        return "View";
     }
-  }
+  };
 
   return (
     <Card className="w-full">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <div className="space-y-1 flex-1">
+          <div className="flex-1 space-y-1">
             <CardTitle className="text-lg">{title}</CardTitle>
-            <CardDescription className="line-clamp-2">{description}</CardDescription>
+            <CardDescription className="line-clamp-2">
+              {description}
+            </CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button className="h-8 w-8 p-0" variant="ghost">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -118,26 +147,28 @@ export function CourseCard({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {getStatusBadge()}
           {getContentTypeBadge()}
           {status === "generating" && progress !== undefined && (
-            <div className="flex-1 min-w-[100px]">
-              <Progress value={progress} className="h-2" />
+            <div className="min-w-[100px] flex-1">
+              <Progress className="h-2" value={progress} />
             </div>
           )}
         </div>
       </CardHeader>
-      
+
       {imageUrl && (
         <div className="px-6 pb-3">
-          <div className="aspect-video rounded-md bg-muted bg-cover bg-center" 
-               style={{ backgroundImage: `url(${imageUrl})` }} />
+          <div
+            className="aspect-video rounded-md bg-center bg-cover bg-muted"
+            style={{ backgroundImage: `url(${imageUrl})` }}
+          />
         </div>
       )}
-      
+
       <CardContent className="pt-0">
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center justify-between text-muted-foreground text-sm">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <Eye className="h-3 w-3" />
@@ -151,17 +182,17 @@ export function CourseCard({
           <span className="font-medium text-foreground">${price}</span>
         </div>
       </CardContent>
-      
+
       <CardFooter className="pt-0">
-        <div className="flex gap-2 w-full">
-          <Link href={getEditLink()} className="flex-1">
-            <Button variant="outline" size="sm" className="w-full">
+        <div className="flex w-full gap-2">
+          <Link className="flex-1" href={getEditLink()}>
+            <Button className="w-full" size="sm" variant="outline">
               <Edit className="mr-2 h-4 w-4" />
               Edit
             </Button>
           </Link>
-          <Link href={getEditLink()} className="flex-1">
-            <Button size="sm" className="w-full">
+          <Link className="flex-1" href={getEditLink()}>
+            <Button className="w-full" size="sm">
               <Eye className="mr-2 h-4 w-4" />
               {getActionText()}
             </Button>
@@ -169,5 +200,5 @@ export function CourseCard({
         </div>
       </CardFooter>
     </Card>
-  )
-} 
+  );
+}

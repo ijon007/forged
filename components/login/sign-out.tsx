@@ -1,19 +1,23 @@
-'use client'
+"use client";
 
-import { Button } from '../ui/button'
-import { signOut } from '@/actions/auth-actions'
-import { LogOut } from 'lucide-react'
+import { LogOut } from "lucide-react";
+import { signOut } from "@/actions/auth-actions";
+import { Button } from "../ui/button";
 
 const SignOut = () => {
-    const handleSignOut = async () => {
-        await signOut()
-    }
-    return (
-        <Button variant="outline" onClick={handleSignOut} className='w-full cursor-pointer text-red-500 hover:text-red-600'>
-            <LogOut />
-            Sign Out
-        </Button>
-    )
-}
+  const handleSignOut = async () => {
+    await signOut();
+  };
+  return (
+    <Button
+      className="flex h-8 w-full cursor-pointer flex-row items-center justify-start bg-transparent py-0 text-red-500 hover:bg-red-500/20"
+      onClick={handleSignOut}
+      variant="default"
+    >
+      <LogOut />
+      <span>Sign Out</span>
+    </Button>
+  );
+};
 
-export default SignOut
+export default SignOut;

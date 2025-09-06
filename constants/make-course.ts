@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const MAKE_COURSE: Record<string, BlogPost> = {
-    "make-course-with-ai": {
-        id: "make-course-with-forged",
-        title: "How to Make a Course with Forged",
-        keyword: "How to Make Online Courses with AI",
-        slug: "make-course-with-forged",
-        metaDescription: "Learn how to make a course with Forged. Forged is a platform that allows you to create courses with AI.",
-        content: `# How to Make Online Courses with AI: A Step-by-Step Guide Using Forged
+  "make-course-with-ai": {
+    id: "make-course-with-forged",
+    title: "How to Make a Course with Forged",
+    keyword: "How to Make Online Courses with AI",
+    slug: "make-course-with-forged",
+    metaDescription:
+      "Learn how to make a course with Forged. Forged is a platform that allows you to create courses with AI.",
+    content: `# How to Make Online Courses with AI: A Step-by-Step Guide Using Forged
 
 Creating an online course used to be a long, overwhelming process. You needed to plan lessons, write scripts, design visuals, record videos, and build quizzes — often spending weeks (or months) getting everything right.
 
@@ -152,9 +153,9 @@ Ready to create your first AI-powered course? The platform is designed to get yo
 Head over to [**tryforged.me**](https://tryforged.me/) and start building today — no credit card required. The free trial gives you full access to all features, so you can experience the power of AI-assisted course creation firsthand.
 
 Let AI do the heavy lifting, so you can focus on teaching what you love and making a real impact on your students' lives. The future of education is here, and it's more accessible than ever before.`,
-        tags: ["AI", "Course Creation", "Education"],
-        readingTime: 13,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
+    tags: ["AI", "Course Creation", "Education"],
+    readingTime: 13,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

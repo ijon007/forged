@@ -1,46 +1,60 @@
-import type { Metadata } from "next"
-import { getSession } from "@/actions/auth-actions"
-import { redirect } from "next/navigation"
-import { getUserCourses } from "@/actions/course-db-actions"
-import { AppSidebar } from "@/components/sidebar/app-sidebar"
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import type { Metadata } from "next";
+import { getSession, hasActiveSubscription } from "@/actions/auth-actions";
+import { getUserCourses } from "@/actions/course-db-actions";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
-    title: {
-        default: "Dashboard",
-        template: "%s | Dashboard",
-    },
-    description: "Dashboard",
-}
+  title: {
+    default: "Dashboard",
+    template: "%s | Dashboard",
+  },
+  description: "Dashboard",
+};
 
 export default async function DashboardLayout({
-    children,
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-    const session = await getSession()
-    const user = session?.user
-    if (!user) {
-        redirect("/login")
-    }
+  const session = await getSession();
+  const user = session?.user;
 
-    // Fetch user courses on the server to eliminate client-side fetching
-    const userCourses = await getUserCourses()
-
+  if (!user) {
     return (
-        <SidebarProvider>
-            <AppSidebar 
-                user={{
-                    name: user.name,
-                    email: user.email, 
-                    image: user.image
-                }}
-                userCourses={userCourses}
-            />
-            <SidebarInset className="border shadow-none relative overflow-hidden">
-                {children}
-            </SidebarInset>
-        </SidebarProvider>
-    )
-}
+      <SidebarProvider>
+        <AppSidebar
+          hasActiveSubscription={false}
+          user={null}
+          userCourses={[]}
+        />
+        <SidebarInset className="relative overflow-hidden border shadow-none">
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    );
+  }
 
+  // Fetch user courses and subscription status on the server
+  const [userCourses, isActive] = await Promise.all([
+    getUserCourses(),
+    hasActiveSubscription(),
+  ]);
+
+  return (
+    <SidebarProvider>
+      <AppSidebar
+        hasActiveSubscription={isActive}
+        user={{
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        }}
+        userCourses={userCourses}
+      />
+      <SidebarInset className="relative overflow-hidden border shadow-none">
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}

@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 interface OrdersData {
-  month: string
-  orders: number
+  month: string;
+  orders: number;
 }
 
 interface OrdersChartProps {
-  data: OrdersData[]
+  data: OrdersData[];
 }
 
 export function OrdersChart({ data }: OrdersChartProps) {
@@ -30,13 +30,13 @@ export function OrdersChart({ data }: OrdersChartProps) {
       label: "New Orders",
       color: "hsl(217, 91%, 60%)",
     },
-  } satisfies ChartConfig
+  } satisfies ChartConfig;
 
   // Calculate total orders for the period
-  const totalOrders = data.reduce((sum, item) => sum + item.orders, 0)
+  const totalOrders = data.reduce((sum, item) => sum + item.orders, 0);
 
   return (
-    <Card className="border rounded-3xl">
+    <Card className="rounded-3xl border">
       <CardHeader>
         <CardTitle>Orders</CardTitle>
         <CardDescription>
@@ -48,15 +48,15 @@ export function OrdersChart({ data }: OrdersChartProps) {
           <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
+              axisLine={false}
               dataKey="month"
+              tickFormatter={(value) => value.slice(0, 3)}
               tickLine={false}
               tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
-              cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              cursor={false}
               labelClassName="gap-2"
             />
             <Bar dataKey="orders" fill="var(--color-orders)" radius={8} />
@@ -64,5 +64,5 @@ export function OrdersChart({ data }: OrdersChartProps) {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
-} 
+  );
+}

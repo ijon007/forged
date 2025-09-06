@@ -1,132 +1,185 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/lib/auth-client"
-import { Check } from "lucide-react"
-import { useState } from "react"
+import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export function PlanSelection() {
-  const [isLoading, setIsLoading] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [isYearly, setIsYearly] = useState(false);
+  const { data: session } = useSession();
 
-  const buyMonthlyPlan = async () => {
-    setIsLoading('monthly')
-    await authClient.checkout({
-      products: ["847b402b-f743-49d7-a0d1-02a2f7ab5393"],
-      slug: "forged",
-    });
-  }
+  const isSignedIn = !!session?.user;
 
-  const buyYearlyPlan = async () => {
-    setIsLoading('yearly')
-    await authClient.checkout({
-      products: ["d607a6a7-db1b-45c8-bd93-6d8d9179e0c4"],
-      slug: "forged-yearly",
-    });
-  }
+  useEffect(() => {
+    const handleAutoCheckout = async () => {
+      // Check if user just signed in and has a stored plan
+      if (isSignedIn) {
+        const selectedPlan = localStorage.getItem("selectedPlan");
+        if (selectedPlan) {
+          localStorage.removeItem("selectedPlan");
+          
+          try {
+            const productId = selectedPlan === "yearly" 
+              ? process.env.NEXT_PUBLIC_YEARLY_ID 
+              : process.env.NEXT_PUBLIC_MONTHLY_ID;
+            
+            const slug = selectedPlan === "yearly" ? "forged-yearly" : "forged";
+
+            if (!productId) {
+              console.error(`Missing ${selectedPlan === 'yearly' ? 'YEARLY' : 'MONTHLY'}_ID environment variable`);
+              return;
+            }
+
+            // Trigger checkout for the selected plan
+            await authClient.checkout({
+              products: [productId],
+              slug,
+            });
+          } catch (error) {
+            console.error("Auto-checkout error:", error);
+          }
+        }
+      }
+    };
+
+    handleAutoCheckout();
+  }, [isSignedIn]);
+
+  const buyPlan = async () => {
+    if (!isSignedIn) {
+      // Store the selected plan and redirect to Google auth
+      localStorage.setItem("selectedPlan", isYearly ? "yearly" : "monthly");
+
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+        errorCallbackURL: "/dashboard",
+      });
+      return;
+    }
+
+    try {
+      const productId = isYearly 
+        ? process.env.NEXT_PUBLIC_YEARLY_ID 
+        : process.env.NEXT_PUBLIC_MONTHLY_ID;
+      
+      const slug = isYearly ? "forged-yearly" : "forged";
+
+      if (!productId) {
+        console.error(`Missing ${isYearly ? 'YEARLY' : 'MONTHLY'}_ID environment variable`);
+        alert(`Configuration error: Missing product ID for ${isYearly ? 'yearly' : 'monthly'} plan`);
+        return;
+      }
+
+      if (isYearly) {
+        setIsLoading("yearly");
+      } else {
+        setIsLoading("monthly");
+      }
+
+      await authClient.checkout({
+        products: [productId],
+        slug,
+      });
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Failed to start checkout. Please try again.");
+      setIsLoading(null);
+    }
+  };
+
+  const monthlyPrice = 20;
+  const yearlyPrice = 160;
+  const yearlyOriginalPrice = 240;
+  const savings = yearlyOriginalPrice - yearlyPrice;
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Monthly Plan */}
-        <div className="group relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-300 blur-sm"></div>
-          <div className="relative rounded-3xl border border-gray-200 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-            <div className="text-center flex flex-col items-center">
-              <div className="mb-8">
-                <div className="inline-block px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm font-semibold uppercase tracking-wide mb-4">
-                  Monthly Plan
-                </div>
-                
-                <div className="flex items-baseline justify-center mb-2">
-                  <span className="text-6xl font-bold text-gray-900">$20</span>
-                  <span className="text-xl text-gray-500 ml-1">/month</span>
-                </div>
-              </div>
-
-              <Button 
-                onClick={() => buyMonthlyPlan()}
-                disabled={isLoading !== null}
-                className="mb-8 py-6 w-full bg-black text-white hover:bg-gray-800 transition-all hover:scale-105 hover:shadow-lg rounded-2xl font-semibold"
-              >
-                {isLoading === 'monthly' ? 'Loading...' : 'Start Creating'}
-              </Button>
-
-              <div className="space-y-4 w-full">
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Unlimited generations</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Hosted & Shareable</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Advanced analytics dashboard</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>No platform fees</span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="w-full">
+      <div className="flex flex-col items-center text-center">
+        <div className="mb-8 flex items-center justify-center gap-4">
+          <span
+            className={`font-medium text-sm ${isYearly ? "text-neutral-500" : "text-neutral-900"}`}
+          >
+            Monthly
+          </span>
+          <Switch
+            checked={isYearly}
+            className="cursor-pointer"
+            onCheckedChange={setIsYearly}
+          />
+          <span
+            className={`font-medium text-sm ${isYearly ? "text-neutral-900" : "text-neutral-500"}`}
+          >
+            Yearly
+          </span>
+          <span className="rounded-full bg-green-100 px-2 py-1 font-medium text-green-700 text-xs">
+            Save ${savings}
+          </span>
         </div>
 
-        {/* Yearly Plan */}
-        <div className="group relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-300 blur-sm"></div>
-          <div className="relative rounded-3xl border border-gray-200 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-            <div className="text-center flex flex-col items-center">
-              <div className="mb-8">
-                <div className="inline-block px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm font-semibold uppercase tracking-wide mb-4">
-                  Yearly Plan
-                </div>
-                
-                <div className="flex items-baseline justify-center mb-2 gap-3">
-                  <span className="text-3xl font-semibold text-gray-400 line-through select-none">
-                    $240
-                  </span>
-                  <span className="text-6xl font-bold text-gray-900">
-                    $160
-                  </span>
-                </div>
-                
-                <div className="flex justify-center items-center text-green-700 font-semibold">
-                  <span>Save $80 — 4 months free</span>
-                </div>
-              </div>
-
-              <Button 
-                onClick={() => buyYearlyPlan()}
-                disabled={isLoading !== null}
-                className="mb-8 py-6 w-full bg-black text-white hover:bg-gray-800 transition-all hover:scale-105 hover:shadow-lg rounded-2xl font-semibold"
-              >
-                {isLoading === 'yearly' ? 'Loading...' : 'Start Creating'}
-              </Button>
-
-              <div className="space-y-4 w-full">
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Unlimited generations</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Hosted & Shareable</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>No platform fees - Earnings are all yours</span>
-                </div>
-                <div className="flex items-center text-gray-700">
-                  <Check className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0" />
-                  <span>Billed yearly</span>
-                </div>
-              </div>
-            </div>
+        {/* Price Display */}
+        <div className="mb-6">
+          <div className="mb-2 flex items-baseline justify-center">
+            <span className="font-bold text-5xl text-neutral-900">
+              ${isYearly ? yearlyPrice : monthlyPrice}
+            </span>
+            <span className="ml-1 text-neutral-500 text-lg">
+              /{isYearly ? "year" : "month"}
+            </span>
           </div>
+
+          {isYearly && (
+            <div className="mb-2 flex items-center justify-center gap-2">
+              <span className="text-neutral-400 text-lg line-through">
+                ${yearlyOriginalPrice}
+              </span>
+              <span className="font-medium text-green-700 text-sm">
+                4 months free
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* CTA Button */}
+        <Button
+          className="mb-6 w-full rounded-xl bg-black py-4 font-medium text-white hover:bg-neutral-800"
+          disabled={isLoading !== null}
+          onClick={buyPlan}
+        >
+          {isLoading ? "Loading..." : "Start Creating"}
+        </Button>
+
+        {/* Features */}
+        <div className="w-full space-y-3">
+          <div className="flex items-center text-neutral-700">
+            <Check className="mr-3 h-4 w-4 flex-shrink-0 text-neutral-600" />
+            <span className="text-sm">Unlimited generations</span>
+          </div>
+          <div className="flex items-center text-neutral-700">
+            <Check className="mr-3 h-4 w-4 flex-shrink-0 text-neutral-600" />
+            <span className="text-sm">Hosted & Shareable</span>
+          </div>
+          <div className="flex items-center text-neutral-700">
+            <Check className="mr-3 h-4 w-4 flex-shrink-0 text-neutral-600" />
+            <span className="text-sm">Advanced analytics dashboard</span>
+          </div>
+          <div className="flex items-center text-neutral-700">
+            <Check className="mr-3 h-4 w-4 flex-shrink-0 text-neutral-600" />
+            <span className="text-sm">
+              No platform fees{isYearly ? " - Earnings are all yours" : ""}
+            </span>
+          </div>
+          {isYearly && (
+            <div className="flex items-center text-neutral-700">
+              <Check className="mr-3 h-4 w-4 flex-shrink-0 text-neutral-600" />
+              <span className="text-sm">Billed yearly</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

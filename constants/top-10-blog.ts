@@ -1,13 +1,14 @@
-import { BlogPost } from "./blogs";
+import type { BlogPost } from "./blogs";
 
 export const TOP_10_BLOG: Record<string, BlogPost> = {
-    "top-10-ai-tools-for-creating-online-courses-in-2025": {
-        id: "top-10-ai-tools-for-creating-online-courses-in-2025",
-        title: "Top 10 AI Tools for Creating Online Courses in 2025",
-        keyword: "top 10 ai tools for creating online courses",
-        slug: "top-10-ai-tools-for-creating-online-courses-in-2025",
-        metaDescription: "Discover the top 10 AI tools for creating online courses in 2025. From Forged's comprehensive AI assistant to specialized platforms like SC Training's free solution, there's a tool to meet virtually every need and budget.",
-        content: `# Top 10 AI Tools for Creating Online Courses in 2025
+  "top-10-ai-tools-for-creating-online-courses-in-2025": {
+    id: "top-10-ai-tools-for-creating-online-courses-in-2025",
+    title: "Top 10 AI Tools for Creating Online Courses in 2025",
+    keyword: "top 10 ai tools for creating online courses",
+    slug: "top-10-ai-tools-for-creating-online-courses-in-2025",
+    metaDescription:
+      "Discover the top 10 AI tools for creating online courses in 2025. From Forged's comprehensive AI assistant to specialized platforms like SC Training's free solution, there's a tool to meet virtually every need and budget.",
+    content: `# Top 10 AI Tools for Creating Online Courses in 2025
 
 The world of online education is experiencing a revolutionary transformation, and artificial intelligence is at the forefront of this change. As we move through 2025, educators and course creators are discovering that AI-powered tools can dramatically reduce the time and effort required to create compelling, engaging online courses. These innovative platforms are not just automating mundane tasks—they're enabling creators to focus on what truly matters: delivering exceptional learning experiences.
 
@@ -134,9 +135,9 @@ As you evaluate these options, consider your specific requirements, technical ex
 The future of online education is here, and it's powered by artificial intelligence. By embracing these tools and understanding their capabilities, you can position yourself at the forefront of this educational revolution, creating courses that not only inform but truly transform your learners' lives and careers.
 
 Whether you're an individual educator looking to share your expertise or a large organization seeking to train thousands of employees, the AI course creation tools of 2025 offer the power, flexibility, and intelligence needed to succeed in the modern educational landscape. The only question is: which tool will you choose to unlock your educational potential?`,
-        tags: ["AI", "Course Creation", "Education"],
-        readingTime: 13,
-        publishedAt: "2025-07-09",
-        author: "Forged"
-    }
-}
+    tags: ["AI", "Course Creation", "Education"],
+    readingTime: 13,
+    publishedAt: "2025-07-09",
+    author: "Forged",
+  },
+};

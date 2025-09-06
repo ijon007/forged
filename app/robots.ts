@@ -1,12 +1,12 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/private/', '/admin/', '/api/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/private/", "/admin/", "/api/"],
     },
-    sitemap: 'https://www.tryforged.me/sitemap.xml',
-  }
-} 
+    sitemap: "https://www.tryforged.me/sitemap.xml",
+  };
+}
