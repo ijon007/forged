@@ -52,12 +52,25 @@ export function PlanSelection() {
     if (!isSignedIn) {
       // Store the selected plan and redirect to Google auth
       localStorage.setItem("selectedPlan", isYearly ? "yearly" : "monthly");
-
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/dashboard",
-        errorCallbackURL: "/dashboard",
+      
+      console.log("Starting Google OAuth flow...");
+      console.log("Environment check:", {
+        hasGoogleClientId: !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        hasAppUrl: !!process.env.NEXT_PUBLIC_APP_URL,
+        appUrl: process.env.NEXT_PUBLIC_APP_URL,
+        currentUrl: window.location.origin,
       });
+
+      try {
+        await authClient.signIn.social({
+          provider: "google",
+          callbackURL: "/dashboard",
+          errorCallbackURL: "/dashboard",
+        });
+      } catch (error) {
+        console.error("Google OAuth error:", error);
+        alert("Failed to start Google sign-in. Please check console for details.");
+      }
       return;
     }
 

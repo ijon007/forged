@@ -71,25 +71,17 @@ export function DashboardPage({
                   ? "Transform your PDFs into beautiful, sellable pages that generate passive income"
                   : "Sign in to your account to start creating and selling your content"}
               </p>
-
-              {/* CTA Button */}
-              {showPlanSelection ? (
-                <Button
-                  className="group relative mb-8 overflow-hidden rounded-xl bg-black text-white transition-all hover:bg-neutral-800"
-                  onClick={() => setIsPlanDialogOpen(true)}
-                  size="lg"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-neutral-800 to-black opacity-0 transition-opacity group-hover:opacity-100" />
-                  <span className="relative">
-                    Get Started - Choose Your Plan
-                  </span>
-                  <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              ) : (
-                <div className="mb-8">
-                  <GoogleLoginButton />
-                </div>
-              )}
+              <Button
+                className="group relative mb-8 overflow-hidden rounded-xl bg-black text-white transition-all hover:bg-neutral-800"
+                onClick={() => setIsPlanDialogOpen(true)}
+                size="lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-neutral-800 to-black opacity-0 transition-opacity group-hover:opacity-100" />
+                <span className="relative">
+                  Get Started - Choose Your Plan
+                </span>
+                <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
 
               {/* Feature highlights */}
               <div className="grid max-w-2xl gap-4 md:grid-cols-3">
